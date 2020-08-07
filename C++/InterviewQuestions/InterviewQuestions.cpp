@@ -5,8 +5,10 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <ctype.h>
 #include <math.h>
 #include <vector>
+#include <stack>
 #include <string>
 #include <limits>
 #include <algorithm>
@@ -16,11 +18,16 @@ using namespace std;
 // Function prototypes
 template <typename T>
 vector<T> getArrayInput();
+bool is_digit(string);
 void fizzBuzz();
 void twoSum();
 void maxConsecutiveOnes();
 void maxProductofThreeNumbers();
 void validParanthesis();
+void baseballGame();
+void containsDuplicate();
+void validAnagram();
+void kthLargestElement();
 
 int main()
 {
@@ -36,6 +43,10 @@ int main()
         cout << "3 - Max Consecutive Ones" << endl;
         cout << "4 - Max Product of Three Numbers in an array" << endl;
         cout << "5 - Valid Paranthesis" << endl;
+        cout << "6 - Baseball Game" << endl;
+        cout << "7 - Contains Duplicate" << endl;
+        cout << "8 - Valid Anagram" << endl;
+        cout << "9 - Kth Largest Element" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -60,6 +71,18 @@ int main()
         case 5:
             validParanthesis();
             break;
+        case 6:
+            baseballGame();
+            break;
+        case 7:
+            containsDuplicate();
+            break;
+        case 8:
+            validAnagram();
+            break;
+        case 9:
+            kthLargestElement();
+            break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
             break;
@@ -76,7 +99,7 @@ vector<T> getArrayInput() {
 
     // Get array values from user
     vector<T> arr(0);
-    T tempInput = NULL;
+    T tempInput;
     cout << "Enter the array elements." << endl;
     for (int i = 0; i < arrSize; ++i) {
         cout << to_string(i) + "th: ";
@@ -85,6 +108,11 @@ vector<T> getArrayInput() {
     }
 
     return arr;
+}
+
+bool is_digits(const string& str){
+    return str.find_first_not_of("-0123456789") == string::npos;
+    //return all_of(str.begin(), str.end(), ::isdigit); // C++11
 }
 
 void fizzBuzz() {
@@ -128,7 +156,7 @@ void twoSum() {
     cin >> targetNumber;
 
     // Get array values from user
-    vector<int> arr = getArrayInput();
+    vector<int> arr = getArrayInput<int>();
     int arrSize = arr.size();
 
     // Result indexes
@@ -205,7 +233,7 @@ void maxConsecutiveOnes() {
 
     // Get array values from user
 
-    vector<bool> arr = getArrayInput();
+    vector<bool> arr = getArrayInput<bool>();
     int arrSize = arr.size();
 
     // O(n) solution
@@ -234,7 +262,7 @@ void maxProductofThreeNumbers(){
     cout << "Given an array of integers, print the product of 3 max integers. For example; [1,2,3,4] --> 2*3*4=24" << endl;
 
     // Get array values from user
-    vector<int> arr = getArrayInput();
+    vector<int> arr = getArrayInput<int>();
     int arrSize = arr.size();
 
     int solutionSelection = 0;
@@ -330,6 +358,115 @@ void validParanthesis() {
     // Description of the problem
     cout << "Given an array of paranthesis check its validness. Every opening parathesis must have one closing paranthesis!" << endl;
 
+    // Get array values from user
+    cout << "Array should only consist of ( and ) characters!" << endl;
+    vector<char> arr = getArrayInput<char>();
+    int arrSize = arr.size();
 
+    // Size of the array is not even, not valid
+    if (arrSize % 2 != 0) {
+        cout << "Not Valid: Array size is not even." << endl;
+    }
+
+    // Use stack for validness
+    stack<char> paranthesisStack;
+
+    // Loop over every element in the array
+    for (char element : arr) {
+        // Opening paranthesis, push something to the stack
+        if (element == '(') {
+            paranthesisStack.push('x');
+        }
+        // Closing paranthesis, pop last pushed characters
+        else if (element == ')' && !paranthesisStack.empty()) {
+            paranthesisStack.pop();
+        }
+        // Closing paranthesis but stack is empty, error
+        else {
+            cout << "Not Valid: There is a closing paranthesis without opening paranthesis." << endl;
+            break;
+        }
+    }
+
+    if (paranthesisStack.empty()) {
+        cout << "Valid: All paranthesis matched." << endl;
+    }
+    else {
+        cout << "Not Valid: There is/are opening paranthesis that didn't close." << endl;
+    }
 
 }
+
+void baseballGame() {
+    // Description of the problem
+    cout << "Calculate the final score of the baseball game. Given the array of characters: integers are the points, D doubles the previous point, C cancels the previous point and + sums last two points." << endl;
+    cout << "[5,2,C,D,+] --> 5+2=7 --> C: 2 canceled=5 --> D: 5*2=10 : total=5+10=15 --> +: 5+10=15 total=5+10+15=30" << endl;
+
+    // Get array values from user
+    vector<string> arr = getArrayInput<string>();
+    int arrSize = arr.size();
+
+    // Result
+    int total = 0;
+
+    // Use stack for easier calculation
+    stack<int> pointStack;
+
+    // Loop over the array
+    for (string element : arr) {
+        // Digit, push to stack
+        if (is_digits(element)) {
+            pointStack.push(stoi(element));
+        }
+        // D: double the previous
+        else if (element == "D" || element == "d") {
+            // Convert char to int
+            int lastElement = pointStack.top();
+            // Double it
+            lastElement *= 2;
+            // Push to stack
+            pointStack.push(lastElement);
+        }
+        // C: cancel the previous
+        else if (element == "C" || element == "c") {
+            // Pop the last element
+            pointStack.pop();
+        }
+        // +: sum the previous two
+        else if (element == "+") {
+            // Get the top element
+            int lastElement1 = pointStack.top();
+            // Pop the top element
+            pointStack.pop();
+            // Get the second top element
+            int lastElement2 = pointStack.top();
+            // Sum these two elements
+            int sum = lastElement1 + lastElement2;
+            // Push the previous top to stack
+            pointStack.push(lastElement1);
+            // Push the sum result to stack
+            pointStack.push(sum);
+        }
+        // None: error
+        else {
+            cout << "Error: Invalid character in the array (" << element << "), finishing the function." << endl;
+            break;
+        }
+    }
+
+    // Find the total
+    while (!pointStack.empty()) {
+        // Get the top from stack and add to the total
+        total += pointStack.top();
+        // Pop it
+        pointStack.pop();
+    }
+
+    cout << "Total: " << total << endl;
+}
+
+void containsDuplicate(){}
+
+void validAnagram(){}
+
+void kthLargestElement(){}
