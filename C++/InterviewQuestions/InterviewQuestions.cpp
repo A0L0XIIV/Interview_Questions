@@ -9,6 +9,7 @@
 #include <math.h>
 #include <vector>
 #include <stack>
+#include <map>
 #include <string>
 #include <limits>
 #include <algorithm>
@@ -465,8 +466,171 @@ void baseballGame() {
     cout << "Total: " << total << endl;
 }
 
-void containsDuplicate(){}
+void containsDuplicate(){
+    // Description of the problem
+    cout << "Find the duplicates in the given array with k index difference." << endl;
+    cout << "[2,4,1,1,3,2,5,6] and k=2. 2's index difference is larger than k=2 so only return 1 as a result." << endl;
 
-void validAnagram(){}
+    // Get k value from user
+    cout << "Enter the value of the k, index difference:";
+    int k = 0;
+    cin >> k;
 
-void kthLargestElement(){}
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+
+    vector<int> results;
+    int solutionSelection = 0;
+    // Problem has several solutions, choose one
+    cout << "Enter 1 for O(n*k) brute force solution, 2 for O(n) hash table solution." << endl;
+    cin >> solutionSelection;
+
+    // O(n*k) solution, check each pairs in the array
+    if (solutionSelection == 1) {
+        // First loop, all elements in the array
+        for (int i = 0; i < arrSize; ++i) {
+            // Second loop for finding duplicates, k times
+            for (int j = i+1; j-i <= k && j < arrSize; ++j) {
+                // Duplicate check
+                if (arr[i] == arr[j]) {
+                    results.push_back(arr[i]);
+                }
+            }
+        }
+        // Print the result
+        if (results.empty()) {
+            cout << "Couldn't find any duplicates in the given array with k=" << k << " index difference." << endl;
+        }
+        else {
+            cout << "Found " << results.size() << " different duplicates." << endl;
+        }
+    }
+    // Could add O(logn) solution with sorting and paired (value, unsorted index) vectors
+    // O(n) solution, use hash maps
+    else if (solutionSelection == 2) {
+        map<int, int> hashMap;
+        // Loop over all elements
+        for (int i = 0; i < arrSize; ++i) {
+            // Check if there is an element in the hashMap, if not insert it
+            if (hashMap.find(arr[i]) == hashMap.end()) {
+                // Map keys are array values, map values are array indexes
+                hashMap[arr[i]] =  i;
+            }
+            // Element's values is already in the map, and |previous index - current index| is smaller than the k, add it into results list
+            else if (hashMap.find(arr[i]) != hashMap.end() && abs(hashMap[arr[i]] - i) <= k) {
+                results.push_back(arr[i]);
+                // Update the hash map for possible duplicates
+                hashMap[arr[i]] = i;
+            }
+        }
+        // Print the result
+        if (results.empty()) {
+            cout << "Couldn't find any duplicates in the given array with k=" << k << " index difference." << endl;
+        }
+        else {
+            cout << "Found " << results.size() << " different duplicates." << endl;
+        }
+    }
+    // Neither O(n^2) nor O(logn) solution selected
+    else {
+        cout << "Incorrect solution selection!" << endl;
+    }
+
+}
+
+void validAnagram(){
+    // Description of the problem
+    cout << "Check if the given 2 words are anagrams or not (containts the same letters)." << endl;
+    cout << "Example: anagram and nagaram are anagrams but cat and rat are not." << endl;
+
+    // Get two strings from user
+    cout << "Enter the first string: ";
+    string firstWord = "";
+    cin >> firstWord;
+    cout << "Enter the second string: ";
+    string secondWord = "";
+    cin >> secondWord;
+
+    // Check their sizes
+    if (firstWord.size() != secondWord.size()) {
+        cout << "Size of the two words are different, they aren't anagrams." << endl;
+    }
+    // Sizes are equal
+    else {
+        // Problem has several solutions, choose one
+        int solutionSelection = 0;
+        cout << "Enter 1 for O(logn) sorting solution, 2 for O(n) hash map solution." << endl;
+        cin >> solutionSelection;
+
+        // Brute force O(n^2) solution, check two arrays' every pairs, then delete same letters
+
+        // O(logn) solution, sort two strings and check pairs
+        if (solutionSelection == 1) {
+            // Sort 2 strings
+            sort(firstWord.begin(), firstWord.end());
+            sort(secondWord.begin(), secondWord.end());
+            bool validAnagram = true;
+            // Check every index
+            for (int i = 0; i < firstWord.size(); ++i) {
+                if (firstWord[i] != secondWord[i]) {
+                    cout << "Not Anagram: These two words are not anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
+                    validAnagram = false;
+                    break;
+                }
+            }
+            if (validAnagram)
+                cout << "Anagram: These two words are anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
+        }
+        // O(n) solution, use hash map for each letter, increase counters for the first word, decrease the same letters for the second word, if all 0 they are anagrams
+        else if (solutionSelection == 2) {
+            map<char, int> letterMap;
+            bool validAnagram = true;
+
+            // Loop over every letter in the first word
+            for (char c : firstWord) {
+                // First add each letter in the map
+                if (letterMap.find(c) == letterMap.end()) {
+                    letterMap[c] = 1;
+                }
+                // Update their counter everytime when encounter the same letter
+                else if (letterMap.find(c) != letterMap.end()) {
+                    letterMap[c] += 1;
+                }
+            }
+
+            // Second, loop over second word and decrease each letters counter
+            for (char c : secondWord) {
+                // First add each letter in the map
+                if (letterMap.find(c) == letterMap.end()) {
+                    validAnagram = false;
+                }
+                // Update (decrease) their counter everytime when encounter the same letter
+                else if (letterMap.find(c) != letterMap.end() && letterMap[c] > 0) {
+                    letterMap[c] -= 1;
+                }
+            }
+
+            // Check hash map, if all letters' counter is 0 they are anagram, if not not anagram
+            for (auto itr = letterMap.begin(); itr != letterMap.end(); ++itr) {
+                if (itr->second != 0)
+                    validAnagram = false;
+            }
+            // Print result
+            if(validAnagram){
+                cout << "Anagram: These two words are anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
+            }
+            else {
+                cout << "Not Anagram: These two words are not anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
+            }
+        }
+        // Neither O(logn) nor O(n) solution selected
+        else {
+            cout << "Incorrect solution selection!" << endl;
+        }
+    }
+}
+
+void kthLargestElement(){
+
+}
