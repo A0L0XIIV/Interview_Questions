@@ -9,6 +9,7 @@
 #include <math.h>
 #include <vector>
 #include <stack>
+#include <queue>
 #include <map>
 #include <string>
 #include <limits>
@@ -29,6 +30,7 @@ void baseballGame();
 void containsDuplicate();
 void validAnagram();
 void kthLargestElement();
+void kPairsWithSmallestSum();
 
 int main()
 {
@@ -48,6 +50,7 @@ int main()
         cout << "7 - Contains Duplicate" << endl;
         cout << "8 - Valid Anagram" << endl;
         cout << "9 - Kth Largest Element" << endl;
+        cout << "10 - K Pairs with Smallest Sum" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -83,6 +86,9 @@ int main()
             break;
         case 9:
             kthLargestElement();
+            break;
+        case 10:
+            kPairsWithSmallestSum();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
@@ -632,5 +638,143 @@ void validAnagram(){
 }
 
 void kthLargestElement(){
+    // Description of the problem
+    cout << "Find the Kth largest element in the given array." << endl;
+
+    // Get the k
+    int k = 0;
+    cout << "Enter a value for k: ";
+    cin >> k;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+
+    int solutionSelection = 0;
+    // Problem has several solutions, choose one
+    cout << "Enter 1 for O(nlogn) sorting solution, 2 for O(nlogk) min heap solution." << endl;
+    cin >> solutionSelection;
+
+    // O(nlogn) solution, sort the array and get Kth element
+    if (solutionSelection == 1) {
+        // Sort the array
+        sort(arr.begin(), arr.end());
+
+        // Print the result
+        cout << "Kth largest element in the given array: " << arr[arrSize - k] << endl;
+    
+    }
+    // O(nlogk) solution, use min heaps
+    else if (solutionSelection == 2) {
+        // Convert vector array to MIN HEAP with STL priority_queue
+        priority_queue <int, vector<int>, greater<int>> minHeap;
+        // Loop over array's elements
+        for (int element : arr) {
+            // Heap only has k elements because we only need kth element, push first k element into heap
+            if (minHeap.size() < k) {
+                minHeap.push(element);
+            }
+            // After heap is full, change the elements if they are greater than the heap's min
+            else if (minHeap.top() < element) {
+                // Pop smaller element
+                minHeap.pop();
+                // Push new greater element to heap
+                minHeap.push(element);
+            }
+        }
+        // Print the result
+        cout << "Kth largest element in the given array: " << minHeap.top() << endl;
+    }
+    // Neither O(nlogn) nor O(nlogk) solution selected
+    else {
+        cout << "Incorrect solution selection!" << endl;
+    }
+}
+
+void kPairsWithSmallestSum() {
+    // Description of the problem
+    cout << "Given 2 different arrays, find the k pairs that have smallest sum value." << endl;
+    cout << "For example: u=[1,7,11] and v=[2,4,6], results are= [1,2], [1,4] and [1,6]." << endl;
+
+    // Get the k
+    int k = 0;
+    cout << "Enter a value for k: ";
+    cin >> k;
+
+    // Get array values from user
+    cout << "First Array:" << endl;
+    vector<int> arr1 = getArrayInput<int>();
+    int arr1Size = arr1.size();
+
+    // Get array values from user
+    cout << "Second Array:" << endl;
+    vector<int> arr2 = getArrayInput<int>();
+    int arr2Size = arr2.size();
+
+    int solutionSelection = 0;
+    // Problem has several solutions, choose one
+    cout << "Enter 1 for O(n^2*logn) naive solution, 2 for O(n^2*logn) max heap solution." << endl;
+    cin >> solutionSelection;
+
+    // Combination array with all sums, size = arr1Size * arr2Size
+    vector<pair<int, int>> pairArray;
+
+    // Loop over the first array
+    for (int element1 : arr1) {
+        // Loop over the second array
+        for (int element2 : arr2) {
+            // Temporary pair for pushing elements into the vector
+            pair<int, int> tempPair(element1, element2);
+            pairArray.push_back(tempPair);
+        }
+    }
+
+    // O(n^2*logn) solution, combine all possible combinations, sort the array and get Kth element
+    if (solutionSelection == 1) {
+        // Sort the pairArray and get first k elements, use pair's sum for sort comparasion
+        sort(pairArray.begin(), pairArray.end(),
+            [](const pair<int,int>& a, const pair<int, int>& b) -> bool
+            {
+                return (a.first + a.second) < (b.first + b.second);
+            });
+        // Print the results
+        cout << "The smallest sum pairs are: " << endl;
+        for (int i = 0; i < k; ++i) {
+            cout << "- [" << pairArray[i].first << ',' << pairArray[i].second << ']' << endl;
+        }
+    }
+    // O(n^2*logn) solution, use k sized max heaps
+    else if (solutionSelection == 2) {
+        // Create a new max heap with lambda comparison function
+        // Heap will only store k min summed pairs
+        priority_queue <pair<int, int>, vector<pair<int, int>>, auto(*)(pair<int, int>, pair<int, int>)->bool> maxHeap{
+            // Using lambda function to compare pair elements sum
+            [](pair<int, int> a, pair<int, int> b)->bool { return (a.first+a.second) < (b.first+b.second); }
+        };
+        // Loop over pair array
+        for (pair<int, int> p : pairArray) {
+            // If the heap is empty, push new pairs to heap
+            if (maxHeap.size() < k) {
+                maxHeap.push(p);
+            }
+            // Heap is full, change elements if their sum is less than the max in the heap
+            else if ((p.first + p.second) < (maxHeap.top().first + maxHeap.top().second) ) {
+                // Pop the max sum pair
+                maxHeap.pop();
+                // Put the smaller summed pair in heap
+                maxHeap.push(p);
+            }
+        }
+        // Print the results
+        cout << "The smallest sum pairs are: " << endl;
+        for (int i = 0; i < k; ++i) {
+            cout << "- [" << maxHeap.top().first << ',' << maxHeap.top().second << ']' << endl;
+            maxHeap.pop();
+        }
+    }
+    // Neither O(n^2*logn) nor O(n^2*logn) solution selected
+    else {
+        cout << "Incorrect solution selection!" << endl;
+    }
 
 }
