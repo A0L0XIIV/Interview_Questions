@@ -15,6 +15,8 @@
 #include <limits>
 #include <algorithm>
 
+#include "BinarySearchTree.h";
+
 using namespace std;
 
 // Function prototypes
@@ -31,6 +33,7 @@ void containsDuplicate();
 void validAnagram();
 void kthLargestElement();
 void kPairsWithSmallestSum();
+void invertBST();
 
 int main()
 {
@@ -51,6 +54,7 @@ int main()
         cout << "8 - Valid Anagram" << endl;
         cout << "9 - Kth Largest Element" << endl;
         cout << "10 - K Pairs with Smallest Sum" << endl;
+        cout << "11 - Invert a Binary Search Tree" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -89,6 +93,9 @@ int main()
             break;
         case 10:
             kPairsWithSmallestSum();
+            break;
+        case 11:
+            invertBST();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
@@ -775,6 +782,20 @@ void kPairsWithSmallestSum() {
     // Neither O(n^2*logn) nor O(n^2*logn) solution selected
     else {
         cout << "Incorrect solution selection!" << endl;
+    }
+
+}
+
+void invertBST() {
+    // Description of the problem
+    cout << "Invert the given binary search tree." << endl;
+
+    // Create a new BST
+    BST* bst = new BST();
+
+    // Get new node data from user to fill the tree
+    while (true) {
+        // TO DO
     }
 
 }
