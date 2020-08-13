@@ -34,6 +34,10 @@ void validAnagram();
 void kthLargestElement();
 void kPairsWithSmallestSum();
 void invertBST();
+void insertionSort();
+void mergeSort(vector<int> & array, int p, int r);
+void merge(vector<int> & array, int p, int q, int r);
+void mergeSortCaller();
 
 int main()
 {
@@ -55,6 +59,8 @@ int main()
         cout << "9 - Kth Largest Element" << endl;
         cout << "10 - K Pairs with Smallest Sum" << endl;
         cout << "11 - Invert a Binary Search Tree" << endl;
+        cout << "12 - Insertion Sort" << endl;
+        cout << "13 - Merge Sort" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -96,6 +102,12 @@ int main()
             break;
         case 11:
             invertBST();
+            break;
+        case 12:
+            insertionSort();
+            break;
+        case 13:
+            mergeSortCaller();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
@@ -793,9 +805,121 @@ void invertBST() {
     // Create a new BST
     BST* bst = new BST();
 
-    // Get new node data from user to fill the tree
-    while (true) {
-        // TO DO
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+    // Define a BSTnode
+    BSTNode* tempNode;
+
+    // Fill the tree with array's data
+    for (int element : arr) {
+        // Create a new node object
+        tempNode = new BSTNode(element);
+        // Add new node to tree
+        bst->addNode(tempNode);
     }
 
+    bst->printTree();
+
 }
+
+void insertionSort() { 
+    // Description of the problem
+    cout << "Insertion sort algoritm. Create a new array and it will print the sorted result." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+    int i, key;
+
+    // First loop, start from the second element
+    for (int j = 1; j < arrSize; ++j) {
+        // Get second element's value
+        key = arr[j];
+        // Previous index
+        i = j - 1;
+        // Loop previous elements and change their location if they are bigger
+        while (i >= 0 && arr[i] > key) {
+            arr[i + 1] = arr[i];
+            i--;
+        }
+        // change key's position if its smaller
+        arr[i + 1] = key;
+    }
+
+    cout << "Sorted array: ";
+    // Print sorted array
+    for (int element : arr) {
+        cout << element << " - ";
+    }
+}
+
+void mergeSortCaller() {
+    // Description of the problem
+    cout << "Merge sort algoritm. Create a new array and it will print the sorted result." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+
+    // Sorted array
+    mergeSort(arr, 0, arrSize-1);
+
+    cout << "Sorted array: ";
+    // Print sorted array
+    for (int element : arr) {
+        cout << element << " - ";
+    }
+}
+
+void mergeSort(vector<int> & array, int p, int r) {
+    if (p < r) {
+        // Middle element.s index
+        int q = ceil((p + r) / 2);
+        // Recusrion for first and second halves
+        mergeSort(array, p, q);
+        mergeSort(array, q + 1, r);
+        // Merge 2 halves
+        merge(array, p, q, r);
+    }
+}
+
+void merge(vector<int> & array, int p, int q, int r) {
+    // Size of 2 arrays
+    int n1 = (q - p) + 1;
+    int n2 = (r - q);
+    int i, j;
+    // Create 2 new arrays
+    vector<int> Left(n1);
+    vector<int> Right(n2);
+    // Fill the arrays
+    for (i = 0; i < n1; ++i) {
+        Left[i] = array[p + i];
+    }
+    for (j = 0; j < n2; ++j) {
+        Right[j] = array[q + j + 1];
+    }
+    // Put max int at the end of the arrays
+    Left.push_back(INT_MAX);
+    Right.push_back(INT_MAX);
+    // Reset indexes
+    i = 0, j = 0;
+    // Merge left and right arrays
+    for (int k = p; k <= r; ++k) {
+        if (Left[i] <= Right[j]) {
+            array[k] = Left[i];
+            i++;
+        }
+        else {
+            array[k] = Right[j];
+            j++;
+        }
+    }
+}
+
+// TO DO
+void heapSort() { }
+
+void quickSort() { }
+
+void binarySearch() { }

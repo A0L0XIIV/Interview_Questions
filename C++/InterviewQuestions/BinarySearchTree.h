@@ -6,7 +6,7 @@ class BSTNode{
 	BSTNode* right;
 public:
 	// Constructors
-	BSTNode() = default;
+	BSTNode();
 	BSTNode(int v);
 	BSTNode(int v, BSTNode* l, BSTNode* r);
 	// Functions
@@ -70,7 +70,7 @@ class BST {
 	unsigned short depth;
 public:
 	// Constructors
-	BST() = default;
+	BST();
 	BST(BSTNode* rootNode);
 	// Functions
 	void printTree();
@@ -81,6 +81,7 @@ public:
 	void addNode(BSTNode* node);
 	void deleteNode(BSTNode* node);
 	int calculateDepth(BSTNode* node);
+	BSTNode* getRoot();
 };
 
 // Constructors
@@ -97,6 +98,10 @@ BST::BST(BSTNode* rootNode) {
 }
 
 // Functions
+BSTNode* BST::getRoot() {
+	return this->root;
+}
+
 void BST::printTree() {
 	std::cout << std::endl << "Preorder: " << std::endl;
 	printPreorder(this->root);
@@ -104,28 +109,29 @@ void BST::printTree() {
 	printInorder(this->root);
 	std::cout << std::endl << "Postorder: " << std::endl;
 	printPostorder(this->root);
+	std::cout << std::endl;
 }
 
 void BST::printPreorder(BSTNode* node) {
 	if (node == nullptr)
 		return;
-	std::cout << " - " << node->getValue() << " - ";
+	std::cout << " - " << node->getValue();
 	printPreorder(node->getLeftChild());
 	printPreorder(node->getRightChild());
 }
 void BST::printInorder(BSTNode* node) {
 	if (node == nullptr)
 		return;
-	printPreorder(node->getLeftChild());
-	std::cout << " - " << node->getValue() << " - ";
-	printPreorder(node->getRightChild());
+	printInorder(node->getLeftChild());
+	std::cout << " - " << node->getValue();
+	printInorder(node->getRightChild());
 }
 void BST::printPostorder(BSTNode* node) {
 	if (node == nullptr)
 		return;
-	printPreorder(node->getLeftChild());
-	printPreorder(node->getRightChild());
-	std::cout << " - " << node->getValue() << " - ";
+	printPostorder(node->getLeftChild());
+	printPostorder(node->getRightChild());
+	std::cout << " - " << node->getValue();
 }
 
 BSTNode* BST::find(int v, BSTNode * node) {
