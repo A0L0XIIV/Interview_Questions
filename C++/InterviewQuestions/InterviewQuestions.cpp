@@ -38,6 +38,9 @@ void insertionSort();
 void mergeSort(vector<int> & array, int p, int r);
 void merge(vector<int> & array, int p, int q, int r);
 void mergeSortCaller();
+void heapSort();
+void quickSort();
+void binarySearch();
 
 int main()
 {
@@ -61,6 +64,9 @@ int main()
         cout << "11 - Invert a Binary Search Tree" << endl;
         cout << "12 - Insertion Sort" << endl;
         cout << "13 - Merge Sort" << endl;
+        cout << "14 - Heap Sort" << endl;
+        cout << "15 - Quick Sort" << endl;
+        cout << "16 - Binary Search" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -108,6 +114,15 @@ int main()
             break;
         case 13:
             mergeSortCaller();
+            break;
+        case 14:
+            heapSort();
+            break;
+        case 15:
+            quickSort();
+            break;
+        case 16:
+            binarySearch();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
@@ -917,9 +932,100 @@ void merge(vector<int> & array, int p, int q, int r) {
     }
 }
 
-// TO DO
-void heapSort() { }
+void heapSort() {
+    // Description of the problem
+    cout << "Heap sort algoritm. Create a new array and it will print the sorted result." << endl;
 
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+
+    // Instead of custom Heapify function, I used C++ STL make_heap function
+    make_heap(arr.begin(), arr.end());
+
+    // Remove the max element from heap and call make_heap again
+    for (int i = arrSize - 1; i > 0; i--)
+    {
+        // Move max element to the end
+        swap(arr[0], arr[i]);
+
+        // Call make_heap (heapify) for remaining heap (beginning to last - i)
+        make_heap(arr.begin(), arr.begin() + i);
+    }
+
+    cout << "Sorted array: ";
+    // Print sorted array
+    for (int element : arr) {
+        cout << element << " - ";
+    }
+}
+
+// TO DO
 void quickSort() { }
 
-void binarySearch() { }
+void binarySearch() {
+    // Description of the problem
+    cout << "Binary search algorithm. Create a new array, select value for search. It will show the search results." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+    cout << "Enter a value to search in the array: ";
+    int searchValue = 0;
+    cin >> searchValue;
+    bool found = false;
+
+    // Create a new array with unsorted array's indexes
+    vector<pair<int, int>> indexArray;
+    for (int i = 0; i < arrSize; ++i) {
+        pair<int, int> indexPair(arr[i], i);
+        indexArray.push_back(indexPair);
+    }
+
+    // Sort the index array with the first value of the pair
+    sort(indexArray.begin(), indexArray.end(),
+        [](const pair<int, int>& a, const pair<int, int>& b) -> bool
+        {
+            return a.first < b.first;
+        });
+
+    // Find the middle element
+    int midIndex = arrSize / 2;
+
+    // Vector iterators for subset operations
+    auto first = indexArray.begin();
+    auto last = indexArray.end();
+
+    while (!indexArray.empty()) {
+        // Update the size variable
+        arrSize = indexArray.size();
+        midIndex = arrSize / 2;
+        // Check middle element's value
+        if (indexArray[midIndex].first == searchValue) {
+            cout << "Found the value in index " << indexArray[midIndex].second << endl;
+            found = true;
+            break;
+        }
+        // Middle is bigger than the value, search the upper half
+        else if (indexArray[midIndex].first > searchValue) {
+            first = indexArray.begin();
+            last = indexArray.begin() + midIndex;
+            vector<pair<int, int>> temp(first, last);
+            indexArray = temp;
+        }
+        // Middle is smaller than the value, search the lower half
+        else {
+            first = indexArray.begin() + midIndex + 1;
+            last = indexArray.end();
+            vector<pair<int, int>> temp(first, last);
+            indexArray = temp;
+        }
+    }
+
+    if (!found)
+        cout << "Couldn't find the " << searchValue << " in the array." << endl;
+}
+
+void breathFirstSearch() {}
+
+void depthFirstSearch() {}
