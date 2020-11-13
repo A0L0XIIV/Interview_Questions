@@ -15,7 +15,7 @@
 #include <limits>
 #include <algorithm>
 
-#include "BinarySearchTree.h";
+#include "BinarySearchTree.h"
 
 using namespace std;
 
@@ -34,13 +34,17 @@ void validAnagram();
 void kthLargestElement();
 void kPairsWithSmallestSum();
 void invertBST();
+void invertBSTCaller();
 void insertionSort();
 void mergeSort(vector<int> & array, int p, int r);
 void merge(vector<int> & array, int p, int q, int r);
 void mergeSortCaller();
 void heapSort();
 void quickSort();
+void quickSortCaller();
 void binarySearch();
+void breadthFirstSearch();
+void depthFirstSearch();
 
 int main()
 {
@@ -67,6 +71,8 @@ int main()
         cout << "14 - Heap Sort" << endl;
         cout << "15 - Quick Sort" << endl;
         cout << "16 - Binary Search" << endl;
+        cout << "17 - Breadth First Search" << endl;
+        cout << "18 - Depth First Search" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -107,7 +113,7 @@ int main()
             kPairsWithSmallestSum();
             break;
         case 11:
-            invertBST();
+            invertBSTCaller();
             break;
         case 12:
             insertionSort();
@@ -119,10 +125,16 @@ int main()
             heapSort();
             break;
         case 15:
-            quickSort();
+            quickSortCaller();
             break;
         case 16:
             binarySearch();
+            break;
+        case 17:
+            breadthFirstSearch();
+            break;
+        case 18:
+            depthFirstSearch();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
@@ -813,29 +825,42 @@ void kPairsWithSmallestSum() {
 
 }
 
-void invertBST() {
-    // Description of the problem
-    cout << "Invert the given binary search tree." << endl;
+void invertBST(BSTNode* node) {
+    // Base case
+    if (node == nullptr)
+        return;
+    // Swap left and right children
+    BSTNode* temp = node->getLeftChild();
+    node->updateLeft(node->getRightChild());
+    node->updateRight(temp);
+    // Call left child
+    if (node->getLeftChild() != nullptr) {
+        invertBST(node->getLeftChild());
+    }
+    // Call right child
+    if (node->getRightChild() != nullptr) {
+        invertBST(node->getRightChild());
+    }
+}
 
-    // Create a new BST
-    BST* bst = new BST();
+void invertBSTCaller() {
+    // Description of the problem
+    // Inverting BST instead of BT is not logical but I only coded BST implementation, so I inverted BST.
+    cout << "Invert the given binary (search) tree." << endl;
 
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     int arrSize = arr.size();
-    // Define a BSTnode
-    BSTNode* tempNode;
+    // Create a BST from the vector
+    BST* bst = new BST(arr);
 
-    // Fill the tree with array's data
-    for (int element : arr) {
-        // Create a new node object
-        tempNode = new BSTNode(element);
-        // Add new node to tree
-        bst->addNode(tempNode);
-    }
-
+    cout << endl << "Before invertion print tree: ";
     bst->printTree();
 
+    invertBST(bst->getRoot());
+
+    cout << endl << "After invertion print tree: ";
+    bst->printTree();
 }
 
 void insertionSort() { 
@@ -960,7 +985,24 @@ void heapSort() {
     }
 }
 
-// TO DO
+void quickSortCaller() {
+    // Description of the problem
+    cout << "Quick sort algoritm. Create a new array and it will print the sorted result." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+
+    // Sorted array
+    //quickSort(arr, 0, arrSize - 1);
+
+    cout << "Sorted array: ";
+    // Print sorted array
+    for (int element : arr) {
+        cout << element << " - ";
+    }
+}
+
 void quickSort() { }
 
 void binarySearch() {
@@ -1026,6 +1068,90 @@ void binarySearch() {
         cout << "Couldn't find the " << searchValue << " in the array." << endl;
 }
 
-void breathFirstSearch() {}
+void breadthFirstSearch() {
+    // Description of the problem
+    cout << "Breadth First Search algorithm. Create a new Binary Search Tree, select value for search. It will show the search results." << endl;
 
-void depthFirstSearch() {}
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+    cout << "Enter a value to search in the array: ";
+    int searchValue = 0;
+    cin >> searchValue;
+    bool found = false;
+
+    // Create a BST from the vector
+    BST* bst = new BST(arr);
+    // Array for storing node's discovered state (NOT NECESSARY FOR BST)
+    vector<bool> discovered(arrSize, false);
+    // Queue for BFS operations
+    queue<BSTNode*> q;
+    q.push(bst->getRoot());
+    BSTNode* temp = nullptr;
+
+    while (!q.empty()) {
+        // Print the front and pop it from queue
+        temp = q.front();
+        cout << " - " << temp->getValue();
+        q.pop();
+
+        // Find check
+        if (temp->getValue() == searchValue)
+            found = true; // Can stop here but BFS will print all tree elements
+
+        // Push popped one's children in queue
+        if (temp->getLeftChild() != nullptr)
+            q.push(temp->getLeftChild());
+        if (temp->getRightChild() != nullptr)
+            q.push(temp->getRightChild());
+    }
+
+    if (found)
+        cout << endl << "Found " << searchValue << " in the Binary Search Tree." << endl;
+    else
+        cout << endl << "Could not find " << searchValue << " in the Binary Search Tree." << endl;
+}
+
+void depthFirstSearch() {
+    // Description of the problem
+    cout << "Depth First Search algorithm. Create a new Binary Search Tree, select value for search. It will show the search results." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+    cout << "Enter a value to search in the array: ";
+    int searchValue = 0;
+    cin >> searchValue;
+    bool found = false;
+
+    // Create a BST from the vector
+    BST* bst = new BST(arr);
+    // Array for storing node's explored state (NOT NECESSARY FOR BST)
+    vector<bool> explored(arrSize, false);
+    // Stack for DFS operations
+    stack<BSTNode*> s;
+    s.push(bst->getRoot());
+    BSTNode* temp = nullptr;
+
+    while (!s.empty()) {
+        // Print the top and pop it from stack
+        temp = s.top();
+        cout << " - " << temp->getValue();
+        s.pop();
+
+        // Find check
+        if (temp->getValue() == searchValue)
+            found = true; // Can stop here but DFS will print all tree elements
+
+        // Push popped one's children in queue
+        if (temp->getLeftChild() != nullptr)
+            s.push(temp->getLeftChild());
+        if (temp->getRightChild() != nullptr)
+            s.push(temp->getRightChild());
+    }
+
+    if (found)
+        cout << endl << "Found " << searchValue << " in the Binary Search Tree." << endl;
+    else
+        cout << endl << "Could not find " << searchValue << " in the Binary Search Tree."  << endl;
+}
