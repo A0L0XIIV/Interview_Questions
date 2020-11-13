@@ -1,3 +1,8 @@
+/*
+* Baran Kaya
+* 2020
+*/
+
 #include <iostream>
 
 class BSTNode{
@@ -72,6 +77,7 @@ public:
 	// Constructors
 	BST();
 	BST(BSTNode* rootNode);
+	BST(std::vector<int> array);
 	// Functions
 	void printTree();
 	void printPreorder(BSTNode* node);
@@ -95,6 +101,15 @@ BST::BST(BSTNode* rootNode) {
 	this->root = rootNode;
 	this->numOfNodes = 1;
 	this->depth = 1;
+}
+
+BST::BST(std::vector<int> array) {
+	// Create BST from an array
+	// Loop over the array and fill the BST, Start from 1 because 0 is root
+	for (int num : array) {
+		BSTNode* node = new BSTNode(num);
+		BST::addNode(node);
+	}
 }
 
 // Functions
