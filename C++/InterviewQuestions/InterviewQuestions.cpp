@@ -4,18 +4,21 @@
 */
 
 #include <iostream>
+#include <algorithm>
 #include <cstdlib>
 #include <ctype.h>
-#include <math.h>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <map>
-#include <string>
 #include <limits>
-#include <algorithm>
+#include <map>
+#include <math.h>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <vector>
+#include <windows.h> // Sleep
 
 #include "BinarySearchTree.h"
+#include "LinkedList.h"
 
 using namespace std;
 
@@ -45,34 +48,52 @@ void quickSortCaller();
 void binarySearch();
 void breadthFirstSearch();
 void depthFirstSearch();
+void UniqueCharacters();
+void URLify();
+void OneEditDistance();
+void StringCompression();
+void ZeroMatrix();
+void StringRotation();
+void LinkedListRemoveDuplicates();
+void LinkedListKthLast();
 
 int main()
 {
     // Selection of the question
-    int questionSelection = 1;
+    int questionSelection = 3000;
 
     while (questionSelection) {
-        cout << "This program consits of several interview questions and their solutions/implementations in C++. List of questions given below. Enter 0 to end the program." << endl;
-        cout << "Questions list:" << endl;
+        // Show this menu after 3 seconds so that user can see problem's result for 3 sec
+        if (questionSelection != 3000) { Sleep(3000); }
 
-        cout << "1 - FizzBuzz" << endl;
-        cout << "2 - Two Sum" << endl;
-        cout << "3 - Max Consecutive Ones" << endl;
-        cout << "4 - Max Product of Three Numbers in an array" << endl;
-        cout << "5 - Valid Paranthesis" << endl;
-        cout << "6 - Baseball Game" << endl;
-        cout << "7 - Contains Duplicate" << endl;
-        cout << "8 - Valid Anagram" << endl;
-        cout << "9 - Kth Largest Element" << endl;
-        cout << "10 - K Pairs with Smallest Sum" << endl;
-        cout << "11 - Invert a Binary Search Tree" << endl;
-        cout << "12 - Insertion Sort" << endl;
-        cout << "13 - Merge Sort" << endl;
-        cout << "14 - Heap Sort" << endl;
-        cout << "15 - Quick Sort" << endl;
-        cout << "16 - Binary Search" << endl;
-        cout << "17 - Breadth First Search" << endl;
-        cout << "18 - Depth First Search" << endl;
+        cout << "This program consits of several interview questions and their solutions/implementations in C++. List of questions given below. Enter 0 to end the program." << endl;
+        cout << "Questions list:" << endl
+        << "1 - FizzBuzz" << endl
+        << "2 - Two Sum" << endl
+        << "3 - Max Consecutive Ones" << endl
+        << "4 - Max Product of Three Numbers in an array" << endl
+        << "5 - Valid Paranthesis" << endl
+        << "6 - Baseball Game" << endl
+        << "7 - Contains Duplicate" << endl
+        << "8 - Valid Anagram" << endl
+        << "9 - Kth Largest Element" << endl
+        << "10 - K Pairs with Smallest Sum" << endl
+        << "11 - Invert a Binary Search Tree" << endl
+        << "12 - Insertion Sort" << endl
+        << "13 - Merge Sort" << endl
+        << "14 - Heap Sort" << endl
+        << "15 - Quick Sort" << endl
+        << "16 - Binary Search" << endl
+        << "17 - Breadth First Search" << endl
+        << "18 - Depth First Search" << endl
+        << "19 - Check characters uniqueness in a string" << endl
+        << "20 - URLify: convert spaces to %20 in a string" << endl
+        << "21 - One edit distance between 2 strings" << endl
+        << "22 - String Compression" << endl
+        << "23 - Zero Matrix: Change row and column to zero" << endl
+        << "24 - String Rotation check: battle vs ttleba" << endl
+        << "25 - Remove Duplications in LinkedList" << endl
+        << "26 - Kth last element in the LinkedList" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -135,6 +156,30 @@ int main()
             break;
         case 18:
             depthFirstSearch();
+            break;
+        case 19:
+            UniqueCharacters();
+            break;
+        case 20:
+            URLify();
+            break;
+        case 21:
+            OneEditDistance();
+            break;
+        case 22:
+            StringCompression();
+            break;
+        case 23:
+            ZeroMatrix();
+            break;
+        case 24:
+            StringRotation();
+            break;
+        case 25:
+            LinkedListRemoveDuplicates();
+            break;
+        case 26:
+            LinkedListKthLast();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
@@ -825,12 +870,12 @@ void kPairsWithSmallestSum() {
 
 }
 
-void invertBST(BSTNode* node) {
+void invertBST(BSTNode<int>* node) {
     // Base case
     if (node == nullptr)
         return;
     // Swap left and right children
-    BSTNode* temp = node->getLeftChild();
+    BSTNode<int>* temp = node->getLeftChild();
     node->updateLeft(node->getRightChild());
     node->updateRight(temp);
     // Call left child
@@ -852,7 +897,7 @@ void invertBSTCaller() {
     vector<int> arr = getArrayInput<int>();
     int arrSize = arr.size();
     // Create a BST from the vector
-    BST* bst = new BST(arr);
+    BST<int>* bst = new BST<int>(arr);
 
     cout << endl << "Before invertion print tree: ";
     bst->printTree();
@@ -1081,13 +1126,13 @@ void breadthFirstSearch() {
     bool found = false;
 
     // Create a BST from the vector
-    BST* bst = new BST(arr);
+    BST<int>* bst = new BST<int>(arr);
     // Array for storing node's discovered state (NOT NECESSARY FOR BST)
     vector<bool> discovered(arrSize, false);
     // Queue for BFS operations
-    queue<BSTNode*> q;
+    queue<BSTNode<int>*> q;
     q.push(bst->getRoot());
-    BSTNode* temp = nullptr;
+    BSTNode<int>* temp = nullptr;
 
     while (!q.empty()) {
         // Print the front and pop it from queue
@@ -1125,13 +1170,13 @@ void depthFirstSearch() {
     bool found = false;
 
     // Create a BST from the vector
-    BST* bst = new BST(arr);
+    BST<int>* bst = new BST<int>(arr);
     // Array for storing node's explored state (NOT NECESSARY FOR BST)
     vector<bool> explored(arrSize, false);
     // Stack for DFS operations
-    stack<BSTNode*> s;
+    stack<BSTNode<int>*> s;
     s.push(bst->getRoot());
-    BSTNode* temp = nullptr;
+    BSTNode<int>* temp = nullptr;
 
     while (!s.empty()) {
         // Print the top and pop it from stack
@@ -1155,3 +1200,128 @@ void depthFirstSearch() {
     else
         cout << endl << "Could not find " << searchValue << " in the Binary Search Tree."  << endl;
 }
+
+void UniqueCharacters() {    
+    // Description of the problem
+    cout << "Check if the given string has unique characters or not." << endl;
+
+    // Get string from user
+    string testString;
+    cout << endl << "- Enter a string:";
+    cin >> testString;
+
+    // Check string's size
+    if (testString.size() == 0) {
+        cout << "String is empty." << endl;
+    }
+    // String is not empty
+    else {
+        // Problem has several solutions, choose one
+        int solutionSelection = 0;
+        cout << "Enter 1 for O(n^2) loop solution, 2 for O(n) hash map solution." << endl;
+        cin >> solutionSelection;
+        bool isUnique = true;
+
+        // Sort force O(n logn) solution, sort the string charaters, check every characters neighbors
+
+        // O(n^2) loop solution, sort two strings and check pairs
+        if (solutionSelection == 1) {
+            const int strSize = testString.size();
+
+            for (int i = 0; i < strSize; ++i) {
+                for (int j = i+1; j < strSize; ++j) {
+                    if (testString[i] == testString[j]) {
+                        isUnique = false;
+                        break;
+                    }
+                }
+                // If string has non-unique charaters, break both of the loops
+                if (!isUnique) { break; }
+            }
+
+            if (isUnique)
+                cout << testString << "'s all characters are unique." << endl << endl;
+            else
+                cout << testString << " has non-unique characters." << endl << endl;
+        }
+        // O(n) solution, put each character into the hash table/stl set
+        else if (solutionSelection == 2) {
+            set<char> charSet;
+
+            for (char c : testString) {
+                // If set contains the same value, uniqueness break
+                if (charSet.insert(c).second == false) {
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            if (isUnique)
+                cout << testString << "'s all characters are unique." << endl << endl;
+            else
+                cout << testString << " has non-unique characters." << endl << endl;
+        }        
+        // Neither O(logn) nor O(n) solution selected
+        else {
+            cout << "Incorrect solution selection!" << endl;
+        }
+
+        return;
+    }
+};
+
+void URLify() {
+    // Description of the problem
+    cout << "Change space \" \" characters to \"%20\" in a given string." << endl;
+    
+    // Get string from user
+    string urlString;
+    cout << endl << "- Enter a string: ";
+    //cin >> noskipws >> urlString; // Doesn't work! 
+    getline(cin, urlString, '\n');
+
+    // Check string's size
+    if (urlString.size() == 0) {
+        cout << "String is empty." << endl;
+    }
+    else {
+        int oldSize = urlString.size();
+        int newSize = oldSize;
+        // Calculate the new string's size by using existing space count * 2 --> ' ' to '%20' --> +2 char for each ' '
+        for (char c : urlString) {
+            if (c == ' ')
+                newSize += 2;
+        }
+        // New string and reserve
+        string newString;
+        newString.reserve(newSize);
+        cout << "oldSize: " << oldSize << " newSize: " << newSize << endl;
+        for (int o = oldSize - 1, n = newSize - 1; o >= 0; --o) {
+            if (urlString[o] == ' ') {
+                newString[n] = '0';
+                newString[--n] = '2';
+                newString[--n] = '%';
+            }
+            else {
+                newString[n] == urlString[o];
+            }
+            --n;
+        }
+
+        cout << "New URL string: " << newString << " created from: " << urlString << endl << endl;
+    }
+
+    return;
+};
+
+void OneEditDistance() {};
+
+void StringCompression() {};
+
+void ZeroMatrix() {};
+
+void StringRotation() {};
+
+void LinkedListRemoveDuplicates() {};
+
+void LinkedListKthLast() {};
