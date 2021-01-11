@@ -5,119 +5,66 @@
 
 #include <iostream>
 
+template<class Type>
 class BSTNode{
-	int value;
+	Type value;
 	BSTNode* left;
 	BSTNode* right;
 public:
 	// Constructors
-	BSTNode();
-	BSTNode(int v);
-	BSTNode(int v, BSTNode* l, BSTNode* r);
+	BSTNode() = default;
+	BSTNode(Type v) { value = v; left = nullptr; right = nullptr; };
+	BSTNode(Type v, BSTNode* l, BSTNode* r) { value = v; left = l; right = r; };
 	// Functions
-	int getValue();
-	BSTNode* getLeftChild();
-	BSTNode* getRightChild();
-	void updateValue(int v);
-	void updateLeft(BSTNode* l);
-	void updateRight(BSTNode* r);
+	Type getValue() { return value; };
+	BSTNode* getLeftChild() { return left; };
+	BSTNode* getRightChild() { return right; };
+	void updateValue(Type v) { value = v; };
+	void updateLeft(BSTNode* l) { left = l; };
+	void updateRight(BSTNode* r) { right = r; };
 };
 
-// Constructors
-BSTNode::BSTNode() {
-	this->value = 0;
-	this->left = nullptr;
-	this->right = nullptr;
-}
-
-BSTNode::BSTNode(int v) {
-	this->value = v;
-	this->left = nullptr;
-	this->right = nullptr;
-}
-
-BSTNode::BSTNode(int v, BSTNode* l, BSTNode* r) {
-	this->value = v;
-	this->left = l;
-	this->right = r;
-}
-
-// Functions
-int BSTNode::getValue() {
-	return this->value;
-}
-
-BSTNode* BSTNode::getLeftChild() {
-	return this->left;
-}
-
-BSTNode* BSTNode::getRightChild() {
-	return this->right;
-}
-
-void BSTNode::updateValue(int v) {
-	this->value = v;
-}
-
-void BSTNode::updateLeft(BSTNode* l) {
-	this->left = l;
-}
-
-void BSTNode::updateRight(BSTNode* r) {
-	this->right = r;
-}
-
-
-
+template<class Type>
 class BST {
-	BSTNode* root;
+	BSTNode<Type>* root;
 	unsigned short numOfNodes;
 	unsigned short depth;
 public:
 	// Constructors
-	BST();
-	BST(BSTNode* rootNode);
-	BST(std::vector<int> array);
+	BST() = default;
+	BST(BSTNode<Type>* rootNode) { root = rootNode; };
+	BST(std::vector<Type> array);
 	// Functions
 	void printTree();
-	void printPreorder(BSTNode* node);
-	void printInorder(BSTNode* node);
-	void printPostorder(BSTNode* node);
-	BSTNode* find(int v, BSTNode* node);
-	void addNode(BSTNode* node);
-	void deleteNode(BSTNode* node);
-	int calculateDepth(BSTNode* node);
-	BSTNode* getRoot();
+	void printPreorder(BSTNode<Type>* node);
+	void printInorder(BSTNode<Type>* node);
+	void printPostorder(BSTNode<Type>* node);
+	BSTNode<Type>* find(int v, BSTNode<Type>* node);
+	void addNode(BSTNode<Type>* node);
+	void deleteNode(BSTNode<Type>* node);
+	int calculateDepth(BSTNode<Type>* node);
+	BSTNode<Type>* getRoot();
 };
 
-// Constructors
-BST::BST() {
-	this->root = nullptr;
-	this->numOfNodes = 0;
-	this->depth = 0;
-}
-
-BST::BST(BSTNode* rootNode) {
-	this->root = rootNode;
-	this->numOfNodes = 1;
-	this->depth = 1;
-}
-
-BST::BST(std::vector<int> array) {
+// Constructor
+template<class Type>
+BST<Type>::BST(std::vector<Type> array) {
 	// Create BST from an array
 	// Loop over the array and fill the BST, Start from 1 because 0 is root
-	for (int num : array) {
-		BSTNode* node = new BSTNode(num);
-		BST::addNode(node);
+	for (Type element : array) {
+		BSTNode<Type>* node = new BSTNode<Type>(element);
+		BST<Type>::addNode(node);
 	}
 }
 
 // Functions
-BSTNode* BST::getRoot() {
+template<class Type>
+BSTNode<Type>* BST<Type>::getRoot() {
 	return this->root;
 }
 
-void BST::printTree() {
+template<class Type>
+void BST<Type>::printTree() {
 	std::cout << std::endl << "Preorder: " << std::endl;
 	printPreorder(this->root);
 	std::cout << std::endl << "Inorder: " << std::endl;
@@ -127,21 +74,26 @@ void BST::printTree() {
 	std::cout << std::endl;
 }
 
-void BST::printPreorder(BSTNode* node) {
+template<class Type>
+void BST<Type>::printPreorder(BSTNode<Type>* node) {
 	if (node == nullptr)
 		return;
 	std::cout << " - " << node->getValue();
 	printPreorder(node->getLeftChild());
 	printPreorder(node->getRightChild());
 }
-void BST::printInorder(BSTNode* node) {
+
+template<class Type>
+void BST<Type>::printInorder(BSTNode<Type>* node) {
 	if (node == nullptr)
 		return;
 	printInorder(node->getLeftChild());
 	std::cout << " - " << node->getValue();
 	printInorder(node->getRightChild());
 }
-void BST::printPostorder(BSTNode* node) {
+
+template<class Type>
+void BST<Type>::printPostorder(BSTNode<Type>* node) {
 	if (node == nullptr)
 		return;
 	printPostorder(node->getLeftChild());
@@ -149,14 +101,15 @@ void BST::printPostorder(BSTNode* node) {
 	std::cout << " - " << node->getValue();
 }
 
-BSTNode* BST::find(int v, BSTNode * node) {
+template<class Type>
+BSTNode<Type>* BST<Type>::find(int v, BSTNode<Type>* node) {
 	// Base case
 	if (node->getValue() == v)
 		return node;
 	// Reached the null leafs
 	else if (node == nullptr)
 		return nullptr;
-	else if (node->getValue() > v){
+	else if (node->getValue() > v){ // TODO: Add custom comparision for template values
 		// Recursion
 		find(v, node->getLeftChild());
 	}
@@ -166,13 +119,14 @@ BSTNode* BST::find(int v, BSTNode * node) {
 	}
 }
 
-void BST::addNode(BSTNode* node) {
-	BSTNode* newNode = new BSTNode(node->getValue(), node->getLeftChild(), node->getRightChild());
+template<class Type>
+void BST<Type>::addNode(BSTNode<Type>* node) {
+	BSTNode<Type>* newNode = new BSTNode<Type>(node->getValue(), node->getLeftChild(), node->getRightChild());
 	// Check root of the tree
 	if (this->root != nullptr) {
 		bool isLeft = false;
-		BSTNode* traversal = this->root;
-		BSTNode* previousTraversal = traversal;
+		BSTNode<Type>* traversal = this->root;
+		BSTNode<Type>* previousTraversal = traversal;
 		// Loop over the tree
 		while (traversal != nullptr){
 			if (traversal->getValue() > node->getValue()) {
@@ -200,11 +154,13 @@ void BST::addNode(BSTNode* node) {
 	this->depth = this->calculateDepth(this->root);
 }
 
-void BST::deleteNode(BSTNode* node){
+template<class Type>
+void BST<Type>::deleteNode(BSTNode<Type>* node){
 	// TO DO: 4 case: leaf, w/left child, w/right child, w/both children
 }
 
-int BST::calculateDepth(BSTNode* node) {
+template<class Type>
+int BST<Type>::calculateDepth(BSTNode<Type>* node) {
 	if (node == nullptr)
 		return 0;
 	else {
