@@ -1426,7 +1426,42 @@ void OneEditDistance() {
     return;
 };
 
-void StringCompression() {};
+void StringCompression() {
+    // Description of the problem
+    cout << "Compress the given string. If result is longer, return original. Ex: aaabbbbbcca --> a3b5c2a1" << endl;
+
+    // Get strings from user
+    string compressed, uncompressed;;
+    cout << endl << "- Enter a string to compress: ";
+    cin >> uncompressed;
+
+    int counter = 0;
+    char previousChar = uncompressed[0];
+    const unsigned short uncSize = uncompressed.size();
+    for (char c : uncompressed) {
+        if (previousChar == c) {
+            ++counter;
+        }
+        else {
+            compressed += (previousChar + to_string(counter));
+            // Reset counter
+            counter = 1;
+            // Update previous
+            previousChar = c;
+        }
+    }
+    // Last character
+    compressed += (previousChar + to_string(counter));
+    const unsigned short cSize = compressed.size();
+
+    if (uncSize > cSize) {
+        cout << "Compressed: " << compressed << endl << endl;
+    }
+    else {
+        cout << "Uncompressed: " << uncompressed <<  " Compressed is longer: " << compressed << endl << endl;
+    }
+    return;
+};
 
 void ZeroMatrix() {};
 
