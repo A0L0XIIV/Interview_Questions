@@ -5,6 +5,8 @@
 * 2021
 */
 
+#include <iostream>
+
 template<class Type>
 class Node {
 	Type value;
@@ -14,15 +16,15 @@ class Node {
 public:
 	// Constructors
 	Node() = default;
-	Node(Type val) { value = val; };
-	Node(Type val, Node<Type>* n) { value = val; next = n; };
+	Node(Type val) { value = val; next = nullptr; previous = nullptr; };
+	Node(Type val, Node<Type>* n) { value = val; next = n; previous = nullptr; };
 	Node(Type val, Node<Type>* n, Node<Type>* p) { value = val; next = n; previous = p; };
 	// Functions
 	Type getValue() { return value; };
 	void setValue(Type newValue) { value = newValue; };
-	Node* getNext() { return next; };
+	Node<Type>* getNext() { return next; };
 	void setNext(Node<Type>* newNext) { next = newNext; };
-	Node* getPrevious() { return previous; };
+	Node<Type>* getPrevious() { return previous; };
 	void setPrevious(Node<Type>* newPrevious) { previous = newPrevious; };
 };
 
@@ -34,6 +36,9 @@ public:
 	LinkedList() = default;
 	LinkedList(Node<Type>* h) { head = h; };
 	LinkedList(std::vector<Type> arr);
+	// Functions
+	void printLinkedList();
+	Node<Type>* getKthNode(int k);
 };
 
 template<class Type>
@@ -50,7 +55,7 @@ public:
 template<class Type>
 LinkedList<Type>::LinkedList(std::vector<Type> arr) {
 	// Head node
-	Node<Type>* head = new Node<Type>(arr[0]);
+	head = new Node<Type>(arr[0]);
 	// Erase the first element from the vector
 	arr.erase(arr.begin());
 	// For holding previous nodes
@@ -67,9 +72,6 @@ LinkedList<Type>::LinkedList(std::vector<Type> arr) {
 
 	// Set last node's next pointer
 	previous->setNext(nullptr);
-
-	// Return newly created linked list with head node
-	return LinkedList<Type>(head);
 }
 
 template<class Type>
@@ -95,4 +97,36 @@ DoubleLinkedList<Type>::DoubleLinkedList(std::vector<Type> arr) {
 
 	// Return newly created double linked list with head and the tail nodes
 	return DoubleLinkedList<Type>(head, previous);
+}
+
+// Print function
+template<class Type>
+void LinkedList<Type>::printLinkedList() {
+	Node<Type>* current = head;
+
+	while (current) {
+		// Print node's value
+		std::cout << current->getValue() << "->";
+		// Move forward
+		current = current->getNext();
+	}
+	// Print Null at the end
+	std::cout << "NULL" << std::endl;
+
+	return;
+};
+
+// Get Kth Node Function
+template<class Type>
+Node<Type>* LinkedList<Type>::getKthNode(int k) {
+	Node<Type>* current = head;
+
+	while (k > 0 && current) {
+		// Decrement k
+		--k;
+		// Move pointer
+		current = current->getNext();
+	}
+
+	return current;
 }
