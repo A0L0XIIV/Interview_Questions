@@ -22,174 +22,6 @@
 
 using namespace std;
 
-// Function prototypes
-template <typename T>
-vector<T> getArrayInput();
-template <typename T>
-vector<T> getArrayInput(int size);
-bool is_digit(string);
-void fizzBuzz();
-void twoSum();
-void maxConsecutiveOnes();
-void maxProductofThreeNumbers();
-void validParanthesis();
-void baseballGame();
-void containsDuplicate();
-void validAnagram();
-void kthLargestElement();
-void kPairsWithSmallestSum();
-void invertBST();
-void invertBSTCaller();
-void insertionSort();
-void mergeSort(vector<int> & array, int p, int r);
-void merge(vector<int> & array, int p, int q, int r);
-void mergeSortCaller();
-void heapSort();
-void quickSort();
-void quickSortCaller();
-void binarySearch();
-void breadthFirstSearch();
-void depthFirstSearch();
-void UniqueCharacters();
-void URLify();
-void OneEditDistance();
-void StringCompression();
-void StringRotation();
-void ZeroMatrix();
-void LinkedListRemoveDuplicates();
-void LinkedListKthLast();
-
-int main()
-{
-    // Selection of the question
-    int questionSelection = 3000;
-
-    while (questionSelection) {
-        // Show this menu after 3 seconds so that user can see problem's result for 3 sec
-        if (questionSelection != 3000) { Sleep(3000); }
-
-        cout << "This program consits of several interview questions and their solutions/implementations in C++. List of questions given below. Enter 0 to end the program." << endl;
-        cout << "Questions list:" << endl
-        << "1 - FizzBuzz" << endl
-        << "2 - Two Sum" << endl
-        << "3 - Max Consecutive Ones" << endl
-        << "4 - Max Product of Three Numbers in an array" << endl
-        << "5 - Valid Paranthesis" << endl
-        << "6 - Baseball Game" << endl
-        << "7 - Contains Duplicate" << endl
-        << "8 - Valid Anagram" << endl
-        << "9 - Kth Largest Element" << endl
-        << "10 - K Pairs with Smallest Sum" << endl
-        << "11 - Invert a Binary Search Tree" << endl
-        << "12 - Insertion Sort" << endl
-        << "13 - Merge Sort" << endl
-        << "14 - Heap Sort" << endl
-        << "15 - Quick Sort" << endl
-        << "16 - Binary Search" << endl
-        << "17 - Breadth First Search" << endl
-        << "18 - Depth First Search" << endl
-        << "19 - Check characters uniqueness in a string" << endl
-        << "20 - URLify: convert spaces to %20 in a string" << endl
-        << "21 - One edit distance between 2 strings" << endl
-        << "22 - String Compression" << endl
-        << "23 - String Rotation check: battle vs ttleba" << endl
-        << "24 - Zero Matrix: Change rows and columns to 0 if cell is 0" << endl
-        << "25 - Remove Duplications in LinkedList" << endl
-        << "26 - Kth last element in the LinkedList" << endl;
-
-        cout << "Select a question: ";
-        // Get selection input from the user
-        cin >> questionSelection;
-        switch (questionSelection)
-        {
-        case 0:
-            cout << "Program ending!" << endl;
-            break;
-        case 1:
-            fizzBuzz();
-            break;
-        case 2:
-            twoSum();
-            break;
-        case 3:
-            maxConsecutiveOnes();
-            break;
-        case 4:
-            maxProductofThreeNumbers();
-            break;
-        case 5:
-            validParanthesis();
-            break;
-        case 6:
-            baseballGame();
-            break;
-        case 7:
-            containsDuplicate();
-            break;
-        case 8:
-            validAnagram();
-            break;
-        case 9:
-            kthLargestElement();
-            break;
-        case 10:
-            kPairsWithSmallestSum();
-            break;
-        case 11:
-            invertBSTCaller();
-            break;
-        case 12:
-            insertionSort();
-            break;
-        case 13:
-            mergeSortCaller();
-            break;
-        case 14:
-            heapSort();
-            break;
-        case 15:
-            quickSortCaller();
-            break;
-        case 16:
-            binarySearch();
-            break;
-        case 17:
-            breadthFirstSearch();
-            break;
-        case 18:
-            depthFirstSearch();
-            break;
-        case 19:
-            UniqueCharacters();
-            break;
-        case 20:
-            URLify();
-            break;
-        case 21:
-            OneEditDistance();
-            break;
-        case 22:
-            StringCompression();
-            break;
-        case 23:
-            StringRotation();
-            break;
-        case 24:
-            ZeroMatrix();
-            break;
-        case 25:
-            LinkedListRemoveDuplicates();
-            break;
-        case 26:
-            LinkedListKthLast();
-            break;
-        default:
-            cout << "Please enter a valid input from the question list!" << endl;
-            break;
-        }
-    }
-}
-
 template <typename T>
 vector<T> getArrayInput() {
     // Get array/vector size from user
@@ -905,26 +737,7 @@ void invertBST(BSTNode<int>* node) {
     }
 }
 
-void invertBSTCaller() {
-    // Description of the problem
-    // Inverting BST instead of BT is not logical but I only coded BST implementation, so I inverted BST.
-    cout << "Invert the given binary (search) tree." << endl;
-
-    // Get array values from user
-    vector<int> arr = getArrayInput<int>();
-    // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
-
-    cout << endl << "Before invertion print tree: ";
-    bst->printTree();
-
-    invertBST(bst->getRoot());
-
-    cout << endl << "After invertion print tree: ";
-    bst->printTree();
-}
-
-void insertionSort() { 
+void insertionSort() {
     // Description of the problem
     cout << "Insertion sort algoritm. Create a new array and it will print the sorted result." << endl;
 
@@ -955,37 +768,26 @@ void insertionSort() {
     }
 }
 
-void mergeSortCaller() {
+void invertBSTCaller() {
     // Description of the problem
-    cout << "Merge sort algoritm. Create a new array and it will print the sorted result." << endl;
+    // Inverting BST instead of BT is not logical but I only coded BST implementation, so I inverted BST.
+    cout << "Invert the given binary (search) tree." << endl;
 
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
-    int arrSize = arr.size();
+    // Create a BST from the vector
+    BST<int>* bst = new BST<int>(arr);
 
-    // Sorted array
-    mergeSort(arr, 0, arrSize-1);
+    cout << endl << "Before invertion print tree: ";
+    bst->printTree();
 
-    cout << "Sorted array: ";
-    // Print sorted array
-    for (int element : arr) {
-        cout << element << " - ";
-    }
+    invertBST(bst->getRoot());
+
+    cout << endl << "After invertion print tree: ";
+    bst->printTree();
 }
 
-void mergeSort(vector<int> & array, int p, int r) {
-    if (p < r) {
-        // Middle element.s index
-        int q = ceil((p + r) / 2);
-        // Recusrion for first and second halves
-        mergeSort(array, p, q);
-        mergeSort(array, q + 1, r);
-        // Merge 2 halves
-        merge(array, p, q, r);
-    }
-}
-
-void merge(vector<int> & array, int p, int q, int r) {
+void merge(vector<int>& array, int p, int q, int r) {
     // Size of 2 arrays
     int n1 = (q - p) + 1;
     int n2 = (r - q);
@@ -1015,6 +817,36 @@ void merge(vector<int> & array, int p, int q, int r) {
             array[k] = Right[j];
             j++;
         }
+    }
+}
+
+void mergeSort(vector<int>& array, int p, int r) {
+    if (p < r) {
+        // Middle element.s index
+        int q = ceil((p + r) / 2);
+        // Recusrion for first and second halves
+        mergeSort(array, p, q);
+        mergeSort(array, q + 1, r);
+        // Merge 2 halves
+        merge(array, p, q, r);
+    }
+}
+
+void mergeSortCaller() {
+    // Description of the problem
+    cout << "Merge sort algoritm. Create a new array and it will print the sorted result." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    int arrSize = arr.size();
+
+    // Sorted array
+    mergeSort(arr, 0, arrSize-1);
+
+    cout << "Sorted array: ";
+    // Print sorted array
+    for (int element : arr) {
+        cout << element << " - ";
     }
 }
 
@@ -1660,3 +1492,134 @@ void LinkedListKthLast() {
 
     return;
 };
+
+int main()
+{
+    // Selection of the question
+    int questionSelection = 3000;
+
+    while (questionSelection) {
+        // Show this menu after 3 seconds so that user can see problem's result for 3 sec
+        if (questionSelection != 3000) { Sleep(3000); }
+
+        cout << "This program consits of several interview questions and their solutions/implementations in C++. List of questions given below. Enter 0 to end the program." << endl;
+        cout << "Questions list:" << endl
+            << "1 - FizzBuzz" << endl
+            << "2 - Two Sum" << endl
+            << "3 - Max Consecutive Ones" << endl
+            << "4 - Max Product of Three Numbers in an array" << endl
+            << "5 - Valid Paranthesis" << endl
+            << "6 - Baseball Game" << endl
+            << "7 - Contains Duplicate" << endl
+            << "8 - Valid Anagram" << endl
+            << "9 - Kth Largest Element" << endl
+            << "10 - K Pairs with Smallest Sum" << endl
+            << "11 - Invert a Binary Search Tree" << endl
+            << "12 - Insertion Sort" << endl
+            << "13 - Merge Sort" << endl
+            << "14 - Heap Sort" << endl
+            << "15 - Quick Sort" << endl
+            << "16 - Binary Search" << endl
+            << "17 - Breadth First Search" << endl
+            << "18 - Depth First Search" << endl
+            << "19 - Check characters uniqueness in a string" << endl
+            << "20 - URLify: convert spaces to %20 in a string" << endl
+            << "21 - One edit distance between 2 strings" << endl
+            << "22 - String Compression" << endl
+            << "23 - String Rotation check: battle vs ttleba" << endl
+            << "24 - Zero Matrix: Change rows and columns to 0 if cell is 0" << endl
+            << "25 - Remove Duplications in LinkedList" << endl
+            << "26 - Kth last element in the LinkedList" << endl;
+
+        cout << "Select a question: ";
+        // Get selection input from the user
+        cin >> questionSelection;
+        switch (questionSelection)
+        {
+        case 0:
+            cout << "Program ending!" << endl;
+            break;
+        case 1:
+            fizzBuzz();
+            break;
+        case 2:
+            twoSum();
+            break;
+        case 3:
+            maxConsecutiveOnes();
+            break;
+        case 4:
+            maxProductofThreeNumbers();
+            break;
+        case 5:
+            validParanthesis();
+            break;
+        case 6:
+            baseballGame();
+            break;
+        case 7:
+            containsDuplicate();
+            break;
+        case 8:
+            validAnagram();
+            break;
+        case 9:
+            kthLargestElement();
+            break;
+        case 10:
+            kPairsWithSmallestSum();
+            break;
+        case 11:
+            invertBSTCaller();
+            break;
+        case 12:
+            insertionSort();
+            break;
+        case 13:
+            mergeSortCaller();
+            break;
+        case 14:
+            heapSort();
+            break;
+        case 15:
+            quickSortCaller();
+            break;
+        case 16:
+            binarySearch();
+            break;
+        case 17:
+            breadthFirstSearch();
+            break;
+        case 18:
+            depthFirstSearch();
+            break;
+        case 19:
+            UniqueCharacters();
+            break;
+        case 20:
+            URLify();
+            break;
+        case 21:
+            OneEditDistance();
+            break;
+        case 22:
+            StringCompression();
+            break;
+        case 23:
+            StringRotation();
+            break;
+        case 24:
+            ZeroMatrix();
+            break;
+        case 25:
+            LinkedListRemoveDuplicates();
+            break;
+        case 26:
+            LinkedListKthLast();
+            break;
+        default:
+            cout << "Please enter a valid input from the question list!" << endl;
+            break;
+        }
+    }
+}
