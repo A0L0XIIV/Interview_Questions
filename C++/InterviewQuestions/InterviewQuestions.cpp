@@ -1465,7 +1465,40 @@ void StringCompression() {
 
 void ZeroMatrix() {};
 
-void StringRotation() {};
+void StringRotation() {
+    // Description of the problem
+    cout << "Check if given 2 string are in one edit distance (add/remove/change) or not." << endl;
+
+    // Get strings from user
+    string firstString;
+    string secondString;
+    cout << endl << "- Enter the first string: ";
+    cin >> firstString;
+    cout << endl << "- Enter the second string: ";
+    cin >> secondString;
+
+    const unsigned short firstSize = firstString.size();
+    const unsigned short secondSize = secondString.size();
+    // Size check
+    if (firstSize != secondSize) {
+        cout << "Two strings' sizes are different, they cannot be rotation." << endl << endl;
+    }
+    else {
+        // Concat itself so that "waterwater" we can check if it contains "terwa"
+        firstString += firstString;
+        // Check if it is a substring of it or not
+        size_t pos = firstString.find(secondString);
+        // Couldn't find in it
+        if (pos == string::npos) {
+            cout << firstString << " is not a rotation of the " << secondString << endl << endl;
+        }
+        else {
+            cout << firstString << " is a (" << pos << ") rotation of the " << secondString << endl << endl;
+        }
+    }
+
+    return;
+};
 
 void LinkedListRemoveDuplicates() {
     // Description of the problem
