@@ -25,6 +25,8 @@ using namespace std;
 // Function prototypes
 template <typename T>
 vector<T> getArrayInput();
+template <typename T>
+vector<T> getArrayInput(int size);
 bool is_digit(string);
 void fizzBuzz();
 void twoSum();
@@ -52,8 +54,8 @@ void UniqueCharacters();
 void URLify();
 void OneEditDistance();
 void StringCompression();
-void ZeroMatrix();
 void StringRotation();
+void ZeroMatrix();
 void LinkedListRemoveDuplicates();
 void LinkedListKthLast();
 
@@ -90,8 +92,8 @@ int main()
         << "20 - URLify: convert spaces to %20 in a string" << endl
         << "21 - One edit distance between 2 strings" << endl
         << "22 - String Compression" << endl
-        << "23 - Zero Matrix: Change row and column to zero" << endl
-        << "24 - String Rotation check: battle vs ttleba" << endl
+        << "23 - String Rotation check: battle vs ttleba" << endl
+        << "24 - Zero Matrix: Change rows and columns to 0 if cell is 0" << endl
         << "25 - Remove Duplications in LinkedList" << endl
         << "26 - Kth last element in the LinkedList" << endl;
 
@@ -170,10 +172,10 @@ int main()
             StringCompression();
             break;
         case 23:
-            ZeroMatrix();
+            StringRotation();
             break;
         case 24:
-            StringRotation();
+            ZeroMatrix();
             break;
         case 25:
             LinkedListRemoveDuplicates();
@@ -200,6 +202,21 @@ vector<T> getArrayInput() {
     T tempInput;
     cout << "Enter the array elements." << endl;
     for (int i = 0; i < arrSize; ++i) {
+        cout << to_string(i) + "th: ";
+        cin >> tempInput;
+        arr.push_back(tempInput);
+    }
+
+    return arr;
+}
+
+template <typename T>
+vector<T> getArrayInput(int size) {
+    // Get array values from user
+    vector<T> arr(0);
+    T tempInput;
+    cout << "Enter the array elements." << endl;
+    for (int i = 0; i < size; ++i) {
         cout << to_string(i) + "th: ";
         cin >> tempInput;
         arr.push_back(tempInput);
@@ -1463,8 +1480,6 @@ void StringCompression() {
     return;
 };
 
-void ZeroMatrix() {};
-
 void StringRotation() {
     // Description of the problem
     cout << "Check if given 2 string are in one edit distance (add/remove/change) or not." << endl;
@@ -1497,6 +1512,66 @@ void StringRotation() {
         }
     }
 
+    return;
+};
+
+void ZeroMatrix() {
+    // Description of the problem
+    cout << "Change all row and column values to Zero if the cell's value is Zero in the given matrix." << endl;
+
+    unsigned short rowCount = 0, columnCount = 0;
+    cout << endl << "- Enter row count: ";
+    cin >> rowCount;
+    cout << endl << "- Enter column count: ";
+    cin >> columnCount;
+
+    vector<vector<int>> matrix;
+    vector<bool> changeToZeroRow(rowCount, false);
+    vector<bool> changeToZeroCol(columnCount, false);
+
+    for (int i = 0; i < rowCount; ++i) {
+        // Get array values from user
+        vector<int> arr = getArrayInput<int>(columnCount);
+        // Put new vector/array in the matrix
+        matrix.push_back(arr);
+    }
+
+    // Print
+    cout << "Matrix Before: " << endl;
+    for (int i = 0; i < rowCount; ++i) {
+        for (int val : matrix[i]) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+
+    // Solution
+    for (int i = 0; i < rowCount; ++i) {
+        for (int j = 0; j < columnCount; ++j) {
+            if (matrix[i][j] == 0) {
+                // Update boolean arrays
+                changeToZeroRow[i] = true;
+                changeToZeroCol[j] = true;
+            }
+        }
+    }
+    // Update rows and columns to zero
+    for (int i = 0; i < rowCount; ++i) {
+        for (int j = 0; j < columnCount; ++j) {
+            if (changeToZeroRow[i] || changeToZeroCol[j]) {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+
+    // Print
+    cout << "Matrix After: " << endl;
+    for (int i = 0; i < rowCount; ++i) {
+        for (int val : matrix[i]) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
     return;
 };
 
