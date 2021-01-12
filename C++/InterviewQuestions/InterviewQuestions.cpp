@@ -1264,9 +1264,9 @@ void UniqueCharacters() {
         else {
             cout << "Incorrect solution selection!" << endl;
         }
-
-        return;
     }
+
+    return;
 };
 
 void URLify() {
@@ -1314,7 +1314,116 @@ void URLify() {
 };
 
 void OneEditDistance() {
+    // Description of the problem
+    cout << "Check if given 2 string are in one edit distance (add/remove/change) or not." << endl;
 
+    // Get strings from user
+    string firstString;
+    string secondString;
+    cout << endl << "- Enter the first string: ";
+    cin >> firstString;
+    cout << endl << "- Enter the second string: ";
+    cin >> secondString;
+
+    const unsigned short firstSize = firstString.size();
+    const unsigned short secondSize = secondString.size();
+    bool hasOneDifference = true;
+    bool different = false;
+
+    // Check string's size
+    if ( abs(firstSize - secondSize) > 1) {
+        hasOneDifference = false;
+    }
+    else {
+        // Problem has several solutions, choose one
+        int solutionSelection = 0;
+        cout << "Enter 1 for O(n) neighbor check solution, 2 for O(n) hash map solution." << endl;
+        cin >> solutionSelection;
+
+        // Sort force O(n logn) solution, sort the string charaters, check every characters neighbors
+
+        // O(n) check neighbors solution, check pairs: NOTE: Its not a perfect solution, it has some flaws
+        if (solutionSelection == 1) {
+            const int shorterSize = firstSize < secondSize ? firstSize : secondSize;
+
+            for (int i = 0, j = 0; i < shorterSize && j < shorterSize; ++i, ++j) {
+                if (firstString[i] == secondString[j]) {
+                    continue;
+                }
+                else {
+                    // Second difference
+                    if (different) {
+                        hasOneDifference = false;
+                        break;
+                    }
+                    // i - ple vs j - pale
+                    else if (firstString[i] == secondString[j+1]) {
+                        different = true;
+                        ++j;
+                    }
+                    // i - palse vs j - pale
+                    else if (firstString[i+1] == secondString[j]) {
+                        different = true;
+                        ++i;
+                    }
+                    // Last character, different is false so its true
+                    else {
+                        break;
+                    }
+                }
+            }
+
+        }
+        // O(n) solution, put each character into the hash table/stl map
+        else if (solutionSelection == 2) {
+            map<char, int> charCounter;
+            int nonZeroCount = 0;
+
+            for (char c : firstString) {
+                // If map contains the same value, increase its value
+                if (charCounter.find(c) != charCounter.end()) {
+                    charCounter[c]++;
+                }
+                // If not add it and make its value 1
+                else {
+                    charCounter[c] = 1;
+                    ++nonZeroCount;
+                }
+            }
+
+            for (char c : secondString) {
+                // If set contains the same value, uniqueness break
+                if (charCounter.find(c) != charCounter.end()) {
+                    if(--charCounter[c] == 0)
+                        --nonZeroCount;
+                }
+                // Second difference, break the loop
+                else if (different) {
+                    hasOneDifference = false;
+                    break;
+                }
+                // First difference
+                else {
+                    different = true;
+                }
+            }
+
+            if(nonZeroCount > 1)
+                hasOneDifference = false;
+        }
+        // Neither O(logn) nor O(n) solution selected
+        else {
+            cout << "Incorrect solution selection!" << endl;
+            return;
+        }
+    }
+
+    if (hasOneDifference)
+        cout << firstString << " and " << secondString << " difference is <1 edit distance." << endl << endl;
+    else
+        cout << firstString << " and " << secondString << " difference is greater than 1 edit distance." << endl << endl;
+
+    return;
 };
 
 void StringCompression() {};
