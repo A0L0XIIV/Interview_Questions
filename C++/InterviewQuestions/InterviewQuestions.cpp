@@ -3,7 +3,7 @@
 * 2020
 */
 
-#include <iostream>
+//#include <iostream> Coming from .h files
 #include <algorithm>
 #include <cstdlib>
 #include <ctype.h>
@@ -895,7 +895,6 @@ void invertBSTCaller() {
 
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
-    int arrSize = arr.size();
     // Create a BST from the vector
     BST<int>* bst = new BST<int>(arr);
 
@@ -1278,7 +1277,7 @@ void URLify() {
     string urlString;
     cout << endl << "- Enter a string: ";
     //cin >> noskipws >> urlString; // Doesn't work! 
-    getline(cin, urlString, '\n');
+    getline(cin, urlString, '\n');  // TODO: Doesn't work, fix it!
 
     // Check string's size
     if (urlString.size() == 0) {
@@ -1314,7 +1313,9 @@ void URLify() {
     return;
 };
 
-void OneEditDistance() {};
+void OneEditDistance() {
+
+};
 
 void StringCompression() {};
 
@@ -1322,6 +1323,88 @@ void ZeroMatrix() {};
 
 void StringRotation() {};
 
-void LinkedListRemoveDuplicates() {};
+void LinkedListRemoveDuplicates() {
+    // Description of the problem
+    cout << "Remove duplicates in a given linked list." << endl;
 
-void LinkedListKthLast() {};
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a LinkedList from a vector
+    LinkedList<int>* ll = new LinkedList<int>(arr);
+
+    cout << endl << "LinkedList: ";
+    ll->printLinkedList();
+
+    set<int> uniqueValues;
+    Node<int>* current = ll->head;
+    Node<int>* previous = nullptr;
+
+    while(current){
+        // Check current node's value bu adding in set
+        if (uniqueValues.insert(current->getValue()).second == false) { 
+            // Same value already exist in the set, remove the current
+            // Set previous node's next to current's next
+            previous->setNext(current->getNext());
+            // Delete current node
+            delete current;
+            // Update current node
+            current = previous->getNext();
+        }
+        else {
+            // Update previous
+            previous = current;
+            // Move forward
+            current = current->getNext();
+        }
+    }
+
+    cout << endl << "After removing the duplicates" << endl << "LinkedList: ";
+    ll->printLinkedList();
+
+    return;
+};
+
+void LinkedListKthLast() {
+    // Description of the problem
+    cout << "Get the Kth Last element of the linked list." << endl;
+
+    // Get the k
+    unsigned short k = 0;
+    cout << "K (Kth last element): ";
+    cin >> k;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a LinkedList from a vector
+    LinkedList<int>* ll = new LinkedList<int>(arr);
+
+    cout << endl << "LinkedList: ";
+    ll->printLinkedList();
+
+    Node<int>* slow = ll->head;
+    Node<int>* fast = ll->head;
+    unsigned short size = 0;
+
+    while (fast != nullptr && fast->getNext() != nullptr) {
+        // Increment the size twice
+        size += 2;
+        // Move slow pointer once
+        slow = slow->getNext();
+        // Move fast pointer twice
+        fast = fast->getNext()->getNext();
+    }
+
+    // If the fast is not null, increment size once more
+    if (fast) {
+        ++size;
+    }
+
+    if (k >= size) {
+        cout << "K's value cannot be greater or equal to the size of the linked list. K: " << k << " Size: " << size << endl << endl;
+    }
+    else {
+        cout << "Kth node's value: " << ll->getKthNode(size - k)->getValue() << " Size of the LinkedList: " << size << endl << endl;
+    }
+
+    return;
+};
