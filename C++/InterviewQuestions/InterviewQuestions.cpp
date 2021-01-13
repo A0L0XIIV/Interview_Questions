@@ -1647,7 +1647,65 @@ void LinkedListIntersection() {
     // 1->2->3->4  vs  5->3->4 chop of first list first node so that they can be same length and compare each node
 }
 
-void LinkedListLoopDetection() {}
+void LinkedListLoopDetection() {
+    // Description of the problem
+    cout << "Checks if the given Linked List has a loop or not." << endl;
+
+    // Get array values from user
+    cout << endl << "Enter unique inputs, except one for loop creation." << endl;
+    vector<string> arr = getArrayInput<string>();
+    // Create a LinkedList from a vector
+    set<string> uniqueCheck;
+    Node<string>* prev = nullptr;
+    LinkedList<string>* ll = new LinkedList<string>();
+    // Create new linked list with loop
+    for (string element : arr) {
+        // Put in set: First time and its unique
+        if (uniqueCheck.insert(element).second != false) {
+            // Create a new node
+            Node<string>* temp = new Node<string>(element);
+            // Update prev's next
+            if (prev) {
+                prev->setNext(temp);
+            }
+            // First node, update LL's head
+            else {
+                ll->head = temp;
+            }
+            // Update prev
+            prev = temp;
+        }
+        // Same value, connect last node's (prev) to given valued node
+        else {
+            // Find the node in the LL
+            Node<string>* loopStart = ll->head;
+            while (loopStart && loopStart->getValue() != element) {
+                loopStart = loopStart->getNext();
+            }
+            // Found it or nullptr
+            prev->setNext(loopStart);
+        }
+    }
+    // Solution
+    Node<string>* fast = ll->head;
+    Node<string>* slow = ll->head;
+    // Move pointers until they met or reached the end
+    while (fast && fast->getNext()) {
+        fast = fast->getNext()->getNext();
+        slow = slow->getNext();
+        // After moving from head, check
+        if (fast == slow)
+            break;
+    }
+
+    if (fast && fast->getNext() && fast == slow) {
+        cout << endl << "Linked List contains a loop." << endl;
+    }
+    else {
+        cout << endl << "Linked List doesn't contain a loop." << endl;
+    }
+    return;
+}
 
 int main()
 {

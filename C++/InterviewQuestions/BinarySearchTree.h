@@ -48,7 +48,7 @@ public:
 
 // Constructor
 template<class Type>
-BST<Type>::BST(std::vector<Type> vec) {
+BST<Type>::BST(std::vector<Type> vec) : BST() {
 	// Check vector's emptiness
 	if (!vec.empty()) {
 		// Create a BST from a vector

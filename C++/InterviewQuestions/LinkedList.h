@@ -53,7 +53,7 @@ public:
 
 // Constructor with vector
 template<class Type>
-LinkedList<Type>::LinkedList(std::vector<Type> vec) {
+LinkedList<Type>::LinkedList(std::vector<Type> vec) : LinkedList() {
 	// Check vector's emptiness
 	if (!vec.empty()) {
 		// Head node
