@@ -1583,10 +1583,54 @@ void SumWithLinkedList() {
     result->printLinkedList();
 }
 
-void LinkedListPalindrom() {
+void LinkedListPalindrom() {    
+    // Description of the problem
+    cout << "Checks if the given Linked List is palindrom or not." << endl;
+
+    // Get array values from user
+    cout << endl << "Enter only one character (letter or number)." << endl;
+    vector<char> arr = getArrayInput<char>();
+    // Create a LinkedList from a vector
+    LinkedList<char>* ll = new LinkedList<char>(arr);
+
     // Reverse it, compare the first halves
     // Find mid and tail, move from mid kth times
     // Put first half into stack and compare with last half
+    Node<char>* fast = ll->head;
+    Node<char>* slow = ll->head;
+    stack<char> firstHalf;
+    bool result = true;
+    // Traverse insede the ll
+    while (fast && fast->getNext()) {
+        // Put slow's values in stack
+        firstHalf.push(slow->getValue());
+        // Move pointers
+        slow = slow->getNext();
+        fast = fast->getNext()->getNext();
+    }
+    // If length of the ll is odd, move slow once, no need to use middle node
+    if (fast) {
+        slow = slow->getNext();
+    }
+    // Pop everything from the stack while comparing
+    while (!firstHalf.empty()) {
+        if (firstHalf.top() != slow->getValue()) {
+            result = false;
+            break;
+        }
+        else {
+            slow = slow->getNext(); // Move slow
+            firstHalf.pop(); // Pop from stack
+        }
+    }
+    // Print result
+    ll->printLinkedList();
+    if (result) {
+        cout << endl << "Linked List is palindrome." << endl;
+    }
+    else {
+        cout << endl << "Linked List is NOT palindrome." << endl;
+    }
 }
 
 void LinkedListIntersection() {
