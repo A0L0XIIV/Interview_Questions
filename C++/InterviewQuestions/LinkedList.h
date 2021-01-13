@@ -53,25 +53,28 @@ public:
 
 // Constructor with vector
 template<class Type>
-LinkedList<Type>::LinkedList(std::vector<Type> arr) {
-	// Head node
-	head = new Node<Type>(arr[0]);
-	// Erase the first element from the vector
-	arr.erase(arr.begin());
-	// For holding previous nodes
-	Node<Type>* previous = head;
+LinkedList<Type>::LinkedList(std::vector<Type> vec) {
+	// Check vector's emptiness
+	if (!vec.empty()) {
+		// Head node
+		head = new Node<Type>(vec[0]);
+		// Erase the first element from the vector
+		vec.erase(vec.begin());
+		// For holding previous nodes
+		Node<Type>* previous = head;
 
-	for (Type element : arr) {
-		// Create a new node
-		Node<Type>* newNode = new Node<Type>(element);
-		// Set previous node's next pointer
-		previous->setNext(newNode);
-		// Update previous pointer
-		previous = newNode;
+		for (Type element : vec) {
+			// Create a new node
+			Node<Type>* newNode = new Node<Type>(element);
+			// Set previous node's next pointer
+			previous->setNext(newNode);
+			// Update previous pointer
+			previous = newNode;
+		}
+
+		// Set last node's next pointer
+		previous->setNext(nullptr);
 	}
-
-	// Set last node's next pointer
-	previous->setNext(nullptr);
 }
 
 template<class Type>

@@ -33,7 +33,7 @@ public:
 	// Constructors
 	BST() = default;
 	BST(BSTNode<Type>* rootNode) { root = rootNode; };
-	BST(std::vector<Type> array);
+	BST(std::vector<Type> vec);
 	// Functions
 	void printTree();
 	void printPreorder(BSTNode<Type>* node);
@@ -48,12 +48,14 @@ public:
 
 // Constructor
 template<class Type>
-BST<Type>::BST(std::vector<Type> array) {
-	// Create BST from an array
-	// Loop over the array and fill the BST, Start from 1 because 0 is root
-	for (Type element : array) {
-		BSTNode<Type>* node = new BSTNode<Type>(element);
-		BST<Type>::addNode(node);
+BST<Type>::BST(std::vector<Type> vec) {
+	// Check vector's emptiness
+	if (!vec.empty()) {
+		// Create a BST from a vector
+		for (Type element : vec) {
+			BSTNode<Type>* node = new BSTNode<Type>(element);
+			BST<Type>::addNode(node);
+		}
 	}
 }
 

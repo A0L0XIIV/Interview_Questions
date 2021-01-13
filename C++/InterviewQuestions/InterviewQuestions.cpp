@@ -24,36 +24,44 @@ using namespace std;
 template <typename T>
 vector<T> getArrayInput() {
     // Get array/vector size from user
-    int arrSize = 0;
-    cout << "Enter size of the array: ";
-    cin >> arrSize;
-
-    // Get array values from user
-    vector<T> arr(0);
-    T tempInput;
-    cout << "Enter the array elements." << endl;
-    for (int i = 0; i < arrSize; ++i) {
-        cout << to_string(i) + "th: ";
-        cin >> tempInput;
-        arr.push_back(tempInput);
+    size_t vecSize = 0;
+    cout << "Enter size of the array/list: ";
+    cin >> vecSize;
+    // Create a new vector
+    vector<T> vec(0);
+    // Check given size
+    if (vecSize != 0) {
+        vec.reserve(vecSize);
+        T tempInput;
+        // Get array values from user
+        cout << "Enter the array/list elements." << endl;
+        for (unsigned int i = 0; i < vecSize; ++i) {
+            cout << to_string(i) + "th: ";
+            cin >> tempInput;
+            vec.push_back(static_cast<T>(tempInput));
+        }
     }
-
-    return arr;
+    // Return filled OR empty vector
+    return vec;
 }
 
 template <typename T>
-vector<T> getArrayInput(int size) {
-    // Get array values from user
-    vector<T> arr(0);
-    T tempInput;
-    cout << "Enter the array elements." << endl;
-    for (int i = 0; i < size; ++i) {
-        cout << to_string(i) + "th: ";
-        cin >> tempInput;
-        arr.push_back(tempInput);
+vector<T> getArrayInput(size_t size) {
+    // Create a new vector
+    vector<T> vec(0);
+    // Check given size
+    if (size != 0) {
+        T tempInput;
+        // Get array values from user
+        cout << "Enter the array/list elements." << endl;
+        for (unsigned int i = 0; i < size; ++i) {
+            cout << to_string(i) + "th: ";
+            cin >> tempInput;
+            vec.push_back(static_cast<T>(tempInput));
+        }
     }
-
-    return arr;
+    // Return filled OR empty vector
+    return vec;
 }
 
 bool is_digits(const string& str){
