@@ -3,13 +3,12 @@
 * 2020
 */
 
-//#include <iostream> Coming from .h files
+#include <iostream>
 #include <algorithm>
 #include <cstdlib>
 #include <ctype.h>
 #include <limits>
 #include <map>
-#include <math.h>
 #include <queue>
 #include <set>
 #include <stack>
@@ -517,8 +516,9 @@ void validAnagram(){
             sort(firstWord.begin(), firstWord.end());
             sort(secondWord.begin(), secondWord.end());
             bool validAnagram = true;
+            const size_t firstSize = firstWord.size();
             // Check every index
-            for (int i = 0; i < firstWord.size(); ++i) {
+            for (unsigned int i = 0; i < firstSize; ++i) {
                 if (firstWord[i] != secondWord[i]) {
                     cout << "Not Anagram: These two words are not anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
                     validAnagram = false;
@@ -582,7 +582,7 @@ void kthLargestElement(){
     cout << "Find the Kth largest element in the given array." << endl;
 
     // Get the k
-    int k = 0;
+    unsigned int k = 0;
     cout << "Enter a value for k: ";
     cin >> k;
 
@@ -610,8 +610,9 @@ void kthLargestElement(){
         priority_queue <int, vector<int>, greater<int>> minHeap;
         // Loop over array's elements
         for (int element : arr) {
+            const size_t minHeapSize = minHeap.size();
             // Heap only has k elements because we only need kth element, push first k element into heap
-            if (minHeap.size() < k) {
+            if (minHeapSize < k) {
                 minHeap.push(element);
             }
             // After heap is full, change the elements if they are greater than the heap's min
@@ -637,7 +638,7 @@ void kPairsWithSmallestSum() {
     cout << "For example: u=[1,7,11] and v=[2,4,6], results are= [1,2], [1,4] and [1,6]." << endl;
 
     // Get the k
-    int k = 0;
+    unsigned int k = 0;
     cout << "Enter a value for k: ";
     cin >> k;
 
@@ -679,7 +680,7 @@ void kPairsWithSmallestSum() {
             });
         // Print the results
         cout << "The smallest sum pairs are: " << endl;
-        for (int i = 0; i < k; ++i) {
+        for (unsigned int i = 0; i < k; ++i) {
             cout << "- [" << pairArray[i].first << ',' << pairArray[i].second << ']' << endl;
         }
     }
@@ -693,8 +694,9 @@ void kPairsWithSmallestSum() {
         };
         // Loop over pair array
         for (pair<int, int> p : pairArray) {
+            const size_t maxHeapSize = maxHeap.size();
             // If the heap is empty, push new pairs to heap
-            if (maxHeap.size() < k) {
+            if (maxHeapSize < k) {
                 maxHeap.push(p);
             }
             // Heap is full, change elements if their sum is less than the max in the heap
@@ -707,7 +709,7 @@ void kPairsWithSmallestSum() {
         }
         // Print the results
         cout << "The smallest sum pairs are: " << endl;
-        for (int i = 0; i < k; ++i) {
+        for (unsigned int i = 0; i < k; ++i) {
             cout << "- [" << maxHeap.top().first << ',' << maxHeap.top().second << ']' << endl;
             maxHeap.pop();
         }
@@ -823,7 +825,7 @@ void merge(vector<int>& array, int p, int q, int r) {
 void mergeSort(vector<int>& array, int p, int r) {
     if (p < r) {
         // Middle element.s index
-        int q = ceil((p + r) / 2);
+        int q = static_cast<int> (ceil((p + r) / 2));
         // Recusrion for first and second halves
         mergeSort(array, p, q);
         mergeSort(array, q + 1, r);
@@ -1151,7 +1153,7 @@ void URLify() {
                 newString[--n] = '%';
             }
             else {
-                newString[n] == urlString[o];
+                newString[n] = urlString[o];
             }
             --n;
         }
@@ -1174,13 +1176,14 @@ void OneEditDistance() {
     cout << endl << "- Enter the second string: ";
     cin >> secondString;
 
-    const unsigned short firstSize = firstString.size();
-    const unsigned short secondSize = secondString.size();
+    const size_t firstSize = firstString.size();
+    const size_t secondSize = secondString.size();
+    int sizeDifference = firstSize - secondSize;
     bool hasOneDifference = true;
     bool different = false;
 
     // Check string's size
-    if ( abs(firstSize - secondSize) > 1) {
+    if ( abs(sizeDifference) > 1) {
         hasOneDifference = false;
     }
     else {
@@ -1286,7 +1289,7 @@ void StringCompression() {
 
     int counter = 0;
     char previousChar = uncompressed[0];
-    const unsigned short uncSize = uncompressed.size();
+    const size_t uncSize = uncompressed.size();
     for (char c : uncompressed) {
         if (previousChar == c) {
             ++counter;
@@ -1301,7 +1304,7 @@ void StringCompression() {
     }
     // Last character
     compressed += (previousChar + to_string(counter));
-    const unsigned short cSize = compressed.size();
+    const size_t cSize = compressed.size();
 
     if (uncSize > cSize) {
         cout << "Compressed: " << compressed << endl << endl;
@@ -1324,8 +1327,8 @@ void StringRotation() {
     cout << endl << "- Enter the second string: ";
     cin >> secondString;
 
-    const unsigned short firstSize = firstString.size();
-    const unsigned short secondSize = secondString.size();
+    const size_t firstSize = firstString.size();
+    const size_t secondSize = secondString.size();
     // Size check
     if (firstSize != secondSize) {
         cout << "Two strings' sizes are different, they cannot be rotation." << endl << endl;
@@ -1493,6 +1496,107 @@ void LinkedListKthLast() {
     return;
 };
 
+void SumWithLinkedList() {
+    // Description of the problem
+    cout << "Sum 2 integers as a Linked List. (Intergers are reversed in LL)" << endl;
+
+    // Get numbers from user
+    int first = 0, second = 0;
+    cout << endl << "Enter the first number: ";
+    cin >> first;
+    cout << endl << "Enter the second number: ";
+    cin >> second;
+    // Number vectors
+    vector<int> firstNumVec;
+    vector<int> secondNumVec;
+    // Generate vectors from numbers
+    while (first > 10) {
+        firstNumVec.push_back(first % 10);
+        first /= 10;
+    }
+    firstNumVec.push_back(first);
+    while (second > 10) {
+        secondNumVec.push_back(second % 10);
+        second /= 10;
+    }
+    secondNumVec.push_back(second);
+    // Create LinkedLists from vectors
+    LinkedList<int>* firstNum = new LinkedList<int>(firstNumVec);
+    LinkedList<int>* secondNum = new LinkedList<int>(secondNumVec);
+    LinkedList<int>* result = new LinkedList<int>();
+    // Print
+    cout << endl << "First LinkedList: ";
+    firstNum->printLinkedList();
+    cout << endl << "Second LinkedList: ";
+    secondNum->printLinkedList();
+    // Calculate sum operations
+    Node<int>* firstPointer = firstNum->head;
+    Node<int>* secondPointer = secondNum->head;
+    Node<int>* prev = nullptr;
+    int carry = 0;
+    int sum = 0;
+    // Traverse
+    while (firstPointer || secondPointer) {
+        // Calculate sum
+        // Second integer's digits over, only add first integer's digits
+        if (firstPointer && !secondPointer) {
+            sum = firstPointer->getValue() + carry;
+        }
+        // First integer's digits over, only add second integer's digits
+        else if (secondPointer && !firstPointer) {
+            sum = secondPointer->getValue() + carry;
+        }
+        else {
+            sum = firstPointer->getValue() + secondPointer->getValue() + carry;
+        }
+
+        // >10, update carry
+        if (sum >= 10) {
+            carry = sum / 10;
+            sum %= 10;
+        }
+        else {
+            carry = 0; // Reset
+        }
+        // Create a new node
+        Node<int>* temp = new Node<int>(sum);
+        // If prev is not null, update prev's next
+        if (prev) {
+            prev->setNext(temp);
+        }
+        // Update the prev pointer
+        prev = temp;
+        // If result linked list's head is null, assign first node
+        if (!(result->head))
+            result->head = temp;
+        // Move 2 pointers
+        if(firstPointer)
+            firstPointer = firstPointer->getNext();
+        if (secondPointer)
+            secondPointer = secondPointer->getNext();
+    }
+    // Lastly check carry, if not zero add to the tail (prev)
+    if (carry != 0)
+        prev->setValue(prev->getValue() + carry);
+    // Print result Linked List
+    cout << endl << "Result LinkedList: ";
+    result->printLinkedList();
+}
+
+void LinkedListPalindrom() {
+    // Reverse it, compare the first halves
+    // Find mid and tail, move from mid kth times
+    // Put first half into stack and compare with last half
+}
+
+void LinkedListIntersection() {
+    // If the last nodes are the same
+    // To find intersection chop of larger list's first x nodes and compare others
+    // 1->2->3->4  vs  5->3->4 chop of first list first node so that they can be same length and compare each node
+}
+
+void LinkedListLoopDetection() {}
+
 int main()
 {
     // Selection of the question
@@ -1529,7 +1633,11 @@ int main()
             << "23 - String Rotation check: battle vs ttleba" << endl
             << "24 - Zero Matrix: Change rows and columns to 0 if cell is 0" << endl
             << "25 - Remove Duplications in LinkedList" << endl
-            << "26 - Kth last element in the LinkedList" << endl;
+            << "26 - Kth last element in the LinkedList" << endl
+            << "27 - Sum 2 integers as Linked Lists" << endl
+            << "28 - Check if given LinkedList is palindrome" << endl
+            << "29 - Check if given 2 LinkedLists intersect (not value)" << endl
+            << "30 - LinkedList loop detection" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -1616,6 +1724,18 @@ int main()
             break;
         case 26:
             LinkedListKthLast();
+            break;
+        case 27:
+            SumWithLinkedList();
+            break;
+        case 28:
+            LinkedListPalindrom();
+            break;
+        case 29:
+            LinkedListIntersection();
+            break;
+        case 30:
+            LinkedListLoopDetection();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
