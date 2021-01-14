@@ -18,6 +18,7 @@
 
 #include "BinarySearchTree.h"
 #include "LinkedList.h"
+#include "StacksWithArray.h"
 
 using namespace std;
 
@@ -1645,6 +1646,14 @@ void LinkedListIntersection() {
     // If the last nodes are the same
     // To find intersection chop of larger list's first x nodes and compare others
     // 1->2->3->4  vs  5->3->4 chop of first list first node so that they can be same length and compare each node
+    // Description of the problem
+    cout << "Checks if the given 2 Linked Lists intersect with each other." << endl;
+
+    // Get array values from user
+    cout << endl << "Enter only one character (letter or number)." << endl;
+    vector<char> arr = getArrayInput<char>();
+    // Create a LinkedList from a vector
+    LinkedList<char>* ll = new LinkedList<char>(arr);
 }
 
 void LinkedListLoopDetection() {
@@ -1707,6 +1716,89 @@ void LinkedListLoopDetection() {
     return;
 }
 
+void ThreeStacksWithOneArray() {
+    // Description of the problem
+    cout << "3 Stacks implementation with 1 Array. Stack sizes are static and the same in this one." << endl;
+
+    size_t stackSize = 0;
+    cout << endl << "Enter stacks (all 3 of them are the same) size: ";
+    cin >> stackSize;
+
+    // Create instance of the data structure w/ vector
+    StacksWithArray<int>* threeStacks = new StacksWithArray<int>(stackSize);
+    unsigned int choice = 1;
+    int value = 0;
+    unsigned int stackIndex = 0;
+    while (choice != 0) {
+        cout << endl << "0-Exit, 1-Top, 2-Push, 3-Pop, 4-isEmpty: ";
+        cin >> choice;
+        if (choice == 0) { 
+            cout << "Exiting the question..." << endl;
+            break; 
+        }
+        // Stack operaiton seleciton
+        switch (choice) {
+            case 0:
+                break;
+            case 1: // TOP
+                cout << endl << "Choose a stack to get top (0, 1, 2):";
+                cin >> stackIndex;
+                if(threeStacks->top(stackIndex))
+                    cout << "Top: " << threeStacks->top(stackIndex) << endl;
+                else
+                    cout << "Stack is empty!" << endl;
+                threeStacks->printStack(stackIndex);
+                break;
+            case 2: // PUSH
+                cout << endl << "Choose a stack to push (0, 1, 2):";
+                cin >> stackIndex;
+                cout << "Enter a number to push:";
+                cin >> value;
+                if (threeStacks->push(stackIndex, value))
+                    cout << "Succesfully pushed!" << endl;
+                else
+                    cout << "Push failed, stack is full!" << endl;
+                cout << "After push operation:" << endl;
+                threeStacks->printStack(stackIndex);
+                break;
+            case 3: // POP
+                cout << endl << "Choose a stack to pop (0, 1, 2):";
+                cin >> stackIndex;
+                if (threeStacks->pop(stackIndex))
+                    cout << "Succesfully poped!" << endl;
+                else
+                    cout << "Pop failed, stack is empty!" << endl;
+                cout << "After pop operation:" << endl;
+                threeStacks->printStack(stackIndex);
+                break;
+            case 4: // EMPTY
+                cout << endl << "Choose a stack to check emptiness (0, 1, 2):";
+                cin >> stackIndex;
+                if (threeStacks->isEmpty(stackIndex))
+                    cout << "Stack is empty" << endl;
+                else
+                    cout << "Stack is not empty" << endl;
+                threeStacks->printStack(stackIndex);
+                break;
+            default:
+                cout << "Wrong operation selection, try again." << endl;
+                break;
+        }
+    }
+    return;
+}
+
+void StackWithMinMax() {
+    // 1. Store min/max below in the each node/element
+    // 2. Store min/max in the another stack
+}
+
+void StackWithCapacity() {}
+
+void QueueWithTwoStacks() {}
+
+void StackSorting() {}
+
 int main()
 {
     // Selection of the question
@@ -1747,7 +1839,12 @@ int main()
             << "27 - Sum 2 integers as Linked Lists" << endl
             << "28 - Check if given LinkedList is palindrome" << endl
             << "29 - Check if given 2 LinkedLists intersect (not value)" << endl
-            << "30 - LinkedList loop detection" << endl;
+            << "30 - LinkedList loop detection" << endl
+            << "31 - 3 Stacks with 1 array" << endl
+            << "32 - Stacks that shows min/max" << endl
+            << "33 - Stacs with capacity (Creates new stacks when exceeds)" << endl
+            << "34 - Queue with 2 Stacks" << endl
+            << "35 - Sort Stack with only 1 additional Stack" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -1846,6 +1943,21 @@ int main()
             break;
         case 30:
             LinkedListLoopDetection();
+            break;
+        case 31:
+            ThreeStacksWithOneArray();
+            break;
+        case 32:
+            StackWithMinMax();
+            break;
+        case 33:
+            StackWithCapacity();
+            break;
+        case 34:
+            QueueWithTwoStacks();
+            break;
+        case 35:
+            StackSorting();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
