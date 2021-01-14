@@ -1922,7 +1922,92 @@ void StackWithMinMax() {
     }
 }
 
-void StackWithCapacity() {}
+void StackWithCapacity() {
+    // Description of the problem
+    cout << "Stack with capacity. If the current stack is full, it creates a new one." << endl;
+
+    size_t stackCapacity = 0;
+    cout << endl << "Enter stack capacity: ";
+    cin >> stackCapacity;
+    
+    // Vector to hold all the stacks
+    vector<stack<int>*> stackVec;
+    // Push empty stack
+    stackVec.push_back(new stack<int>);
+    // Stack index
+    unsigned int currentStack = 0;
+    int value = 0;
+    unsigned int choice = 1;
+    while (choice != 0) {
+        cout << endl << "0-Exit, 1-Top, 2-Push, 3-Pop: "; // TODO: PopAt w/ stackVec index and stack index, put NULL and while poping clear
+        cin >> choice;
+        if (choice == 0) {
+            cout << "Exiting the question..." << endl;
+            break;
+        }
+        // Stack operaiton seleciton
+        switch (choice) {
+        case 0:
+            break;
+        case 1: // TOP
+            cout << "TOP" << endl;
+            if (stackVec[currentStack]->empty())
+                cout << "Stack is empty." << endl;
+            else
+                cout << "Value: " << stackVec[currentStack]->top() << endl;
+            break;
+        case 2: // PUSH
+            cout << "PUSH" << endl;
+            cout << "Enter a number to push:";
+            cin >> value;
+            // Check current stack's capacity
+            if (stackVec[currentStack]->size() == stackCapacity) {
+                // Create a new stack
+                stack<int>* newStack = new stack<int>;
+                newStack->push(value);
+                // Push new stack in stackVec
+                stackVec.push_back(newStack);
+                // Increment the currentStack index
+                ++currentStack;
+                cout << "Pushed in a new stack!" << endl;
+            }
+            else {
+                // Push into current stack
+                stackVec[currentStack]->push(value);
+                cout << "Pushed!" << endl;
+            }
+            break;
+        case 3: // POP
+            cout << "POP" << endl;
+            if (stackVec[currentStack]->size() == 1) {
+                // Pop from stack
+                stackVec[currentStack]->pop();
+                // Do not delete the first stack, but delete others
+                if (currentStack != 0) {
+                    // Delete the pointer
+                    delete stackVec.back();
+                    // Pop the last stack
+                    stackVec.pop_back();
+                    // Decrement the currentStack index
+                    --currentStack;
+                    cout << "Poped and deleted a stack!" << endl;
+                }
+                else
+                    cout << "Poped!" << endl;
+            }
+            else if (currentStack == 0 && stackVec[currentStack]->size() == 0)
+                cout << "Stack is empty." << endl;
+            else {
+                stackVec[currentStack]->pop();
+                cout << "Poped!" << endl;
+            }
+            break;
+        default:
+            cout << "Wrong operation selection, try again." << endl;
+            break;
+        }
+    }
+}
 
 void QueueWithTwoStacks() {}
 
