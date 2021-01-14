@@ -1789,8 +1789,137 @@ void ThreeStacksWithOneArray() {
 }
 
 void StackWithMinMax() {
+    // Description of the problem
+    cout << "Stack with min and max values." << endl; 
+    int solutionSelection = 0;
+    // Problem has several solutions, choose one
+    cout << "Enter 1 for stack w/ custom data structure , 2 for additional stacks for min/max: ";
+    cin >> solutionSelection;
+
+    // Store value, min and max in the array
+    int* node = new int[3]{ 0, 0, 0 };
+    int value = 0;
+    int min = 100; // Could use INT_MIN & INT_MAX
+    int max = -100;
+
     // 1. Store min/max below in the each node/element
-    // 2. Store min/max in the another stack
+    if (solutionSelection == 1) {
+        stack<int*> s;
+        unsigned int choice = 1;
+        while (choice != 0) {
+            cout << endl << "0-Exit, 1-Top, 2-Push, 3-Pop: ";
+            cin >> choice;
+            if (choice == 0) {
+                cout << "Exiting the question..." << endl;
+                break;
+            }
+            // Stack operaiton seleciton
+            switch (choice) {
+            case 0:
+                break;
+            case 1: // TOP
+                cout << "TOP" << endl;
+                if (s.empty())
+                    cout << "Stack is empty." << endl;
+                else
+                    cout << "Value: " << s.top()[0] << " Min: " << s.top()[1] << " Max: " << s.top()[2] << endl;
+                break;
+            case 2: // PUSH
+                cout << "PUSH" << endl;
+                cout << "Enter a number to push:";
+                cin >> value;
+                // Get top node's min and max
+                if (!s.empty()) {
+                    min = s.top()[1];
+                    max = s.top()[2];
+                }
+                // Update min and max
+                if (value < min)
+                    min = value;
+                if (value > max)
+                    max = value;
+                // Create new array
+                node = new int[3]{ value, min, max };
+                s.push(node);
+                cout << "Pushed!" << endl;
+                break;
+            case 3: // POP
+                cout << "POP" << endl;
+                if (s.empty())
+                    cout << "Stack is empty." << endl;
+                else {
+                    s.pop();
+                    cout << "Poped!" << endl;
+                }
+                break;
+            default:
+                cout << "Wrong operation selection, try again." << endl;
+                break;
+            }
+        }
+    }
+    // 2. Store min/max in the another stack    
+    else if (solutionSelection == 2) {
+        stack<int> mins;
+        stack<int> maxs;
+        stack<int> s;
+        unsigned int choice = 1;
+        while (choice != 0) {
+            cout << endl << "0-Exit, 1-Top, 2-Push, 3-Pop: ";
+            cin >> choice;
+            if (choice == 0) {
+                cout << "Exiting the question..." << endl;
+                break;
+            }
+            // Stack operaiton seleciton
+            switch (choice) {
+            case 0:
+                break;
+            case 1: // TOP
+                cout << "TOP" << endl;
+                if (s.empty())
+                    cout << "Stack is empty." << endl;
+                else
+                    cout << "Value: " << s.top() << " Min: " << mins.top() << " Max: " << maxs.top() << endl;
+                break;
+            case 2: // PUSH
+                cout << "PUSH" << endl;
+                cout << "Enter a number to push:";
+                cin >> value;
+                // Update min and max stacks
+                if (mins.empty() || value < mins.top())
+                    mins.push(value);
+                if (maxs.empty() || value > maxs.top())
+                    maxs.push(value);
+                // Push in stack
+                s.push(value);
+                cout << "Pushed!" << endl;
+                break;
+            case 3: // POP
+                cout << "POP" << endl;
+                if (s.empty())
+                    cout << "Stack is empty." << endl;
+                else {
+                    // Update min and max stacks
+                    if (!mins.empty() && s.top() == mins.top())
+                        mins.pop();
+                    if (!maxs.empty() && value == maxs.top())
+                        maxs.pop();
+                    // Pop from stack
+                    s.pop();
+                    cout << "Poped!" << endl;
+                }
+                break;
+            default:
+                cout << "Wrong operation selection, try again." << endl;
+                break;
+            }
+        }
+    }
+    // Incorrect solution selection
+    else {
+        cout << "Incorrect solution selection!" << endl;
+    }
 }
 
 void StackWithCapacity() {}
