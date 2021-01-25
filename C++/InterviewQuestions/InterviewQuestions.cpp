@@ -1649,11 +1649,119 @@ void LinkedListIntersection() {
     // Description of the problem
     cout << "Checks if the given 2 Linked Lists intersect with each other." << endl;
 
-    // Get array values from user
-    cout << endl << "Enter only one character (letter or number)." << endl;
-    vector<char> arr = getArrayInput<char>();
-    // Create a LinkedList from a vector
-    LinkedList<char>* ll = new LinkedList<char>(arr);
+    // Select 1 or 2
+    int selection = 0;
+    cout << endl << "Enter 1 for Linked-List with intersection, 2 for w/o." << endl;
+    cin >> selection;
+    // Create an empty LinkedList
+    LinkedList<int>* ll1 = nullptr;
+    LinkedList<int>* ll2 = nullptr;
+    // Has Intersection
+    if (selection == 1) {
+        // First Linked-List 5 -> 2 -> 1 -> 7 -> 8 -> 13 -> 10 -> 3
+        Node<int>* last = new Node<int> (3);
+        Node<int>* seventh = new Node<int>(10, last);
+        Node<int>* sixth = new Node<int>(13, seventh);
+        Node<int>* fifth = new Node<int>(8, sixth);
+        Node<int>* forth = new Node<int>(7, fifth);
+        Node<int>* third = new Node<int>(1, forth);
+        Node<int>* second = new Node<int>(2, third);
+        Node<int>* first = new Node<int>(3, second);
+        // Create a linked list
+
+        ll1 = new LinkedList<int>(first);
+        // Second Linked-List 6 -> 4 -> 8 -> 13 -> 10 -> 3
+        Node<int>* second_2 = new Node<int>(4, fifth);
+        Node<int>* first_2 = new Node<int>(6, second_2);
+        // Create a linked list
+        ll2 = new LinkedList<int>(first_2);
+    }
+    // Doesn't Have Intersection
+    else if (selection == 2) {
+        // First Linked-List 5 -> 2 -> 1 -> 7 -> 8 -> 13 -> 10 -> 3
+        Node<int>* last = new Node<int>(3);
+        Node<int>* seventh = new Node<int>(10, last);
+        Node<int>* sixth = new Node<int>(13, seventh);
+        Node<int>* fifth = new Node<int>(8, sixth);
+        Node<int>* forth = new Node<int>(7, fifth);
+        Node<int>* third = new Node<int>(1, forth);
+        Node<int>* second = new Node<int>(2, third);
+        Node<int>* first = new Node<int>(3, second);
+        // Create a linked list
+        ll1 = new LinkedList<int>(first);
+
+        // Second Linked-List 6 -> 4 -> 12 -> 15 -> 9
+        Node<int>* last_2 = new Node<int>(9);
+        Node<int>* forth_2 = new Node<int>(15, last_2);
+        Node<int>* third_2 = new Node<int>(12, forth_2);
+        Node<int>* second_2 = new Node<int>(4, third_2);
+        Node<int>* first_2 = new Node<int>(6, second_2);
+        // Create a linked list
+        ll2 = new LinkedList<int>(first_2);
+    }
+    // Incorrect selection
+    else {
+        cout << "Incorrect selection!" << endl;
+        return;
+    }
+
+    // Solution: If the tails of the 2 LL is the same, they have an intersect
+    Node<int>* traverse1 = ll1->head;
+    Node<int>* traverse2 = ll2->head;
+    // Find 2 lists sizes
+    size_t size1 = 0;
+    size_t size2 = 0;
+    // Move 2 pointers until they reached the end
+    while (traverse1->getNext()) {
+        traverse1 = traverse1->getNext();
+        ++size1;
+    }
+    while (traverse2->getNext()) {
+        traverse2 = traverse2->getNext();
+        ++size2;
+    }
+    // Print both Linked-Lists
+    ll1->printLinkedList();
+    ll2->printLinkedList();
+    // Compare 2 pointers
+    if (traverse1 == traverse2) {
+        cout << "2 Linked-Lists have an intersection." << endl;
+    }
+    else {
+        cout << "2 Linked-Lists don't have an intersection." << endl;
+        return;
+    }
+
+    // Find intersection node
+    traverse1 = ll1->head;  // Reset traverse pointers
+    traverse2 = ll2->head;
+    // Find the longer one and move its pointer by size difference
+    size_t sizeDifference = size1 - size2; // Use abs for normal cases, in this case s1 is greater than s2
+    if (size1 > size2) {
+        while (sizeDifference) {
+            traverse1 = traverse1->getNext();
+            --sizeDifference;
+        }
+    }
+    else if (size1 < size2) {
+        while (sizeDifference) {
+            traverse2 = traverse2->getNext();
+            --sizeDifference;
+        }
+    }
+    // Move 2 pointers simulteniously, if they reached the same node, we found the intersection
+    while (traverse1->getNext() && traverse2->getNext()) {
+        // Check intersection node
+        if (traverse1 == traverse2) {
+            cout << "Intersection node is: " << traverse1->getValue() << endl;
+            break;
+        }
+        else {
+            traverse1 = traverse1->getNext();
+            traverse2 = traverse2->getNext();
+        }
+    }
+    return;
 }
 
 void LinkedListLoopDetection() {
