@@ -907,7 +907,7 @@ void quickSortCaller() {
     }
 }
 
-void quickSort() { }
+void quickSort() { } // TODO
 
 void binarySearch() {
     // Description of the problem
@@ -2117,7 +2117,114 @@ void StackWithCapacity() {
     }
 }
 
-void QueueWithTwoStacks() {}
+void ReverseStacks(stack<int>& forwardStack, stack<int>& backwardStack) {
+    // Pop from the forward until it's empty
+    while (!forwardStack.empty()) {
+        // Push forward's top element into backward
+        backwardStack.push(forwardStack.top());
+        // Pop it
+        forwardStack.pop();
+    }
+}
+
+void QueueWithTwoStacks() {
+    // Description of the problem
+    cout << "Queue data structure that implemented with 2 stacks." << endl;
+
+    // Declare 2 stacks
+    stack<int> forwardStack;
+    stack<int> backwardStack;
+    bool isForwardUpToDate = true;
+
+    int value = 0;
+    unsigned int choice = 1;
+    while (choice != 0) {
+        cout << endl << "0-Exit, 1-Front, 2-Back, 3-Push back, 4-Pop front: ";
+        cin >> choice;
+        if (choice == 0) {
+            cout << "Exiting the question..." << endl;
+            break;
+        }
+        // Stack operaiton seleciton
+        switch (choice) {
+        case 0:
+            break;
+        case 1: // FRONT
+            cout << "FRONT" << endl;
+            if (isForwardUpToDate) {
+                if (forwardStack.empty()) {
+                    cout << "Queue is empty." << endl;
+                    break;
+                }
+                else {
+                    ReverseStacks(forwardStack, backwardStack);
+                    isForwardUpToDate = false;
+                }
+            }
+            else if (backwardStack.empty()) {
+                cout << "Queue is empty." << endl;
+                break;
+            }
+            // Print front element's value
+            cout << "Value: " << backwardStack.top() << endl;
+            break;
+        case 2: // BACK
+            cout << "BACK" << endl;
+            if (!isForwardUpToDate) {
+                if (backwardStack.empty()) {
+                    cout << "Queue is empty." << endl;
+                    break;
+                }
+                else {
+                    ReverseStacks(backwardStack, forwardStack);
+                    isForwardUpToDate = true;
+                }
+            }
+            else if (forwardStack.empty()) {
+                cout << "Queue is empty." << endl;
+                break;
+            }
+            // Print back element's value
+            cout << "Value: " << forwardStack.top() << endl;
+            break;
+        case 3: // PUSH BACK
+            cout << "PUSH BACK" << endl;
+            cout << "Enter a number to push back:";
+            cin >> value;
+            // Check forward's up to date
+            if (!isForwardUpToDate) {
+                ReverseStacks(backwardStack, forwardStack);
+                isForwardUpToDate = true;
+            }
+            forwardStack.push(value);
+            cout << "Pushed!" << endl;
+            break;
+        case 4: // Pop front
+            cout << "POP FRONT" << endl;
+            if (isForwardUpToDate) {
+                if (forwardStack.empty()) {
+                    cout << "Queue is empty." << endl;
+                    break;
+                }
+                else {
+                    ReverseStacks(forwardStack, backwardStack);
+                    isForwardUpToDate = false;
+                }
+            }
+            else if (backwardStack.empty()) {
+                cout << "Queue is empty." << endl;
+                break;
+            }
+            // Print front element's value and then pop it
+            cout << "Value: " << backwardStack.top() << " poped from front." << endl;
+            backwardStack.pop();
+            break;
+        default:
+            cout << "Wrong operation selection, try again." << endl;
+            break;
+        }
+    }
+}
 
 void StackSorting() {}
 
