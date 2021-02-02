@@ -2226,7 +2226,51 @@ void QueueWithTwoStacks() {
     }
 }
 
-void StackSorting() {}
+void StackSorting() {
+    // Description of the problem
+    cout << "Sort stack only with 1 additional stack." << endl;
+
+    // Declare 2 stacks
+    stack<int> s;
+    stack<int> sExtra;
+    // Push 5 integers in s
+    cout << "Initial stack: 5->1->9->2->13" << endl;
+    s.push(5);
+    s.push(1);
+    s.push(9);
+    s.push(2);
+    s.push(13);
+    // 2 Integers for operatins
+    int current = 0;
+    unsigned int counter = 0;
+
+    while (!s.empty()) {
+        // Get the top of the s and pop it
+        current = s.top();
+        s.pop();
+        // If sExtra is not empty and the top element is greater than the current value, pop it and push in s
+        while (!sExtra.empty() && current < sExtra.top()) {
+            s.push(sExtra.top());
+            sExtra.pop();
+            ++counter; // Increment counter so we can get the sExtra elements back
+        }
+        // Top of the sExtra is smaller than the current value, push it in sExtra
+        sExtra.push(current);
+        // Transfer back the counter amonth of elements back to sExtra
+        while (counter > 0 && !s.empty()) {
+            sExtra.push(s.top());
+            s.pop();
+            --counter;
+        }
+
+    }
+    // sExtra is reversed sorted: min in the bottom, max in the top. Print elements while popping
+    while (!sExtra.empty()) {
+        cout << sExtra.top() << endl;
+        sExtra.pop();
+    }
+    return;
+}
 
 int main()
 {
