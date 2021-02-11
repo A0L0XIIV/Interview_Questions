@@ -10,44 +10,44 @@
 template<class Type>
 class Node {
 	Type value;
-	Node<Type>* next;
-	Node<Type>* previous;
+	std::shared_ptr<Node<Type>> next;
+	std::shared_ptr<Node<Type>> previous;
 
 public:
 	// Constructors
 	Node() = default;
-	Node(Type val) { value = val; next = nullptr; previous = nullptr; };
-	Node(Type val, Node<Type>* n) { value = val; next = n; previous = nullptr; };
-	Node(Type val, Node<Type>* n, Node<Type>* p) { value = val; next = n; previous = p; };
+	Node(Type val) : value(val), next(nullptr), previous(nullptr) {};
+	Node(Type val, std::shared_ptr<Node<Type>> n) : value(val), next(n), previous(nullptr) {};
+	Node(Type val, std::shared_ptr<Node<Type>> n, std::shared_ptr<Node<Type>> p) : value(val), next(n), previous(p) {};
 	// Functions
 	Type getValue() { return value; };
 	void setValue(Type newValue) { value = newValue; };
-	Node<Type>* getNext() { return next; };
-	void setNext(Node<Type>* newNext) { next = newNext; };
-	Node<Type>* getPrevious() { return previous; };
-	void setPrevious(Node<Type>* newPrevious) { previous = newPrevious; };
+	std::shared_ptr<Node<Type>> getNext() { return next; };
+	void setNext(std::shared_ptr<Node<Type>> newNext) { next = newNext; };
+	std::shared_ptr<Node<Type>> getPrevious() { return previous; };
+	void setPrevious(std::shared_ptr<Node<Type>> newPrevious) { previous = newPrevious; };
 };
 
 template<class Type>
 class LinkedList {
 public:
-	Node<Type>* head;
+	std::shared_ptr<Node<Type>> head;
 	// Constructors
 	LinkedList() = default;
-	LinkedList(Node<Type>* h) { head = h; };
+	LinkedList(std::shared_ptr<Node<Type>> h) : head (h) {};
 	LinkedList(std::vector<Type> arr);
 	// Functions
 	void printLinkedList();
-	Node<Type>* getKthNode(int k);
+	std::shared_ptr<Node<Type>> getKthNode(int k);
 };
 
 template<class Type>
 class DoubleLinkedList : public LinkedList<Type> {
 public:
-	Node<Type>* tail;
+	std::shared_ptr<Node<Type>> tail;
 	// Constructors
 	DoubleLinkedList() = default;
-	DoubleLinkedList(Node<Type>* h, Node<Type>* t) : LinkedList<Type>(h) { tail = t; }; // Call LL's cons. for head
+	DoubleLinkedList(std::shared_ptr<Node<Type>> h, std::shared_ptr<Node<Type>> t) : LinkedList<Type>(h) { tail = t; }; // Call LL's cons. for head
 	DoubleLinkedList(std::vector<Type> arr);
 };
 
@@ -57,55 +57,47 @@ LinkedList<Type>::LinkedList(std::vector<Type> vec) : LinkedList() {
 	// Check vector's emptiness
 	if (!vec.empty()) {
 		// Head node
-		head = new Node<Type>(vec[0]);
+		head = std::shared_ptr<Node<Type>> (new Node<Type>(vec[0]));
 		// Erase the first element from the vector
 		vec.erase(vec.begin());
 		// For holding previous nodes
-		Node<Type>* previous = head;
+		std::shared_ptr<Node<Type>> prev = head;
 
 		for (Type element : vec) {
 			// Create a new node
-			Node<Type>* newNode = new Node<Type>(element);
+			auto newNode = std::shared_ptr<Node<Type>> (new Node<Type>(element));
 			// Set previous node's next pointer
-			previous->setNext(newNode);
+			prev->setNext(newNode);
 			// Update previous pointer
-			previous = newNode;
+			prev = newNode;
 		}
-
-		// Set last node's next pointer
-		previous->setNext(nullptr);
 	}
 }
 
 template<class Type>
-DoubleLinkedList<Type>::DoubleLinkedList(std::vector<Type> arr) {
-	// Call parent class's constructor
-	LinkedList<Type> ll = new LinkedList<Type>(arr);
-	// Get its head node
-	Node<Type> head = ll.head;
-	// For holding current nodes
-	Node<Type>* current = head;
-	// For holding previous nodes
-	Node<Type>* previous = nullptr;
+DoubleLinkedList<Type>::DoubleLinkedList(std::vector<Type> arr) : LinkedList(arr) {
+	// After creating a normal LinkedList with its ctor, update each nodes' previous ptr
+	std::shared_ptr<Node<Type>> current = this->head;
+	std::shared_ptr<Node<Type>> prev = nullptr;
 
-	// Update each node's tail pointer
+	// Update each node's previous pointer
 	while (current) {
 		// Update each node's previous pointer
-		current->setPrevious(previous);
+		current->setPrevious(prev);
 		// Update the previous
-		previous = current;
+		prev = current;
 		// Move current forward
 		current = current->getNext();
 	}
 
-	// Return newly created double linked list with head and the tail nodes
-	return DoubleLinkedList<Type>(head, previous);
+	// Update the tail ptr
+	tail = prev;
 }
 
 // Print function
 template<class Type>
 void LinkedList<Type>::printLinkedList() {
-	Node<Type>* current = head;
+	std::shared_ptr<Node<Type>> current = head;
 
 	while (current) {
 		// Print node's value
@@ -121,8 +113,8 @@ void LinkedList<Type>::printLinkedList() {
 
 // Get Kth Node Function
 template<class Type>
-Node<Type>* LinkedList<Type>::getKthNode(int k) {
-	Node<Type>* current = head;
+std::shared_ptr<Node<Type>> LinkedList<Type>::getKthNode(int k) {
+	std::shared_ptr<Node<Type>> current = head;
 
 	while (k > 0 && current) {
 		// Decrement k
