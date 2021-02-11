@@ -730,12 +730,12 @@ void kPairsWithSmallestSum() {
 
 }
 
-void invertBST(BSTNode<int>* node) {
+void invertBST(std::shared_ptr<BSTNode<int>> node) {
     // Base case
     if (node == nullptr)
         return;
     // Swap left and right children
-    BSTNode<int>* temp = node->getLeftChild();
+    auto temp = std::shared_ptr<BSTNode<int>> (node->getLeftChild());
     node->updateLeft(node->getRightChild());
     node->updateRight(temp);
     // Call left child
@@ -989,9 +989,9 @@ void breadthFirstSearch() {
     // Array for storing node's discovered state (NOT NECESSARY FOR BST)
     vector<bool> discovered(arrSize, false);
     // Queue for BFS operations
-    queue<BSTNode<int>*> q;
+    queue<std::shared_ptr<BSTNode<int>>> q;
     q.push(bst->getRoot());
-    BSTNode<int>* temp = nullptr;
+    std::shared_ptr<BSTNode<int>> temp = nullptr;
 
     while (!q.empty()) {
         // Print the front and pop it from queue
@@ -1033,9 +1033,9 @@ void depthFirstSearch() {
     // Array for storing node's explored state (NOT NECESSARY FOR BST)
     vector<bool> explored(arrSize, false);
     // Stack for DFS operations
-    stack<BSTNode<int>*> s;
+    stack<std::shared_ptr<BSTNode<int>>> s;
     s.push(bst->getRoot());
-    BSTNode<int>* temp = nullptr;
+    std::shared_ptr<BSTNode<int>> temp = nullptr;
 
     while (!s.empty()) {
         // Print the top and pop it from stack
@@ -1426,14 +1426,15 @@ void LinkedListRemoveDuplicates() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a LinkedList from a vector
-    LinkedList<int>* ll = new LinkedList<int>(arr);
+    auto ll = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(arr));
+    //std::shared_ptr<LinkedList<int>> ll = new LinkedList<int>(arr);
 
     cout << endl << "LinkedList: ";
     ll->printLinkedList();
 
     set<int> uniqueValues;
-    Node<int>* current = ll->head;
-    Node<int>* previous = nullptr;
+    std::shared_ptr<Node<int>> current = ll->head;
+    std::shared_ptr<Node<int>> previous = nullptr;
 
     while(current){
         // Check current node's value bu adding in set
@@ -1442,7 +1443,7 @@ void LinkedListRemoveDuplicates() {
             // Set previous node's next to current's next
             previous->setNext(current->getNext());
             // Delete current node
-            delete current;
+            //delete current.get(); // Deleting a node doesn't necessary w/ smart pointer
             // Update current node
             current = previous->getNext();
         }
@@ -1477,8 +1478,8 @@ void LinkedListKthLast() {
     cout << endl << "LinkedList: ";
     ll->printLinkedList();
 
-    Node<int>* slow = ll->head;
-    Node<int>* fast = ll->head;
+    std::shared_ptr<Node<int>> slow = ll->head;
+    std::shared_ptr<Node<int>> fast = ll->head;
     unsigned short size = 0;
 
     while (fast != nullptr && fast->getNext() != nullptr) {
@@ -1530,18 +1531,18 @@ void SumWithLinkedList() {
     }
     secondNumVec.push_back(second);
     // Create LinkedLists from vectors
-    LinkedList<int>* firstNum = new LinkedList<int>(firstNumVec);
-    LinkedList<int>* secondNum = new LinkedList<int>(secondNumVec);
-    LinkedList<int>* result = new LinkedList<int>();
+    auto firstNum = std::shared_ptr<LinkedList<int>> (new LinkedList<int>(firstNumVec));
+    auto secondNum = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(secondNumVec));
+    auto result = std::shared_ptr<LinkedList<int>>(new LinkedList<int>());
     // Print
     cout << endl << "First LinkedList: ";
     firstNum->printLinkedList();
     cout << endl << "Second LinkedList: ";
     secondNum->printLinkedList();
     // Calculate sum operations
-    Node<int>* firstPointer = firstNum->head;
-    Node<int>* secondPointer = secondNum->head;
-    Node<int>* prev = nullptr;
+    std::shared_ptr<Node<int>> firstPointer = firstNum->head;
+    std::shared_ptr<Node<int>> secondPointer = secondNum->head;
+    std::shared_ptr<Node<int>> prev = nullptr;
     int carry = 0;
     int sum = 0;
     // Traverse
@@ -1568,7 +1569,7 @@ void SumWithLinkedList() {
             carry = 0; // Reset
         }
         // Create a new node
-        Node<int>* temp = new Node<int>(sum);
+        auto temp = std::shared_ptr<Node<int>> (new Node<int>(sum));
         // If prev is not null, update prev's next
         if (prev) {
             prev->setNext(temp);
@@ -1605,8 +1606,8 @@ void LinkedListPalindrom() {
     // Reverse it, compare the first halves
     // Find mid and tail, move from mid kth times
     // Put first half into stack and compare with last half
-    Node<char>* fast = ll->head;
-    Node<char>* slow = ll->head;
+    std::shared_ptr<Node<char>> fast = ll->head;
+    std::shared_ptr<Node<char>> slow = ll->head;
     stack<char> firstHalf;
     bool result = true;
     // Traverse insede the ll
@@ -1659,43 +1660,43 @@ void LinkedListIntersection() {
     // Has Intersection
     if (selection == 1) {
         // First Linked-List 5 -> 2 -> 1 -> 7 -> 8 -> 13 -> 10 -> 3
-        Node<int>* last = new Node<int> (3);
-        Node<int>* seventh = new Node<int>(10, last);
-        Node<int>* sixth = new Node<int>(13, seventh);
-        Node<int>* fifth = new Node<int>(8, sixth);
-        Node<int>* forth = new Node<int>(7, fifth);
-        Node<int>* third = new Node<int>(1, forth);
-        Node<int>* second = new Node<int>(2, third);
-        Node<int>* first = new Node<int>(3, second);
+        auto last = std::shared_ptr<Node<int>> (new Node<int> (3));
+        auto seventh = std::shared_ptr<Node<int>> (new Node<int>(10, last));
+        auto sixth = std::shared_ptr<Node<int>> (new Node<int>(13, seventh));
+        auto fifth = std::shared_ptr<Node<int>> (new Node<int>(8, sixth));
+        auto fourth = std::shared_ptr<Node<int>> (new Node<int>(7, fifth));
+        auto third = std::shared_ptr<Node<int>> (new Node<int>(1, fourth));
+        auto second = std::shared_ptr<Node<int>> (new Node<int>(2, third));
+        auto first = std::shared_ptr<Node<int>> (new Node<int>(3, second));
         // Create a linked list
 
         ll1 = new LinkedList<int>(first);
         // Second Linked-List 6 -> 4 -> 8 -> 13 -> 10 -> 3
-        Node<int>* second_2 = new Node<int>(4, fifth);
-        Node<int>* first_2 = new Node<int>(6, second_2);
+        auto second_2 = std::shared_ptr<Node<int>> (new Node<int>(4, fifth));
+        auto first_2 = std::shared_ptr<Node<int>> (new Node<int>(6, second_2));
         // Create a linked list
         ll2 = new LinkedList<int>(first_2);
     }
     // Doesn't Have Intersection
     else if (selection == 2) {
         // First Linked-List 5 -> 2 -> 1 -> 7 -> 8 -> 13 -> 10 -> 3
-        Node<int>* last = new Node<int>(3);
-        Node<int>* seventh = new Node<int>(10, last);
-        Node<int>* sixth = new Node<int>(13, seventh);
-        Node<int>* fifth = new Node<int>(8, sixth);
-        Node<int>* forth = new Node<int>(7, fifth);
-        Node<int>* third = new Node<int>(1, forth);
-        Node<int>* second = new Node<int>(2, third);
-        Node<int>* first = new Node<int>(3, second);
+        auto last = std::shared_ptr<Node<int>> (new Node<int>(3));
+        auto seventh = std::shared_ptr<Node<int>> (new Node<int>(10, last));
+        auto sixth = std::shared_ptr<Node<int>> (new Node<int>(13, seventh));
+        auto fifth = std::shared_ptr<Node<int>> (new Node<int>(8, sixth));
+        auto fourth = std::shared_ptr<Node<int>> (new Node<int>(7, fifth));
+        auto third = std::shared_ptr<Node<int>> (new Node<int>(1, fourth));
+        auto second = std::shared_ptr<Node<int>> (new Node<int>(2, third));
+        auto first = std::shared_ptr<Node<int>> (new Node<int>(3, second));
         // Create a linked list
         ll1 = new LinkedList<int>(first);
 
         // Second Linked-List 6 -> 4 -> 12 -> 15 -> 9
-        Node<int>* last_2 = new Node<int>(9);
-        Node<int>* forth_2 = new Node<int>(15, last_2);
-        Node<int>* third_2 = new Node<int>(12, forth_2);
-        Node<int>* second_2 = new Node<int>(4, third_2);
-        Node<int>* first_2 = new Node<int>(6, second_2);
+        auto last_2 = std::shared_ptr<Node<int>> (new Node<int>(9));
+        auto fourth_2 = std::shared_ptr<Node<int>> (new Node<int>(15, last_2));
+        auto third_2 = std::shared_ptr<Node<int>> (new Node<int>(12, fourth_2));
+        auto second_2 = std::shared_ptr<Node<int>> (new Node<int>(4, third_2));
+        auto first_2 = std::shared_ptr<Node<int>> (new Node<int>(6, second_2));
         // Create a linked list
         ll2 = new LinkedList<int>(first_2);
     }
@@ -1706,8 +1707,8 @@ void LinkedListIntersection() {
     }
 
     // Solution: If the tails of the 2 LL is the same, they have an intersect
-    Node<int>* traverse1 = ll1->head;
-    Node<int>* traverse2 = ll2->head;
+    std::shared_ptr<Node<int>> traverse1 = ll1->head;
+    std::shared_ptr<Node<int>> traverse2 = ll2->head;
     // Find 2 lists sizes
     size_t size1 = 0;
     size_t size2 = 0;
@@ -1773,14 +1774,14 @@ void LinkedListLoopDetection() {
     vector<string> arr = getArrayInput<string>();
     // Create a LinkedList from a vector
     set<string> uniqueCheck;
-    Node<string>* prev = nullptr;
-    LinkedList<string>* ll = new LinkedList<string>();
+    std::shared_ptr<Node<string>> prev = nullptr;
+    auto ll = std::shared_ptr<LinkedList<string>> (new LinkedList<string>());
     // Create new linked list with loop
     for (string element : arr) {
         // Put in set: First time and its unique
         if (uniqueCheck.insert(element).second != false) {
             // Create a new node
-            Node<string>* temp = new Node<string>(element);
+            auto temp = std::shared_ptr<Node<string>> (new Node<string>(element));
             // Update prev's next
             if (prev) {
                 prev->setNext(temp);
@@ -1795,7 +1796,7 @@ void LinkedListLoopDetection() {
         // Same value, connect last node's (prev) to given valued node
         else {
             // Find the node in the LL
-            Node<string>* loopStart = ll->head;
+            std::shared_ptr<Node<string>> loopStart = ll->head;
             while (loopStart && loopStart->getValue() != element) {
                 loopStart = loopStart->getNext();
             }
@@ -1804,8 +1805,8 @@ void LinkedListLoopDetection() {
         }
     }
     // Solution
-    Node<string>* fast = ll->head;
-    Node<string>* slow = ll->head;
+    std::shared_ptr<Node<string>> fast = ll->head;
+    std::shared_ptr<Node<string>> slow = ll->head;
     // Move pointers until they met or reached the end
     while (fast && fast->getNext()) {
         fast = fast->getNext()->getNext();
@@ -2272,6 +2273,32 @@ void StackSorting() {
     return;
 }
 
+void LongestCommonSubsequence() {}
+
+void graphPathCheck() {}
+
+void sortedArrayToMinimalBST() {}
+
+void BSTToDepthLinkedList() {}
+
+void isBTBalanced() {}
+
+void validateBST() {}
+
+void BTFirstCommonAncestor() {}
+
+void isSubTree() {}
+
+void RandomNodeInBST() {}
+
+void ThreeStepStairs() {}
+
+void TowersOfHanoi() {}
+
+void AllCombinationOfParanthesis() {}
+
+void MergeTwoSortedArrays() {}
+
 int main()
 {
     // Selection of the question
@@ -2317,7 +2344,20 @@ int main()
             << "32 - Stacks that shows min/max" << endl
             << "33 - Stacs with capacity (Creates new stacks when exceeds)" << endl
             << "34 - Queue with 2 Stacks" << endl
-            << "35 - Sort Stack with only 1 additional Stack" << endl;
+            << "35 - Sort Stack with only 1 additional Stack" << endl
+            << "36 - Longest common subsequence of the 2 strings" << endl
+            << "37 - Given 2 nodes in the graph, check if there is a path between them" << endl
+            << "38 - Convert sorted array to minimal depth BST" << endl
+            << "39 - Create a LLs w/ node's within same depth in the BST" << endl
+            << "40 - Check given BT is balanced or not" << endl
+            << "41 - Validate given BST" << endl
+            << "42 - Find the first common ancestor of the 2 nodes in BT" << endl
+            << "43 - Given 2 trees, check if one of them is subtree of the other" << endl
+            << "44 - Random node selection in BST w/ even probability" << endl
+            << "45 - All combinations of three (1 or 2 or ) step stairs climbing" << endl
+            << "46 - Towers of Hanoi (3 towers, N disks)" << endl
+            << "47 - All combination of paranthesis" << endl
+            << "48 - Merge 2 sorted arrays" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -2431,6 +2471,45 @@ int main()
             break;
         case 35:
             StackSorting();
+            break;
+        case 36:
+            LongestCommonSubsequence();
+            break;
+        case 37:
+            graphPathCheck();
+            break;
+        case 38:
+            sortedArrayToMinimalBST();
+            break;
+        case 39:
+            BSTToDepthLinkedList();
+            break;
+        case 40:
+            isBTBalanced();
+            break;
+        case 41:
+            validateBST();
+            break;
+        case 42:
+            BTFirstCommonAncestor();
+            break;
+        case 43:
+            isSubTree();
+            break;
+        case 44:
+            RandomNodeInBST();
+            break;
+        case 45:
+            ThreeStepStairs();
+            break;
+        case 46:
+            TowersOfHanoi();
+            break;
+        case 47:
+            AllCombinationOfParanthesis();
+            break;
+        case 48:
+            MergeTwoSortedArrays();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
