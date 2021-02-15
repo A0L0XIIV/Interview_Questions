@@ -44,7 +44,8 @@ public:
 	void deleteNode(std::shared_ptr<BSTNode<Type>> node);
 	int calculateDepth(std::shared_ptr<BSTNode<Type>> node);
 	std::shared_ptr<BSTNode<Type>> getRoot();
-	std::shared_ptr<BSTNode<Type>> randomNode(std::shared_ptr<BSTNode<Type>> root);
+	std::shared_ptr<BSTNode<Type>> randomNode(std::shared_ptr<BSTNode<Type>> node);
+	size_t countNodes(std::shared_ptr<BSTNode<Type>> root);
 };
 
 // Constructor
@@ -179,6 +180,36 @@ int BST<Type>::calculateDepth(std::shared_ptr<BSTNode<Type>> node) {
 }
 
 template<class Type>
-std::shared_ptr<BSTNode<Type>> BST<Type>::randomNode(std::shared_ptr<BSTNode<Type>> root) {
+std::shared_ptr<BSTNode<Type>> BST<Type>::randomNode(std::shared_ptr<BSTNode<Type>> node) {
+	// Left and right subtree node count for the current node
+	size_t leftCount = countNodes(node->left);
+	size_t rightCount = countNodes(node->right);
+	// Leaf node, doesn't have any branches, return it
+	if (leftCount == 0 && rightCount == 0) {
+		return node;
+	}
+	// Random number for selecting: current node, left subtree or right subtree (+1 is node itself)
+	unsigned int randomSelection = rand() % (leftCount + rightCount + 1);
+	// If random number is 0, return the current node (0)
+	if (randomSelection == 0) {
+		return node;
+	}
+	// Call left subtree recursively (1 to leftCount)
+	else if (randomSelection > 0 && randomSelection <= leftCount) {
+		return randomNode(node->left);
+	}
+	// Call right subtree recursively (leftCount+1 to nodeCount)
+	else {
+		return randomNode(node->right);
+	}
+}
 
+template<class Type>
+size_t BST<Type>::countNodes(std::shared_ptr<BSTNode<Type>> root) {
+	// Reached the leaves
+	if (root == nullptr) {
+		return 0;
+	}
+	// Call for left and right subtrees, +1 is node itself
+	return countNodes(root->left) + countNodes(root->right) + 1;
 }
