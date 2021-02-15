@@ -2305,7 +2305,54 @@ void BSTToDepthLinkedList() {
 
 void isBTBalanced() {}
 
-void validateBST() {}
+bool isBST(std::shared_ptr<BSTNode<int>> root, long min, long max) {
+    // Null check
+    if (root == nullptr)
+        return true;
+    // Node parameters
+    int value = root.get()->getValue();
+    std::shared_ptr<BSTNode<int>> leftChild = root.get()->getLeftChild();
+    std::shared_ptr<BSTNode<int>> rightChild = root.get()->getRightChild();
+
+    if (value <= min || value >= max) {
+        cout << value << endl;
+        return false;
+    }
+
+    // Left child check recursive calls
+    if (leftChild != nullptr && !isBST(leftChild, min, value)) {
+        return false;
+    }
+    // Right child check
+    if (rightChild != nullptr && !isBST(rightChild, value, max)) {
+        return false;
+    }
+
+    // Finally return true
+    return true;
+}
+
+void validateBST() {
+    // Description of the problem
+    cout << "Check if the given Binary Search Tree is valid or not." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a BST from the vector
+    BST<int>* bst = new BST<int>(arr);
+
+    cout << endl << "Tree: ";
+    bst->printTree();
+
+    long min = LONG_MIN;
+    long max = LONG_MAX;
+    if (isBST(bst->getRoot(), min, max)) {
+        cout << "BST is valid" << endl;
+    }
+    else {
+        cout << "BST is NOT valid" << endl;
+    }
+}
 
 void BTFirstCommonAncestor() {}
 
