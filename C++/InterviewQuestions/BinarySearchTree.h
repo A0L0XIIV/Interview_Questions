@@ -4,6 +4,7 @@
 */
 
 #include <iostream>
+#include <list>
 
 template<class Type>
 class BSTNode{
@@ -45,7 +46,8 @@ public:
 	int calculateDepth(std::shared_ptr<BSTNode<Type>> node);
 	std::shared_ptr<BSTNode<Type>> getRoot();
 	std::shared_ptr<BSTNode<Type>> randomNode(std::shared_ptr<BSTNode<Type>> node);
-	size_t countNodes(std::shared_ptr<BSTNode<Type>> root);
+	size_t countNodes(std::shared_ptr<BSTNode<Type>> = root);
+	void depthNodesToLinkedList(std::shared_ptr<BSTNode<Type>> node, size_t depth, std::vector<std::list<std::shared_ptr<BSTNode<Type>>>> &result);
 };
 
 // Constructor
@@ -182,8 +184,8 @@ int BST<Type>::calculateDepth(std::shared_ptr<BSTNode<Type>> node) {
 template<class Type>
 std::shared_ptr<BSTNode<Type>> BST<Type>::randomNode(std::shared_ptr<BSTNode<Type>> node) {
 	// Left and right subtree node count for the current node
-	size_t leftCount = countNodes(node->left);
-	size_t rightCount = countNodes(node->right);
+	size_t leftCount = countNodes(node->getLeftChild());
+	size_t rightCount = countNodes(node->getRightChild());
 	// Leaf node, doesn't have any branches, return it
 	if (leftCount == 0 && rightCount == 0) {
 		return node;
@@ -196,11 +198,11 @@ std::shared_ptr<BSTNode<Type>> BST<Type>::randomNode(std::shared_ptr<BSTNode<Typ
 	}
 	// Call left subtree recursively (1 to leftCount)
 	else if (randomSelection > 0 && randomSelection <= leftCount) {
-		return randomNode(node->left);
+		return randomNode(node->getLeftChild());
 	}
 	// Call right subtree recursively (leftCount+1 to nodeCount)
 	else {
-		return randomNode(node->right);
+		return randomNode(node->getRightChild());
 	}
 }
 
@@ -211,5 +213,24 @@ size_t BST<Type>::countNodes(std::shared_ptr<BSTNode<Type>> root) {
 		return 0;
 	}
 	// Call for left and right subtrees, +1 is node itself
-	return countNodes(root->left) + countNodes(root->right) + 1;
+	return countNodes(root->getLeftChild()) + countNodes(root->getRightChild()) + 1;
+}
+
+template<class Type>
+inline void BST<Type>::depthNodesToLinkedList(std::shared_ptr<BSTNode<Type>> node, size_t depth, std::vector<std::list<std::shared_ptr<BSTNode<Type>>>> &result)
+{
+	if (node == nullptr) {
+		return;
+	}
+	// Create a new linked list for each depth
+	if (result.size() < depth) {
+		result.push_back(std::list<std::shared_ptr<BSTNode<Type>>>());
+	}
+	// Push back node in linked list
+	result[depth-1].push_back(node);
+	// Call left and right subtree nodes
+	depthNodesToLinkedList(node->getLeftChild(), depth + 1, result);
+	depthNodesToLinkedList(node->getRightChild(), depth + 1, result);
+	// Final return
+	return;
 }

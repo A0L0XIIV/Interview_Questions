@@ -2279,7 +2279,29 @@ void graphPathCheck() {}
 
 void sortedArrayToMinimalBST() {}
 
-void BSTToDepthLinkedList() {}
+void BSTToDepthLinkedList() {
+    // Description of the problem
+    cout << "Create linked list w/ same depth nodes in BST" << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a BST from the vector
+    BST<int>* bst = new BST<int>(arr);
+
+    cout << endl << "Tree: ";
+    bst->printTree();
+
+    std::vector<std::list<std::shared_ptr<BSTNode<int>>>> result;
+    bst->depthNodesToLinkedList(bst->getRoot(), 1, result);
+
+    for (auto item : result) {
+        cout << "Linked List Items: ";
+        for (auto node : item) {
+            cout << node.get()->getValue() << ", ";
+        }
+        cout << endl;
+    }
+}
 
 void isBTBalanced() {}
 
@@ -2289,7 +2311,22 @@ void BTFirstCommonAncestor() {}
 
 void isSubTree() {}
 
-void RandomNodeInBST() {}
+void RandomNodeInBST() {
+    // Description of the problem
+    cout << "Select a random node in given binary (search) tree." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a BST from the vector
+    BST<int>* bst = new BST<int>(arr);
+
+    cout << endl << "Tree: ";
+    bst->printTree();
+
+    cout << endl << "Random Node: " << bst->randomNode(bst->getRoot()).get()->getValue();
+    cout << endl << "Random Node: " << bst->randomNode(bst->getRoot()).get()->getValue();
+    cout << endl << "Random Node: " << bst->randomNode(bst->getRoot()).get()->getValue();
+}
 
 void ThreeStepStairs() {}
 
