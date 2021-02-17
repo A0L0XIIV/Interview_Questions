@@ -2277,7 +2277,39 @@ void LongestCommonSubsequence() {}
 
 void graphPathCheck() {}
 
-void sortedArrayToMinimalBST() {}
+std::shared_ptr<BSTNode<int>> sortedArrayToMinimalBST(vector<int> &nums, int begin, int end) {
+    // List is empty
+    if (begin > end)
+        return nullptr;
+
+    // Find the middle index
+    int middle = begin + ((end - begin) / 2);
+
+    // Create new tree node from the middle element
+    auto root = std::shared_ptr<BSTNode<int>>(new BSTNode<int>(nums[middle]));
+
+    root.get()->updateLeft(sortedArrayToMinimalBST(nums, begin, middle - 1));
+    root.get()->updateRight(sortedArrayToMinimalBST(nums, middle + 1, end));
+
+    // Return the root of the tree
+    return root;
+}
+
+void sortedArrayToMinimalBST() {
+    // Description of the problem
+    cout << "Create a minimal depth Binary Search Tree from a sorted array." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Sort the user input array
+    sort(arr.begin(), arr.end());
+
+    // Create a BST from sorted array
+    BST<int>* bst = new BST<int>(sortedArrayToMinimalBST(arr, 0, arr.size()-1));
+
+    cout << endl << "Binary Search Tree: ";
+    bst->printTree();
+}
 
 void BSTToDepthLinkedList() {
     // Description of the problem
@@ -2472,10 +2504,10 @@ int main()
             << "35 - Sort Stack with only 1 additional Stack" << endl
             << "36 - Longest common subsequence of the 2 strings" << endl
             << "37 - Given 2 nodes in the graph, check if there is a path between them" << endl
-            << "38 - Convert sorted array to minimal depth BST" << endl
-            << "39 - Create a LLs w/ node's within same depth in the BST" << endl
-            << "40 - Check given BT is balanced or not" << endl
-            << "41 - Validate given BST" << endl
+            << "38 - Sorted array to minimal depth BST" << endl
+            << "39 - BST: create Linked Lists with the same depth nodes" << endl
+            << "40 - BT is balanced or not" << endl
+            << "41 - Validate BST" << endl
             << "42 - Find the first common ancestor of the 2 nodes in BT" << endl
             << "43 - Given 2 trees, check if one of them is subtree of the other" << endl
             << "44 - Random node selection in BST w/ even probability" << endl
