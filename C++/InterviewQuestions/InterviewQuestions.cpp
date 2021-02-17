@@ -787,7 +787,7 @@ void invertBSTCaller() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
 
     cout << endl << "Before invertion print tree: ";
     bst->printTree();
@@ -985,7 +985,7 @@ void breadthFirstSearch() {
     bool found = false;
 
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
     // Array for storing node's discovered state (NOT NECESSARY FOR BST)
     vector<bool> discovered(arrSize, false);
     // Queue for BFS operations
@@ -1029,7 +1029,7 @@ void depthFirstSearch() {
     bool found = false;
 
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
     // Array for storing node's explored state (NOT NECESSARY FOR BST)
     vector<bool> explored(arrSize, false);
     // Stack for DFS operations
@@ -1473,7 +1473,7 @@ void LinkedListKthLast() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a LinkedList from a vector
-    LinkedList<int>* ll = new LinkedList<int>(arr);
+    auto ll = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(arr));
 
     cout << endl << "LinkedList: ";
     ll->printLinkedList();
@@ -1601,7 +1601,7 @@ void LinkedListPalindrom() {
     cout << endl << "Enter only one character (letter or number)." << endl;
     vector<char> arr = getArrayInput<char>();
     // Create a LinkedList from a vector
-    LinkedList<char>* ll = new LinkedList<char>(arr);
+    auto ll = std::shared_ptr<LinkedList<char>>(new LinkedList<char>(arr));
 
     // Reverse it, compare the first halves
     // Find mid and tail, move from mid kth times
@@ -1655,8 +1655,9 @@ void LinkedListIntersection() {
     cout << endl << "Enter 1 for Linked-List with intersection, 2 for w/o." << endl;
     cin >> selection;
     // Create an empty LinkedList
-    LinkedList<int>* ll1 = nullptr;
-    LinkedList<int>* ll2 = nullptr;
+    std::shared_ptr<LinkedList<int>> ll1 = nullptr;
+    std::shared_ptr<LinkedList<int>> ll2 = nullptr;
+
     // Has Intersection
     if (selection == 1) {
         // First Linked-List 5 -> 2 -> 1 -> 7 -> 8 -> 13 -> 10 -> 3
@@ -1670,12 +1671,12 @@ void LinkedListIntersection() {
         auto first = std::shared_ptr<Node<int>> (new Node<int>(3, second));
         // Create a linked list
 
-        ll1 = new LinkedList<int>(first);
+        ll1 = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(first));
         // Second Linked-List 6 -> 4 -> 8 -> 13 -> 10 -> 3
         auto second_2 = std::shared_ptr<Node<int>> (new Node<int>(4, fifth));
         auto first_2 = std::shared_ptr<Node<int>> (new Node<int>(6, second_2));
         // Create a linked list
-        ll2 = new LinkedList<int>(first_2);
+        ll2 = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(first_2));
     }
     // Doesn't Have Intersection
     else if (selection == 2) {
@@ -1689,7 +1690,7 @@ void LinkedListIntersection() {
         auto second = std::shared_ptr<Node<int>> (new Node<int>(2, third));
         auto first = std::shared_ptr<Node<int>> (new Node<int>(3, second));
         // Create a linked list
-        ll1 = new LinkedList<int>(first);
+        ll1 = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(first));
 
         // Second Linked-List 6 -> 4 -> 12 -> 15 -> 9
         auto last_2 = std::shared_ptr<Node<int>> (new Node<int>(9));
@@ -1698,7 +1699,7 @@ void LinkedListIntersection() {
         auto second_2 = std::shared_ptr<Node<int>> (new Node<int>(4, third_2));
         auto first_2 = std::shared_ptr<Node<int>> (new Node<int>(6, second_2));
         // Create a linked list
-        ll2 = new LinkedList<int>(first_2);
+        ll2 = std::shared_ptr<LinkedList<int>>(new LinkedList<int>(first_2));
     }
     // Incorrect selection
     else {
@@ -1834,10 +1835,11 @@ void ThreeStacksWithOneArray() {
     cin >> stackSize;
 
     // Create instance of the data structure w/ vector
-    StacksWithArray<int>* threeStacks = new StacksWithArray<int>(stackSize);
+    auto threeStacks = std::shared_ptr<StacksWithArray<int>>(new StacksWithArray<int>(stackSize));
     unsigned int choice = 1;
     int value = 0;
     unsigned int stackIndex = 0;
+
     while (choice != 0) {
         cout << endl << "0-Exit, 1-Top, 2-Push, 3-Pop, 4-isEmpty: ";
         cin >> choice;
@@ -2305,7 +2307,7 @@ void sortedArrayToMinimalBST() {
     sort(arr.begin(), arr.end());
 
     // Create a BST from sorted array
-    BST<int>* bst = new BST<int>(sortedArrayToMinimalBST(arr, 0, arr.size()-1));
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(sortedArrayToMinimalBST(arr, 0, arr.size() - 1)));
 
     cout << endl << "Binary Search Tree: ";
     bst->printTree();
@@ -2318,7 +2320,7 @@ void BSTToDepthLinkedList() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
 
     cout << endl << "Tree: ";
     bst->printTree();
@@ -2358,7 +2360,7 @@ void isBTBalanced() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
 
     cout << endl << "Tree: ";
     bst->printTree();
@@ -2412,7 +2414,7 @@ void validateBST() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
 
     cout << endl << "Tree: ";
     bst->printTree();
@@ -2438,7 +2440,7 @@ void RandomNodeInBST() {
     // Get array values from user
     vector<int> arr = getArrayInput<int>();
     // Create a BST from the vector
-    BST<int>* bst = new BST<int>(arr);
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
 
     cout << endl << "Tree: ";
     bst->printTree();
