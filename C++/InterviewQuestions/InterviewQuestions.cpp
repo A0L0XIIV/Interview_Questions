@@ -2303,7 +2303,48 @@ void BSTToDepthLinkedList() {
     }
 }
 
-void isBTBalanced() {}
+int isBalancedBTDepth(std::shared_ptr<BSTNode<int>> root) {
+    // Leaf node, return 0
+    if (root == nullptr) {
+        return 0;
+    }
+    // Get left and right subtrees' depths
+    int left = isBalancedBTDepth(root.get()->getLeftChild());
+    int right = isBalancedBTDepth(root.get()->getRightChild());
+    // If two subtrees' depth difference is greater than 1, return negative number as depth value
+    if (abs(left - right) > 1) {
+        return -32767; // SHRT_MIN
+    }
+    // Depth is correct and subtree is balanced, return max depth + 1 (node's depth)
+    return max(left, right) + 1;
+}
+
+void isBTBalanced() {
+    // Description of the problem
+    cout << "Check if the given Binary Tree is balanced or not." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a BST from the vector
+    BST<int>* bst = new BST<int>(arr);
+
+    cout << endl << "Tree: ";
+    bst->printTree();
+    // Get left and right subtrees' depth
+    int left = isBalancedBTDepth(bst->getRoot()->getLeftChild());
+    int right = isBalancedBTDepth(bst->getRoot()->getRightChild());
+    int depthDifference = abs(left - right);
+
+    if (left < 0 || right < 0) {
+        cout << "BT is NOT balanced." << endl;
+    }
+    else if (depthDifference <= 1 && depthDifference < 32767) {
+        cout << "BT is balanced." << endl;
+    }
+    else {
+        cout << "BT is NOT balanced." << endl;
+    }
+}
 
 bool isBST(std::shared_ptr<BSTNode<int>> root, long min, long max) {
     // Null check
