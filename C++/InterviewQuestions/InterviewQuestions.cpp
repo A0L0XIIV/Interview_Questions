@@ -1817,12 +1817,26 @@ void LinkedListLoopDetection() {
             break;
     }
 
-    if (fast && fast->getNext() && fast == slow) {
-        cout << endl << "Linked List contains a loop." << endl;
+    if (fast == nullptr || fast->getNext() == nullptr) {
+        cout << endl << "Linked List does NOT contain a loop." << endl;
+        return;
     }
-    else {
-        cout << endl << "Linked List doesn't contain a loop." << endl;
+
+    // Find the loop start
+    // Fast moved 2x faster, when they meet restart slow ptr to head
+    // Slow: head, Fast: last meet position
+    // When both of them moves only once they will meet at the loop start
+    slow = ll->head;
+    // Move both fast and slow only 1 node
+    while (fast && fast->getNext()) {
+        fast = fast->getNext();
+        slow = slow->getNext();
+        // After moving from head, check
+        if (fast == slow)
+            break;
     }
+
+    cout << endl << "Linked List contains a loop. Loop start: " << fast->getValue() << endl;
     return;
 }
 
