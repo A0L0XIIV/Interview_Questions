@@ -2458,6 +2458,47 @@ void AllCombinationOfParanthesis() {}
 
 void MergeTwoSortedArrays() {}
 
+int Fibonacci(int input, int n, vector<int>& numbers) {
+    // Fibonacci with memoization
+    if (n == 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    if (numbers[n] > 0) {
+        return numbers[n];
+    }
+    numbers[n] = Fibonacci(input, n - 1, numbers) + Fibonacci(input, n - 2, numbers);
+    return numbers[n];
+}
+
+int Fibonacci(int n) {
+    // Fibonacci with dynamic programming
+    if (n == 0) {
+        return 0;
+    }
+    else if (n == 1) {
+        return 1;
+    }
+    return Fibonacci(n - 1) + Fibonacci(n - 2);
+}
+
+void Fibonacci() {
+    // Description of the problem
+    cout << "Fibonacci" << endl;
+
+    // Get user input
+    int input;
+    cin >> input;
+
+    vector<int> numbers(input+1, 0);
+    cout << "Fibonacci with memoization: " << Fibonacci(input, input, numbers) << endl;
+    for (auto i : numbers)
+        std::cout << i << ' ';
+    cout << endl << "Fibonacci with dynamic programming: " << Fibonacci(input) << endl;
+}
+
 int main()
 {
     // Selection of the question
@@ -2516,7 +2557,8 @@ int main()
             << "45 - All combinations of three (1 or 2 or ) step stairs climbing" << endl
             << "46 - Towers of Hanoi (3 towers, N disks)" << endl
             << "47 - All combination of paranthesis" << endl
-            << "48 - Merge 2 sorted arrays" << endl;
+            << "48 - Merge 2 sorted arrays" << endl
+            << "49 - Fibonacci" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -2669,6 +2711,9 @@ int main()
             break;
         case 48:
             MergeTwoSortedArrays();
+            break;
+        case 49:
+            Fibonacci();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
