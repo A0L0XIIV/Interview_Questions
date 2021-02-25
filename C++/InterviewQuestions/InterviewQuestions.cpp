@@ -75,16 +75,19 @@ void fizzBuzz() {
     // Description of the problem
     cout << "Print numbers from 1 to x. If the number is divisible by 3, replace it with \"Fizz\". If it is divisible by 5, replace it with \"Buzz\". If it is divisible by 3 and 5 replace it with \"FizzBuzz\"." <<endl;
 
-    // integer for user input
-    int userNumber = 0;
+    // Variables
+    unsigned int userNumber = 0;
     string printResults = "";
 
+    // Get user input
     cout << endl << "- Enter the number for FizzBuzz:";
     cin >> userNumber;
 
+    // Input validity
     if (userNumber < 1 || userNumber > INT_MAX)
         cout << "ERROR: Please enter valid number! Between 1 and " + to_string(INT_MAX) << endl;
     else {
+        // FizzBuzz operation
         for (int i = 1; i <= userNumber; ++i) {
             // Number is power of 3, print Fizz
             if (i % 3 == 0 && i % 5 == 0)
@@ -97,7 +100,7 @@ void fizzBuzz() {
                 printResults += to_string(i);
             printResults += '\n';
         }
-
+        // Print the result
         cout << printResults << endl;
     }
 }
@@ -106,7 +109,7 @@ void twoSum() {
     // Description of the problem
     cout << "Given an array of integers, return indices of the two numbers such that they add up to a specific target." << endl;
 
-    // Get target integer from user
+    // Get the target integer from user
     cout << "Please enter the target number: ";
     int targetNumber = 0;
     cin >> targetNumber;
@@ -119,7 +122,7 @@ void twoSum() {
     int firstIndex = -1, secondIndex = -1;
     int solutionSelection = 0;
     // Problem has several solutions, choose one
-    cout << "Enter 1 for O(n^2) solution, 2 for O(logn) solution." << endl;
+    cout << "Enter 1 for O(n^2) solution, 2 for O(n*logn) solution." << endl;
     cin >> solutionSelection;
 
     // O(n^2) solution, check each pair's sum in the array
@@ -142,8 +145,9 @@ void twoSum() {
         }
     }
 
-    // O(logn) solution, sort the array, try to find closest numbers
+    // O(n*logn) solution, sort the array, try to find closest numbers
     else if (solutionSelection == 2) {
+        // Check if array has more than 2 elements
         if (arrSize >= 2) {
             // Pair vector for not sorted array's indexes and sorted array's values
             vector<pair<int, int>> sortedArray(0);
@@ -177,7 +181,7 @@ void twoSum() {
                 cout << "Couldn't find the numbers." << endl;
         }
     }
-    // Neither O(n^2) nor O(logn) solution selected
+    // Neither O(n^2) nor O(n*logn) solutions selected
     else {
         cout << "Incorrect solution selection!" << endl;
     }
@@ -188,20 +192,26 @@ void maxConsecutiveOnes() {
     cout << "Given an array of 0s and 1s (binary), return the number of max consecutive ones. For example; [1,1,1,0,1,1] --> return 3." << endl;
 
     // Get array values from user
-
     vector<bool> arr = getArrayInput<bool>();
     int arrSize = arr.size();
 
     // O(n) solution
-    int maxOnes = INT_MIN;
+    int maxOnes = 0;
 
+    // Loop through the vector
     for (int i = 0; i < arrSize; ++i) {
+        // If find a 1
         if (arr[i] == 1) {
+            // Move until reaching a 0
             for (int j = i; j < arrSize; ++j) {
+                // Reached 0
                 if (arr[j] == 0) {
+                    // Update the max value
                     if(maxOnes < j-i)
                         maxOnes = j - i;
+                    // Checked the previous indexes, move i to j's position
                     i = j;
+                    // Break the inner loop
                     break;
                 }
             }
@@ -210,6 +220,8 @@ void maxConsecutiveOnes() {
 
     if (maxOnes > 0)
         cout << "# max consecutive ones: " + to_string(maxOnes) << endl;
+    else
+        cout << "There aren't any 1 in the array." << endl;
 
 }
 
@@ -223,7 +235,7 @@ void maxProductofThreeNumbers(){
 
     int solutionSelection = 0;
     // Problem has several solutions, choose one
-    cout << "Enter 1 for O(n^3) solution, 2 for O(logn) solution, and 3 for O(n) solution." << endl;
+    cout << "Enter 1 for O(n^3) solution, 2 for O(n*logn) solution, and 3 for O(n) solution." << endl;
     cin >> solutionSelection;
 
     // O(n^3) solution, check every three elements sum in the array
@@ -246,7 +258,7 @@ void maxProductofThreeNumbers(){
         cout << "Product of max 3: " + to_string(maxProduct) << endl;
     }
 
-    // O(logn) solution, sort the array and multiply max and min
+    // O(n*logn) solution, sort the array and multiply max and min
     if (solutionSelection == 2) {
         // Sort the array
         sort(arr.begin(), arr.end());
@@ -270,27 +282,27 @@ void maxProductofThreeNumbers(){
         int min1 = INT_MAX;
         int min2 = INT_MAX;
 
-        for (int i : arr) {
+        for (int item : arr) {
             // Find 3 maximum
-            if (i >= max3) {
+            if (item >= max3) {
                 max1 = max2;
                 max2 = max3;
-                max3 = i;
+                max3 = item;
             }
-            else if (i >= max2) {
+            else if (item >= max2) {
                 max1 = max2;
-                max2 = i;
+                max2 = item;
             }
-            else if (i >= max1) {
-                max1 = i;
+            else if (item >= max1) {
+                max1 = item;
             }
             // Find 2 minimum
-            if (i <= min1) {
+            if (item <= min1) {
                 min2 = min1;
-                min1 = i;
+                min1 = item;
             }
-            else if (i <= min2) {
-                min2 = i;
+            else if (item <= min2) {
+                min2 = item;
             }
         }
         // Non-negative integers
@@ -304,15 +316,15 @@ void maxProductofThreeNumbers(){
             cout << "Product of max 3: " + to_string(result2) << endl;
     }
 
-    // Neither O(n^2) nor O(logn) solution selected
+    // Neither O(n^3), O(n*logn) nor O(n) solutions selected
     else {
         cout << "Incorrect solution selection!" << endl;
     }
 }
 
-void validParanthesis() {
+void validParantheses() {
     // Description of the problem
-    cout << "Given an array of paranthesis check its validness. Every opening parathesis must have one closing paranthesis!" << endl;
+    cout << "Given an array of parantheses check its validness. Every opening paratheses must have one closing parantheses!" << endl;
 
     // Get array values from user
     cout << "Array should only consist of ( and ) characters!" << endl;
@@ -325,30 +337,32 @@ void validParanthesis() {
     }
 
     // Use stack for validness
-    stack<char> paranthesisStack;
+    stack<char> paranthesesStack;
 
-    // Loop over every element in the array
+    // Loop through every element in the array
     for (char element : arr) {
-        // Opening paranthesis, push something to the stack
+        // Opening parantheses, push something to the stack
         if (element == '(') {
-            paranthesisStack.push('x');
+            paranthesesStack.push('x');
         }
-        // Closing paranthesis, pop last pushed characters
-        else if (element == ')' && !paranthesisStack.empty()) {
-            paranthesisStack.pop();
+        // Closing parantheses, pop last pushed characters
+        else if (element == ')' && !paranthesesStack.empty()) {
+            paranthesesStack.pop();
         }
-        // Closing paranthesis but stack is empty, error
+        // Closing parantheses but stack is empty, error
         else {
-            cout << "Not Valid: There is a closing paranthesis without opening paranthesis." << endl;
+            cout << "Not Valid: There is a closing parantheses without opening parantheses." << endl;
             break;
         }
     }
 
-    if (paranthesisStack.empty()) {
-        cout << "Valid: All paranthesis matched." << endl;
+    // Empty stack: valid: Every opening parantheses has closing ones
+    if (paranthesesStack.empty()) {
+        cout << "Valid: All parantheses matched." << endl;
     }
+    // Non-empty stack: not valid
     else {
-        cout << "Not Valid: There is/are opening paranthesis that didn't close." << endl;
+        cout << "Not Valid: There is/are opening parantheses that didn't close." << endl;
     }
 
 }
@@ -368,7 +382,7 @@ void baseballGame() {
     // Use stack for easier calculation
     stack<int> pointStack;
 
-    // Loop over the array
+    // Loop through the array
     for (string element : arr) {
         // Digit, push to stack
         if (is_digits(element)) {
@@ -461,11 +475,12 @@ void containsDuplicate(){
             cout << "Found " << results.size() << " different duplicates." << endl;
         }
     }
-    // Could add O(logn) solution with sorting and paired (value, unsorted index) vectors
+    // Could add O(n*logn) solution with sorting and paired (value, unsorted index) vectors
+
     // O(n) solution, use hash maps
     else if (solutionSelection == 2) {
         map<int, int> hashMap;
-        // Loop over all elements
+        // Loop through all elements
         for (int i = 0; i < arrSize; ++i) {
             // Check if there is an element in the hashMap, if not insert it
             if (hashMap.find(arr[i]) == hashMap.end()) {
@@ -487,7 +502,7 @@ void containsDuplicate(){
             cout << "Found " << results.size() << " different duplicates." << endl;
         }
     }
-    // Neither O(n^2) nor O(logn) solution selected
+    // Neither O(n*k) nor O(n) solution selected
     else {
         cout << "Incorrect solution selection!" << endl;
     }
@@ -515,12 +530,12 @@ void validAnagram(){
     else {
         // Problem has several solutions, choose one
         int solutionSelection = 0;
-        cout << "Enter 1 for O(logn) sorting solution, 2 for O(n) hash map solution." << endl;
+        cout << "Enter 1 for O(n*logn) sorting solution, 2 for O(n) hash map solution." << endl;
         cin >> solutionSelection;
 
         // Brute force O(n^2) solution, check two arrays' every pairs, then delete same letters
 
-        // O(logn) solution, sort two strings and check pairs
+        // O(n*logn) solution, sort two strings and check pairs
         if (solutionSelection == 1) {
             // Sort 2 strings
             sort(firstWord.begin(), firstWord.end());
@@ -538,12 +553,13 @@ void validAnagram(){
             if (validAnagram)
                 cout << "Anagram: These two words are anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
         }
+
         // O(n) solution, use hash map for each letter, increase counters for the first word, decrease the same letters for the second word, if all 0 they are anagrams
         else if (solutionSelection == 2) {
             map<char, int> letterMap;
             bool validAnagram = true;
 
-            // Loop over every letter in the first word
+            // Loop through every letter in the first word
             for (char c : firstWord) {
                 // First add each letter in the map
                 if (letterMap.find(c) == letterMap.end()) {
@@ -555,7 +571,7 @@ void validAnagram(){
                 }
             }
 
-            // Second, loop over second word and decrease each letters counter
+            // Second, loop through second word and decrease each letters counter
             for (char c : secondWord) {
                 // First add each letter in the map
                 if (letterMap.find(c) == letterMap.end()) {
@@ -580,7 +596,7 @@ void validAnagram(){
                 cout << "Not Anagram: These two words are not anagrams. (" << firstWord << "-" << secondWord << ")" << endl;
             }
         }
-        // Neither O(logn) nor O(n) solution selected
+        // Neither O(n*logn) nor O(n) solution selected
         else {
             cout << "Incorrect solution selection!" << endl;
         }
@@ -602,10 +618,10 @@ void kthLargestElement(){
 
     int solutionSelection = 0;
     // Problem has several solutions, choose one
-    cout << "Enter 1 for O(nlogn) sorting solution, 2 for O(nlogk) min heap solution." << endl;
+    cout << "Enter 1 for O(n*logn) sorting solution, 2 for O(n*logk) min heap solution." << endl;
     cin >> solutionSelection;
 
-    // O(nlogn) solution, sort the array and get Kth element
+    // O(n*logn) solution, sort the array and get Kth element
     if (solutionSelection == 1) {
         // Sort the array
         sort(arr.begin(), arr.end());
@@ -614,11 +630,11 @@ void kthLargestElement(){
         cout << "Kth largest element in the given array: " << arr[arrSize - k] << endl;
     
     }
-    // O(nlogk) solution, use min heaps
+    // O(n*logk) solution, use min heaps
     else if (solutionSelection == 2) {
         // Convert vector array to MIN HEAP with STL priority_queue
         priority_queue <int, vector<int>, greater<int>> minHeap;
-        // Loop over array's elements
+        // Loop through array's elements
         for (int element : arr) {
             const size_t minHeapSize = minHeap.size();
             // Heap only has k elements because we only need kth element, push first k element into heap
@@ -636,7 +652,7 @@ void kthLargestElement(){
         // Print the result
         cout << "Kth largest element in the given array: " << minHeap.top() << endl;
     }
-    // Neither O(nlogn) nor O(nlogk) solution selected
+    // Neither O(n*logn) nor O(n*logk) solution selected
     else {
         cout << "Incorrect solution selection!" << endl;
     }
@@ -664,15 +680,15 @@ void kPairsWithSmallestSum() {
 
     int solutionSelection = 0;
     // Problem has several solutions, choose one
-    cout << "Enter 1 for O(n^2*logn) naive solution, 2 for O(n^2*logn) max heap solution." << endl;
+    cout << "Enter 1 for O(n^2*logn) naive solution, 2 for O(n^2*logk) max heap solution." << endl;
     cin >> solutionSelection;
 
     // Combination array with all sums, size = arr1Size * arr2Size
     vector<pair<int, int>> pairArray;
 
-    // Loop over the first array
+    // Loop through the first array
     for (int element1 : arr1) {
-        // Loop over the second array
+        // Loop through the second array
         for (int element2 : arr2) {
             // Temporary pair for pushing elements into the vector
             pair<int, int> tempPair(element1, element2);
@@ -694,15 +710,16 @@ void kPairsWithSmallestSum() {
             cout << "- [" << pairArray[i].first << ',' << pairArray[i].second << ']' << endl;
         }
     }
-    // O(n^2*logn) solution, use k sized max heaps
+    // O(n^2*logk) solution, use k sized max heaps
     else if (solutionSelection == 2) {
         // Create a new max heap with lambda comparison function
+
         // Heap will only store k min summed pairs
         priority_queue <pair<int, int>, vector<pair<int, int>>, auto(*)(pair<int, int>, pair<int, int>)->bool> maxHeap{
             // Using lambda function to compare pair elements sum
             [](pair<int, int> a, pair<int, int> b)->bool { return (a.first+a.second) < (b.first+b.second); }
         };
-        // Loop over pair array
+        // Loop through pair array
         for (pair<int, int> p : pairArray) {
             const size_t maxHeapSize = maxHeap.size();
             // If the heap is empty, push new pairs to heap
@@ -724,7 +741,7 @@ void kPairsWithSmallestSum() {
             maxHeap.pop();
         }
     }
-    // Neither O(n^2*logn) nor O(n^2*logn) solution selected
+    // Neither O(n^2*logn) nor O(n^2*logk) solution selected
     else {
         cout << "Incorrect solution selection!" << endl;
     }
@@ -739,14 +756,33 @@ void invertBST(std::shared_ptr<BSTNode<int>> node) {
     auto temp = std::shared_ptr<BSTNode<int>> (node->getLeftChild());
     node->updateLeft(node->getRightChild());
     node->updateRight(temp);
-    // Call left child
+    // Call left child subtree
     if (node->getLeftChild() != nullptr) {
         invertBST(node->getLeftChild());
     }
-    // Call right child
+    // Call right child subtree
     if (node->getRightChild() != nullptr) {
         invertBST(node->getRightChild());
     }
+}
+
+void invertBSTCaller() {
+    // Description of the problem
+    cout << "Invert the given binary (search) tree." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a BST from the vector
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
+
+    cout << endl << "Before invertion print tree: ";
+    bst->printTree();
+
+    // Call invert function with root node
+    invertBST(bst->getRoot());
+
+    cout << endl << "After invertion print tree: ";
+    bst->printTree();
 }
 
 void insertionSort() {
@@ -778,25 +814,6 @@ void insertionSort() {
     for (int element : arr) {
         cout << element << " - ";
     }
-}
-
-void invertBSTCaller() {
-    // Description of the problem
-    // Inverting BST instead of BT is not logical but I only coded BST implementation, so I inverted BST.
-    cout << "Invert the given binary (search) tree." << endl;
-
-    // Get array values from user
-    vector<int> arr = getArrayInput<int>();
-    // Create a BST from the vector
-    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
-
-    cout << endl << "Before invertion print tree: ";
-    bst->printTree();
-
-    invertBST(bst->getRoot());
-
-    cout << endl << "After invertion print tree: ";
-    bst->printTree();
 }
 
 void merge(vector<int>& array, int p, int q, int r) {
@@ -977,7 +994,7 @@ void breadthFirstSearch() {
     // Description of the problem
     cout << "Breadth First Search algorithm. Create a new Binary Search Tree, select value for search. It will show the search results." << endl;
 
-    // Get array values from user
+    // Get array and search value from user
     vector<int> arr = getArrayInput<int>();
     int arrSize = arr.size();
     cout << "Enter a value to search in the array: ";
@@ -1021,7 +1038,7 @@ void depthFirstSearch() {
     // Description of the problem
     cout << "Depth First Search algorithm. Create a new Binary Search Tree, select value for search. It will show the search results." << endl;
 
-    // Get array values from user
+    // Get array and search value from user
     vector<int> arr = getArrayInput<int>();
     int arrSize = arr.size();
     cout << "Enter a value to search in the array: ";
@@ -1084,7 +1101,7 @@ void UniqueCharacters() {
 
         // Sort force O(n logn) solution, sort the string charaters, check every characters neighbors
 
-        // O(n^2) loop solution, sort two strings and check pairs
+        // O(n^2) nested loops solution, compare every pair in the array
         if (solutionSelection == 1) {
             const int strSize = testString.size();
 
@@ -1107,7 +1124,7 @@ void UniqueCharacters() {
         // O(n) solution, put each character into the hash table/stl set
         else if (solutionSelection == 2) {
             set<char> charSet;
-
+            // Loop through the string
             for (char c : testString) {
                 // If set contains the same value, uniqueness break
                 if (charSet.insert(c).second == false) {
@@ -1115,13 +1132,13 @@ void UniqueCharacters() {
                     break;
                 }
             }
-
+            // Print result
             if (isUnique)
                 cout << testString << "'s all characters are unique." << endl << endl;
             else
                 cout << testString << " has non-unique characters." << endl << endl;
         }        
-        // Neither O(logn) nor O(n) solution selected
+        // Neither O(n^2) nor O(n) solution selected
         else {
             cout << "Incorrect solution selection!" << endl;
         }
@@ -1133,6 +1150,9 @@ void UniqueCharacters() {
 void URLify() {
     // Description of the problem
     cout << "Change space \" \" characters to \"%20\" in a given string." << endl;
+
+    cout << "ERROR: Currently not working do to the input function" << endl;
+    return;
     
     // Get string from user
     string urlString;
@@ -1202,7 +1222,7 @@ void OneEditDistance() {
         cout << "Enter 1 for O(n) neighbor check solution, 2 for O(n) hash map solution." << endl;
         cin >> solutionSelection;
 
-        // Sort force O(n logn) solution, sort the string charaters, check every characters neighbors
+        // Sort force O(n*logn) solution, sort the string charaters, check every characters neighbors
 
         // O(n) check neighbors solution, check pairs: NOTE: Its not a perfect solution, it has some flaws
         if (solutionSelection == 1) {
@@ -1273,7 +1293,7 @@ void OneEditDistance() {
             if(nonZeroCount > 1)
                 hasOneDifference = false;
         }
-        // Neither O(logn) nor O(n) solution selected
+        // Neither O(n) nor O(n) solution selected
         else {
             cout << "Incorrect solution selection!" << endl;
             return;
@@ -1300,6 +1320,7 @@ void StringCompression() {
     int counter = 0;
     char previousChar = uncompressed[0];
     const size_t uncSize = uncompressed.size();
+    // Loop through the string
     for (char c : uncompressed) {
         if (previousChar == c) {
             ++counter;
@@ -1315,7 +1336,7 @@ void StringCompression() {
     // Last character
     compressed += (previousChar + to_string(counter));
     const size_t cSize = compressed.size();
-
+    // Print result
     if (uncSize > cSize) {
         cout << "Compressed: " << compressed << endl << endl;
     }
@@ -2630,8 +2651,10 @@ int main()
             << "51 - Multithreaded Barber-Customer" << endl;
 
         cout << "Select a question: ";
+
         // Get selection input from the user
         cin >> questionSelection;
+
         switch (questionSelection)
         {
         case 0:
