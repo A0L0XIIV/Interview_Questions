@@ -19,6 +19,7 @@
 #include "BinarySearchTree.h"
 #include "LinkedList.h"
 #include "StacksWithArray.h"
+#include "MultithreadProblems.h"
 
 using namespace std;
 
@@ -2519,6 +2520,52 @@ void Fibonacci() {
     cout << endl << "Fibonacci with dynamic programming: " << Fibonacci(input) << endl;
 }
 
+void ConsumerProducerCaller() {
+    // Description of the problem
+    std::cout << "Consumer-Producer multithread problem." << std::endl;
+
+    std::vector<char> cVec;
+    int solutionSelection = 0;
+    unsigned short duration;
+    // Problem has several solutions, choose one
+    std::cout << "Enter 1 mutex  solution, 2 for semaphore solution (Requires C++20)." << std::endl;
+    std::cin >> solutionSelection;
+    // Thread runtime duration
+    std::cout << "Enter a number of seconds which threads going to run (e.g. 10s): " << std::endl;
+    std::cin >> duration;
+
+    // Mutex solution
+    if (solutionSelection == 1) {
+        // Consumer-Producer w/ Mutex
+        ConsumerProducer(true, duration);
+    }
+    // Semaphore solution
+    else if (solutionSelection == 2) {
+        // Consumer-Producer w/ Semaphore
+        ConsumerProducer(false, duration);
+    }
+    // Neither Mutex nor Semaphore solution selected
+    else {
+        std::cout << "Incorrect solution selection!" << std::endl;
+    }
+    return;
+}
+
+void BarberCustomerCaller() {
+    // Description of the problem
+    std::cout << "Barber-Customer multithread problem." << std::endl;
+
+    unsigned short duration;
+    // Thread runtime duration
+    std::cout << "Enter a number of seconds which threads going to run (min 15s): " << std::endl;
+    std::cin >> duration;
+    // 15s check
+    if (duration < 15) duration = 15;
+
+    BarberCustomer(duration);
+    return;
+}
+
 int main()
 {
     // Selection of the question
@@ -2578,7 +2625,9 @@ int main()
             << "46 - Towers of Hanoi (3 towers, N disks)" << endl
             << "47 - All combination of paranthesis" << endl
             << "48 - Merge 2 sorted arrays" << endl
-            << "49 - Fibonacci" << endl;
+            << "49 - Fibonacci" << endl
+            << "50 - Multithreaded Producer-Consumer" << endl
+            << "51 - Multithreaded Barber-Customer" << endl;
 
         cout << "Select a question: ";
         // Get selection input from the user
@@ -2734,6 +2783,12 @@ int main()
             break;
         case 49:
             Fibonacci();
+            break;
+        case 50:
+            ConsumerProducerCaller();
+            break;
+        case 51:
+            BarberCustomerCaller();
             break;
         default:
             cout << "Please enter a valid input from the question list!" << endl;
