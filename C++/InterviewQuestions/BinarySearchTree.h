@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <list>
+#include <string>
 
 template<class Type>
 class BSTNode{
@@ -18,8 +19,8 @@ public:
 	BSTNode(Type v, std::shared_ptr<BSTNode> l, std::shared_ptr<BSTNode> r) : value(v), left(l), right(r) {};
 	// Functions
 	Type getValue() { return value; };
-	std::shared_ptr<BSTNode> getLeftChild() { return left; };
-	std::shared_ptr<BSTNode> getRightChild() { return right; };
+	std::shared_ptr<BSTNode<Type>> getLeftChild() { return left; };
+	std::shared_ptr<BSTNode<Type>> getRightChild() { return right; };
 	void updateValue(Type v) { value = v; };
 	void updateLeft(std::shared_ptr<BSTNode> l) { left = l; };
 	void updateRight(std::shared_ptr<BSTNode> r) { right = r; };
@@ -40,9 +41,11 @@ public:
 	void printPreorder(std::shared_ptr<BSTNode<Type>> node);
 	void printInorder(std::shared_ptr<BSTNode<Type>> node);
 	void printPostorder(std::shared_ptr<BSTNode<Type>> node);
-	std::shared_ptr<BSTNode<Type>> find(int v, std::shared_ptr<BSTNode<Type>> node);
+	std::shared_ptr<BSTNode<Type>> find(Type v, std::shared_ptr<BSTNode<Type>> node);
+	std::shared_ptr<BSTNode<Type>> findParent(Type v, std::shared_ptr<BSTNode<Type>> node, bool &isLeftChild);
 	void addNode(std::shared_ptr<BSTNode<Type>> node);
-	void deleteNode(std::shared_ptr<BSTNode<Type>> node);
+	bool deleteNode(std::shared_ptr<BSTNode<Type>> node);
+	bool deleteNode(Type nodeValue);
 	int calculateDepth(std::shared_ptr<BSTNode<Type>> node);
 	std::shared_ptr<BSTNode<Type>> getRoot();
 	std::shared_ptr<BSTNode<Type>> randomNode(std::shared_ptr<BSTNode<Type>> node);
@@ -108,21 +111,56 @@ void BST<Type>::printPostorder(std::shared_ptr<BSTNode<Type>> node) {
 }
 
 template<class Type>
-std::shared_ptr<BSTNode<Type>> BST<Type>::find(int v, std::shared_ptr<BSTNode<Type>> node) {
-	// Base case
-	if (node->getValue() == v)
-		return node;
+std::shared_ptr<BSTNode<Type>> BST<Type>::find(Type v, std::shared_ptr<BSTNode<Type>> node) {
 	// Reached the null leafs
-	else if (node == nullptr)
+	if (node == nullptr)
 		return nullptr;
-	else if (node->getValue() > v){ // TODO: Add custom comparision for template values
+	// Get node's value
+	Type value = node->getValue();
+	// Base case
+	if (value == v)
+		return node;
+	// Check left subtree
+	else if (value > v){ // TODO: Add custom comparision for template values
 		// Recursion
-		find(v, node->getLeftChild());
+		return find(v, node->getLeftChild());
 	}
+	// Check right subtree
+	else if (value < v) {
+		// Recursion
+		return find(v, node->getRightChild());
+	}
+	// Couldn't find
+	return nullptr;
+}
+
+template<class Type>
+std::shared_ptr<BSTNode<Type>> BST<Type>::findParent(Type v, std::shared_ptr<BSTNode<Type>> node, bool &isLeftChild) {
+	// Reached the null leafs
+	if (node == nullptr)
+		return nullptr;
+	// Parent's left child
+	if (node->getLeftChild()->getValue() == v) {
+		isLeftChild = true;
+		return node;
+	}
+	// Parent's right child
+	else if (node->getRightChild()->getValue() == v) {
+		isLeftChild = false;
+		return node;
+	}
+	// Check left subtree
+	else if (node->getValue() > v) {
+		// Recursion
+		return findParent(v, node->getLeftChild(), isLeftChild);
+	}
+	// Check right subtree
 	else if (node->getValue() < v) {
 		// Recursion
-		find(v, node->getRightChild());
+		return findParent(v, node->getRightChild(), isLeftChild);
 	}
+	// Couldn't find
+	return nullptr;
 }
 
 template<class Type>
@@ -161,8 +199,102 @@ void BST<Type>::addNode(std::shared_ptr<BSTNode<Type>> node) {
 }
 
 template<class Type>
-void BST<Type>::deleteNode(std::shared_ptr<BSTNode<Type>> node){
-	// TO DO: 4 case: leaf, w/left child, w/right child, w/both children
+bool BST<Type>::deleteNode(std::shared_ptr<BSTNode<Type>> node){
+	bool isParentsLeftChild = false;
+	// Find the node's parent
+	std::shared_ptr<BSTNode<Type>> parentNode = findParent(node->getValue(), root, isParentsLeftChild);
+	// 4 case: leaf, w/left child, w/right child, w/both children
+	std::shared_ptr<BSTNode<Type>> leftChild = node->getLeftChild();
+	std::shared_ptr<BSTNode<Type>> rightChild = node->getRightChild();
+	// Case 1: Node has only left subtree/children
+	if (leftChild && !rightChild) {
+		// Remove the root node, node's parent is empty
+		if (!parentNode) {
+			root = leftChild;
+		}
+		// Update the parent's left child pointer to node's left child
+		else if (isParentsLeftChild) {
+			parentNode->updateLeft(leftChild);
+		}
+		// Update the parent's right child pointer to node's left child
+		else {
+			parentNode->updateRight(leftChild);
+		}
+	}	
+	// Case 2: Node has only right subtree/children
+	else if (!leftChild && rightChild) {
+		// Remove the root node, node's parent is empty
+		if (!parentNode) {
+			root = rightChild;
+		}
+		// Update the parent's left child pointer to node's right child
+		else if (isParentsLeftChild) {
+			parentNode->updateLeft(rightChild);
+		}
+		// Update the parent's right child pointer to node's right child
+		else {
+			parentNode->updateRight(rightChild);
+		}
+	}
+	// Case 3: Node has both left and right subtree/children
+	else if (leftChild && rightChild) {
+		// Update the parent's child pointer to node's right child
+		// Right child moves one layer up, find a best spot for left subtree
+		// Remove the root node, node's parent is empty
+		if (!parentNode) {
+			root = rightChild;
+		}
+		// Update the parent's left child pointer to node's right child
+		else if (isParentsLeftChild) {
+			parentNode->updateLeft(node->getRightChild());
+			// Need to put node's left children/subtree
+		}
+		// Update the parent's right child pointer to node's right child
+		else {
+			parentNode->updateRight(node->getRightChild());
+			// Need to put node's left children/subtree
+		}
+		// Current pointer to finding best spot for left subtree, start from parentNode or root
+		std::shared_ptr<BSTNode<Type>> current = parentNode ? parentNode : root;
+		// Find the best spot for left subtree, until finding a node with empty left node
+		while (current->getLeftChild() != nullptr) {
+			// Left child is greater than the current node, move right
+			if (leftChild > current) {
+				current = current->getRightChild();
+			}
+			// Left child is less than the current node, move left
+			else if (leftChild < current) {
+				current = current->getLeftChild();
+			}
+		}
+		// Found the best spot for node's left subtree
+		current->updateLeft(leftChild);
+	}
+	// Case 4: Node is a leaf node: doesn't have any children
+	else {
+		// Remove the root node, node's parent is empty
+		if (!parentNode) {
+			root = nullptr;
+			root.reset();
+		}
+		// Update the parent's left child pointer to nullptr
+		else if (isParentsLeftChild) {
+			parentNode.get()->updateLeft(nullptr);
+			parentNode.get()->getLeftChild().reset();
+		}
+		// Update the parent's right child pointer to nullptr
+		else {
+			parentNode.get()->updateRight(nullptr);
+			parentNode.get()->getRightChild().reset();
+		}
+	}
+	return true;
+}
+
+template<class Type>
+bool BST<Type>::deleteNode(Type nodeValue) {
+	// Find the node via value and call the overloaded function
+	return deleteNode(find(nodeValue, root));
 }
 
 template<class Type>
