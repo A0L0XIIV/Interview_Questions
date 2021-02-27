@@ -66,12 +66,12 @@ vector<T> getArrayInput(size_t size) {
     return vec;
 }
 
-bool is_digits(const string& str){
+bool IsDigits(const string& str){
     return str.find_first_not_of("-0123456789") == string::npos;
     //return all_of(str.begin(), str.end(), ::isdigit); // C++11
 }
 
-void fizzBuzz() {
+void FizzBuzz() {
     // Description of the problem
     cout << "Print numbers from 1 to x. If the number is divisible by 3, replace it with \"Fizz\". If it is divisible by 5, replace it with \"Buzz\". If it is divisible by 3 and 5 replace it with \"FizzBuzz\"." <<endl;
 
@@ -105,7 +105,7 @@ void fizzBuzz() {
     }
 }
 
-void twoSum() {
+void TwoSum() {
     // Description of the problem
     cout << "Given an array of integers, return indices of the two numbers such that they add up to a specific target." << endl;
 
@@ -187,7 +187,7 @@ void twoSum() {
     }
 }
 
-void maxConsecutiveOnes() {
+void MaxConsecutiveOnes() {
     // Description of the problem
     cout << "Given an array of 0s and 1s (binary), return the number of max consecutive ones. For example; [1,1,1,0,1,1] --> return 3." << endl;
 
@@ -225,7 +225,7 @@ void maxConsecutiveOnes() {
 
 }
 
-void maxProductofThreeNumbers(){
+void MaxProductofThreeNumbers(){
     // Description of the problem
     cout << "Given an array of integers, print the product of 3 max integers. For example; [1,2,3,4] --> 2*3*4=24" << endl;
 
@@ -322,7 +322,7 @@ void maxProductofThreeNumbers(){
     }
 }
 
-void validParantheses() {
+void ValidParantheses() {
     // Description of the problem
     cout << "Given an array of parantheses check its validness. Every opening paratheses must have one closing parantheses!" << endl;
 
@@ -367,7 +367,7 @@ void validParantheses() {
 
 }
 
-void baseballGame() {
+void BaseballGame() {
     // Description of the problem
     cout << "Calculate the final score of the baseball game. Given the array of characters: integers are the points, D doubles the previous point, C cancels the previous point and + sums last two points." << endl;
     cout << "[5,2,C,D,+] --> 5+2=7 --> C: 2 canceled=5 --> D: 5*2=10 : total=5+10=15 --> +: 5+10=15 total=5+10+15=30" << endl;
@@ -385,7 +385,7 @@ void baseballGame() {
     // Loop through the array
     for (string element : arr) {
         // Digit, push to stack
-        if (is_digits(element)) {
+        if (IsDigits(element)) {
             pointStack.push(stoi(element));
         }
         // D: double the previous
@@ -435,7 +435,7 @@ void baseballGame() {
     cout << "Total: " << total << endl;
 }
 
-void containsDuplicate(){
+void ContainsDuplicate(){
     // Description of the problem
     cout << "Find the duplicates in the given array with k index difference." << endl;
     cout << "[2,4,1,1,3,2,5,6] and k=2. 2's index difference is larger than k=2 so only return 1 as a result." << endl;
@@ -509,7 +509,7 @@ void containsDuplicate(){
 
 }
 
-void validAnagram(){
+void ValidAnagram(){
     // Description of the problem
     cout << "Check if the given 2 words are anagrams or not (containts the same letters)." << endl;
     cout << "Example: anagram and nagaram are anagrams but cat and rat are not." << endl;
@@ -603,7 +603,7 @@ void validAnagram(){
     }
 }
 
-void kthLargestElement(){
+void KthLargestElement(){
     // Description of the problem
     cout << "Find the Kth largest element in the given array." << endl;
 
@@ -658,7 +658,7 @@ void kthLargestElement(){
     }
 }
 
-void kPairsWithSmallestSum() {
+void KPairsWithSmallestSum() {
     // Description of the problem
     cout << "Given 2 different arrays, find the k pairs that have smallest sum value." << endl;
     cout << "For example: u=[1,7,11] and v=[2,4,6], results are= [1,2], [1,4] and [1,6]." << endl;
@@ -748,7 +748,7 @@ void kPairsWithSmallestSum() {
 
 }
 
-void invertBST(std::shared_ptr<BSTNode<int>> node) {
+void InvertBST(std::shared_ptr<BSTNode<int>> node) {
     // Base case
     if (node == nullptr)
         return;
@@ -758,15 +758,15 @@ void invertBST(std::shared_ptr<BSTNode<int>> node) {
     node->updateRight(temp);
     // Call left child subtree
     if (node->getLeftChild() != nullptr) {
-        invertBST(node->getLeftChild());
+        InvertBST(node->getLeftChild());
     }
     // Call right child subtree
     if (node->getRightChild() != nullptr) {
-        invertBST(node->getRightChild());
+        InvertBST(node->getRightChild());
     }
 }
 
-void invertBSTCaller() {
+void InvertBSTCaller() {
     // Description of the problem
     cout << "Invert the given binary (search) tree." << endl;
 
@@ -779,13 +779,13 @@ void invertBSTCaller() {
     bst->printTree();
 
     // Call invert function with root node
-    invertBST(bst->getRoot());
+    InvertBST(bst->getRoot());
 
     cout << endl << "After invertion print tree: ";
     bst->printTree();
 }
 
-void insertionSort() {
+void InsertionSort() {
     // Description of the problem
     cout << "Insertion sort algoritm. Create a new array and it will print the sorted result." << endl;
 
@@ -816,7 +816,7 @@ void insertionSort() {
     }
 }
 
-void merge(vector<int>& array, int p, int q, int r) {
+void Merge(vector<int>& array, int p, int q, int r) {
     // Size of 2 arrays
     int n1 = (q - p) + 1;
     int n2 = (r - q);
@@ -849,19 +849,19 @@ void merge(vector<int>& array, int p, int q, int r) {
     }
 }
 
-void mergeSort(vector<int>& array, int p, int r) {
+void MergeSort(vector<int>& array, int p, int r) {
     if (p < r) {
         // Middle element.s index
         int q = static_cast<int> (ceil((p + r) / 2));
         // Recusrion for first and second halves
-        mergeSort(array, p, q);
-        mergeSort(array, q + 1, r);
+        MergeSort(array, p, q);
+        MergeSort(array, q + 1, r);
         // Merge 2 halves
-        merge(array, p, q, r);
+        Merge(array, p, q, r);
     }
 }
 
-void mergeSortCaller() {
+void MergeSortCaller() {
     // Description of the problem
     cout << "Merge sort algoritm. Create a new array and it will print the sorted result." << endl;
 
@@ -870,7 +870,7 @@ void mergeSortCaller() {
     int arrSize = arr.size();
 
     // Sorted array
-    mergeSort(arr, 0, arrSize-1);
+    MergeSort(arr, 0, arrSize-1);
 
     cout << "Sorted array: ";
     // Print sorted array
@@ -879,7 +879,7 @@ void mergeSortCaller() {
     }
 }
 
-void heapSort() {
+void HeapSort() {
     // Description of the problem
     cout << "Heap sort algoritm. Create a new array and it will print the sorted result." << endl;
 
@@ -907,7 +907,7 @@ void heapSort() {
     }
 }
 
-void quickSortCaller() {
+void QuickSortCaller() {
     // Description of the problem
     cout << "Quick sort algoritm. Create a new array and it will print the sorted result." << endl;
 
@@ -916,7 +916,7 @@ void quickSortCaller() {
     int arrSize = arr.size();
 
     // Sorted array
-    //quickSort(arr, 0, arrSize - 1);
+    //QuickSort(arr, 0, arrSize - 1);
 
     cout << "Sorted array: ";
     // Print sorted array
@@ -925,9 +925,9 @@ void quickSortCaller() {
     }
 }
 
-void quickSort() { } // TODO
+void QuickSort() { } // TODO
 
-void binarySearch() {
+void BinarySearch() {
     // Description of the problem
     cout << "Binary search algorithm. Create a new array, select value for search. It will show the search results." << endl;
 
@@ -990,7 +990,7 @@ void binarySearch() {
         cout << "Couldn't find the " << searchValue << " in the array." << endl;
 }
 
-void breadthFirstSearch() {
+void BreadthFirstSearch() {
     // Description of the problem
     cout << "Breadth First Search algorithm. Create a new Binary Search Tree, select value for search. It will show the search results." << endl;
 
@@ -1034,7 +1034,7 @@ void breadthFirstSearch() {
         cout << endl << "Could not find " << searchValue << " in the Binary Search Tree." << endl;
 }
 
-void depthFirstSearch() {
+void DepthFirstSearch() {
     // Description of the problem
     cout << "Depth First Search algorithm. Create a new Binary Search Tree, select value for search. It will show the search results." << endl;
 
@@ -2313,9 +2313,9 @@ void StackSorting() {
 
 void LongestCommonSubsequence() {}
 
-void graphPathCheck() {}
+void GraphPathCheck() {}
 
-std::shared_ptr<BSTNode<int>> sortedArrayToMinimalBST(vector<int> &nums, int begin, int end) {
+std::shared_ptr<BSTNode<int>> SortedArrayToMinimalBST(vector<int> &nums, int begin, int end) {
     // List is empty
     if (begin > end)
         return nullptr;
@@ -2326,14 +2326,14 @@ std::shared_ptr<BSTNode<int>> sortedArrayToMinimalBST(vector<int> &nums, int beg
     // Create new tree node from the middle element
     auto root = std::shared_ptr<BSTNode<int>>(new BSTNode<int>(nums[middle]));
 
-    root.get()->updateLeft(sortedArrayToMinimalBST(nums, begin, middle - 1));
-    root.get()->updateRight(sortedArrayToMinimalBST(nums, middle + 1, end));
+    root.get()->updateLeft(SortedArrayToMinimalBST(nums, begin, middle - 1));
+    root.get()->updateRight(SortedArrayToMinimalBST(nums, middle + 1, end));
 
     // Return the root of the tree
     return root;
 }
 
-void sortedArrayToMinimalBST() {
+void SortedArrayToMinimalBST() {
     // Description of the problem
     cout << "Create a minimal depth Binary Search Tree from a sorted array." << endl;
 
@@ -2343,7 +2343,7 @@ void sortedArrayToMinimalBST() {
     sort(arr.begin(), arr.end());
 
     // Create a BST from sorted array
-    auto bst = std::shared_ptr<BST<int>>(new BST<int>(sortedArrayToMinimalBST(arr, 0, arr.size() - 1)));
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(SortedArrayToMinimalBST(arr, 0, arr.size() - 1)));
 
     cout << endl << "Binary Search Tree: ";
     bst->printTree();
@@ -2373,14 +2373,14 @@ void BSTToDepthLinkedList() {
     }
 }
 
-int isBalancedBTDepth(std::shared_ptr<BSTNode<int>> root) {
+int IsBalancedBTDepth(std::shared_ptr<BSTNode<int>> root) {
     // Leaf node, return 0
     if (root == nullptr) {
         return 0;
     }
     // Get left and right subtrees' depths
-    int left = isBalancedBTDepth(root.get()->getLeftChild());
-    int right = isBalancedBTDepth(root.get()->getRightChild());
+    int left = IsBalancedBTDepth(root.get()->getLeftChild());
+    int right = IsBalancedBTDepth(root.get()->getRightChild());
     // If two subtrees' depth difference is greater than 1, return negative number as depth value
     if (abs(left - right) > 1) {
         return -32767; // SHRT_MIN
@@ -2389,7 +2389,7 @@ int isBalancedBTDepth(std::shared_ptr<BSTNode<int>> root) {
     return max(left, right) + 1;
 }
 
-void isBTBalanced() {
+void IsBTBalanced() {
     // Description of the problem
     cout << "Check if the given Binary Tree is balanced or not." << endl;
 
@@ -2401,8 +2401,8 @@ void isBTBalanced() {
     cout << endl << "Tree: ";
     bst->printTree();
     // Get left and right subtrees' depth
-    int left = isBalancedBTDepth(bst->getRoot()->getLeftChild());
-    int right = isBalancedBTDepth(bst->getRoot()->getRightChild());
+    int left = IsBalancedBTDepth(bst->getRoot()->getLeftChild());
+    int right = IsBalancedBTDepth(bst->getRoot()->getRightChild());
     int depthDifference = abs(left - right);
 
     if (left < 0 || right < 0) {
@@ -2416,7 +2416,7 @@ void isBTBalanced() {
     }
 }
 
-bool isBST(std::shared_ptr<BSTNode<int>> root, long min, long max) {
+bool IsBST(std::shared_ptr<BSTNode<int>> root, long min, long max) {
     // Null check
     if (root == nullptr)
         return true;
@@ -2431,11 +2431,11 @@ bool isBST(std::shared_ptr<BSTNode<int>> root, long min, long max) {
     }
 
     // Left child check recursive calls
-    if (leftChild != nullptr && !isBST(leftChild, min, value)) {
+    if (leftChild != nullptr && !IsBST(leftChild, min, value)) {
         return false;
     }
     // Right child check
-    if (rightChild != nullptr && !isBST(rightChild, value, max)) {
+    if (rightChild != nullptr && !IsBST(rightChild, value, max)) {
         return false;
     }
 
@@ -2443,7 +2443,7 @@ bool isBST(std::shared_ptr<BSTNode<int>> root, long min, long max) {
     return true;
 }
 
-void validateBST() {
+void ValidateBST() {
     // Description of the problem
     cout << "Check if the given Binary Search Tree is valid or not." << endl;
 
@@ -2457,7 +2457,7 @@ void validateBST() {
 
     long min = LONG_MIN;
     long max = LONG_MAX;
-    if (isBST(bst->getRoot(), min, max)) {
+    if (IsBST(bst->getRoot(), min, max)) {
         cout << "BST is valid" << endl;
     }
     else {
@@ -2467,7 +2467,7 @@ void validateBST() {
 
 void BTFirstCommonAncestor() {}
 
-void isSubTree() {}
+void IsSubTree() {}
 
 void RandomNodeInBST() {
     // Description of the problem
@@ -2510,7 +2510,7 @@ int Fibonacci(int input, int n, vector<int>& numbers) {
 }
 
 int Fibonacci(int n) {
-    // Fibonacci with dynamic programming
+    // Fibonacci with tabulation
     if (n == 0) {
         return 0;
     }
@@ -2538,7 +2538,7 @@ void Fibonacci() {
     cout << "Fibonacci with memoization: " << Fibonacci(input, input, numbers) << endl;
     for (auto i : numbers)
         std::cout << i << ' ';
-    cout << endl << "Fibonacci with dynamic programming: " << Fibonacci(input) << endl;
+    cout << endl << "Fibonacci with tabulation: " << Fibonacci(input) << endl;
 }
 
 void ConsumerProducerCaller() {
@@ -2622,24 +2622,24 @@ int main()
             << "22 - String Compression" << endl
             << "23 - String Rotation check: battle vs ttleba" << endl
             << "24 - Zero Matrix: Change rows and columns to 0 if cell is 0" << endl
-            << "25 - Remove Duplications in LinkedList" << endl
-            << "26 - Kth last element in the LinkedList" << endl
-            << "27 - Sum 2 integers as Linked Lists" << endl
-            << "28 - Check if given LinkedList is palindrome" << endl
-            << "29 - Check if given 2 LinkedLists intersect (not value)" << endl
+            << "25 - LinkedList: Remove Duplications in LinkedList" << endl
+            << "26 - LinkedList: Kth last element in the LinkedList" << endl
+            << "27 - LinkedList: Sum 2 integers as linked lists" << endl
+            << "28 - LinkedList is palindrome check" << endl
+            << "29 - 2 LinkedLists intersection (not value) check" << endl
             << "30 - LinkedList loop detection" << endl
             << "31 - 3 Stacks with 1 array" << endl
             << "32 - Stacks that shows min/max" << endl
             << "33 - Stacs with capacity (Creates new stacks when exceeds)" << endl
             << "34 - Queue with 2 Stacks" << endl
-            << "35 - Sort Stack with only 1 additional Stack" << endl
+            << "35 - Stack Sort with only 1 additional Stack" << endl
             << "36 - Longest common subsequence of the 2 strings" << endl
             << "37 - Given 2 nodes in the graph, check if there is a path between them" << endl
             << "38 - Sorted array to minimal depth BST" << endl
             << "39 - BST: create Linked Lists with the same depth nodes" << endl
             << "40 - BT is balanced or not" << endl
-            << "41 - Validate BST" << endl
-            << "42 - Find the first common ancestor of the 2 nodes in BT" << endl
+            << "41 - BST Validation" << endl
+            << "42 - BT: Find the first common ancestor of the 2 nodes in BT" << endl
             << "43 - Given 2 trees, check if one of them is subtree of the other" << endl
             << "44 - Random node selection in BST w/ even probability" << endl
             << "45 - All combinations of three (1 or 2 or ) step stairs climbing" << endl
@@ -2661,58 +2661,58 @@ int main()
             cout << "Program ending!" << endl;
             break;
         case 1:
-            fizzBuzz();
+            FizzBuzz();
             break;
         case 2:
-            twoSum();
+            TwoSum();
             break;
         case 3:
-            maxConsecutiveOnes();
+            MaxConsecutiveOnes();
             break;
         case 4:
-            maxProductofThreeNumbers();
+            MaxProductofThreeNumbers();
             break;
         case 5:
-            validParanthesis();
+            ValidParantheses();
             break;
         case 6:
-            baseballGame();
+            BaseballGame();
             break;
         case 7:
-            containsDuplicate();
+            ContainsDuplicate();
             break;
         case 8:
-            validAnagram();
+            ValidAnagram();
             break;
         case 9:
-            kthLargestElement();
+            KthLargestElement();
             break;
         case 10:
-            kPairsWithSmallestSum();
+            KPairsWithSmallestSum();
             break;
         case 11:
-            invertBSTCaller();
+            InvertBSTCaller();
             break;
         case 12:
-            insertionSort();
+            InsertionSort();
             break;
         case 13:
-            mergeSortCaller();
+            MergeSortCaller();
             break;
         case 14:
-            heapSort();
+            HeapSort();
             break;
         case 15:
-            quickSortCaller();
+            QuickSortCaller();
             break;
         case 16:
-            binarySearch();
+            BinarySearch();
             break;
         case 17:
-            breadthFirstSearch();
+            BreadthFirstSearch();
             break;
         case 18:
-            depthFirstSearch();
+            DepthFirstSearch();
             break;
         case 19:
             UniqueCharacters();
@@ -2769,25 +2769,25 @@ int main()
             LongestCommonSubsequence();
             break;
         case 37:
-            graphPathCheck();
+            GraphPathCheck();
             break;
         case 38:
-            sortedArrayToMinimalBST();
+            SortedArrayToMinimalBST();
             break;
         case 39:
             BSTToDepthLinkedList();
             break;
         case 40:
-            isBTBalanced();
+            IsBTBalanced();
             break;
         case 41:
-            validateBST();
+            ValidateBST();
             break;
         case 42:
             BTFirstCommonAncestor();
             break;
         case 43:
-            isSubTree();
+            IsSubTree();
             break;
         case 44:
             RandomNodeInBST();
