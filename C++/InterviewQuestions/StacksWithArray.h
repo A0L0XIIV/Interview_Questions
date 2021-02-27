@@ -47,7 +47,7 @@ StacksWithArray<Type>::StacksWithArray(size_t newStackSize) {
 	stacks = new Type[stackSize * numOfStacks];
 	std::fill(stacks, stacks + (stackSize * numOfStacks), NULL); // Fill with NULLs
 	topIndexes = new unsigned short[numOfStacks];
-	for (unsigned int i = 0; i < numOfStacks; ++i) { // Fill topIndexes with bottom index of the each stack
+	for (unsigned short i = 0; i < numOfStacks; ++i) { // Fill topIndexes with bottom index of the each stack
 		topIndexes[i] = ((i + 1) * stackSize) - 1;
 	}
 }
@@ -105,6 +105,7 @@ bool StacksWithArray<Type>::push(unsigned short stackIndex, Type value) {
 		// Update the top index of the stack
 		topIndexes[stackIndex] -= 1;
 	}
+	return true;
 }
 
 template<class Type>
@@ -137,11 +138,11 @@ template<class Type>
 void StacksWithArray<Type>::printStack(unsigned short stackIndex) {
 	// Find index of the top element
 	//unsigned short firstIndex = topIndexes[stackIndex]; // Prints only non-empty elements in the stack
-	unsigned short firstIndex = stackIndex * stackSize;
-	unsigned short lastIndex = ((stackIndex + 1) * stackSize) - 1; // Next stack's first element - 1 --> current stack's bottom
+	size_t firstIndex = stackIndex * stackSize;
+	size_t lastIndex = ((stackIndex + 1) * stackSize) - 1; // Next stack's first element - 1 --> current stack's bottom
 	size_t arraySize = stackSize * numOfStacks;
 	// Loop over the array
-	for (int i = firstIndex; i <= lastIndex; ++i) {
+	for (unsigned int i = firstIndex; i <= lastIndex; ++i) {
 		std::cout << stackIndex << "th Stack's " << i % stackSize << "th element: " << stacks[i] << std::endl;
 	}
 	std::cout << std::endl;

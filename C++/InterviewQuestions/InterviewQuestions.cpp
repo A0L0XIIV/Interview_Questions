@@ -88,7 +88,7 @@ void FizzBuzz() {
         cout << "ERROR: Please enter valid number! Between 1 and " + to_string(INT_MAX) << endl;
     else {
         // FizzBuzz operation
-        for (int i = 1; i <= userNumber; ++i) {
+        for (unsigned int i = 1; i <= userNumber; ++i) {
             // Number is power of 3, print Fizz
             if (i % 3 == 0 && i % 5 == 0)
                 printResults += "FizzBuzz";

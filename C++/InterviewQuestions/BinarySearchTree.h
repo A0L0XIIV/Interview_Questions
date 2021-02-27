@@ -29,8 +29,8 @@ public:
 template<class Type>
 class BST {
 	std::shared_ptr<BSTNode<Type>> root;
-	unsigned short numOfNodes;
-	unsigned short depth;
+	unsigned short numOfNodes = 0;
+	unsigned short depth = 0;
 public:
 	// Constructors
 	BST() = default;
