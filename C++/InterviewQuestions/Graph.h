@@ -8,7 +8,6 @@
 #include <iostream>
 #include <queue>
 #include <stack>
-#include <map>
 
 template<class Type>
 class GraphNode {
@@ -45,13 +44,13 @@ public:
 	void deleteNode(std::shared_ptr<GraphNode<Type>> node);
 	std::shared_ptr<GraphNode<Type>> getHead();
 	size_t countNodes(std::shared_ptr<GraphNode<Type>> = start);
-	std::shared_ptr<GraphNode<Type>> BreadthFirstSearch();
-	std::shared_ptr<GraphNode<Type>> DepthFirstSearch();
+	std::shared_ptr<GraphNode<Type>> BreadthFirstSearch(Type searchValue);
+	std::shared_ptr<GraphNode<Type>> DepthFirstSearch(Type searchValue);
 };
 
 // BFS
 template <class Type>
-std::shared_ptr<GraphNode<Type>> Graph<Type>::BreadthFirstSearch() {
+std::shared_ptr<GraphNode<Type>> Graph<Type>::BreadthFirstSearch(Type searchValue) {
 	// Queue and explored vector
 	std::queue<std::shared_ptr<GraphNode<Type>>> q;
 	std::vector<Type> explored;
@@ -64,14 +63,14 @@ std::shared_ptr<GraphNode<Type>> Graph<Type>::BreadthFirstSearch() {
 		// Get the front element and its value
 		current = q.front();
 		currentValue = current->getValue();
-		// Pop from queue
-		q.pop();
-		// Search in the vector, if find return it
-		if (find(explored.begin(), explored.end(), current->getValue()) != explored.end()) {
+		// Find the node, return
+		if (currentValue == searchValue) {
 			return current;
 		}
-		// Not find, search next nodes
-		else {
+		// Pop from queue
+		q.pop();
+		// Search in the vector, if find it has been explored continue, if not push into queue
+		if (find(explored.begin(), explored.end(), current->getValue()) == explored.end()) {
 			// Add in the explored vector
 			explored.push_back(currentValue);
 			// Add node's neighbors in queue
@@ -86,7 +85,7 @@ std::shared_ptr<GraphNode<Type>> Graph<Type>::BreadthFirstSearch() {
 
 // DFS
 template <class Type>
-std::shared_ptr<GraphNode<Type>> Graph<Type>::DepthFirstSearch() {
+std::shared_ptr<GraphNode<Type>> Graph<Type>::DepthFirstSearch(Type searchValue) {
 	// Stack and discovered vector
 	std::stack<std::shared_ptr<GraphNode<Type>>> s;
 	std::vector<Type> discovered;
@@ -99,19 +98,19 @@ std::shared_ptr<GraphNode<Type>> Graph<Type>::DepthFirstSearch() {
 		// Get the front element and its value
 		current = s.top();
 		currentValue = current->getValue();
-		// Pop from stack
-		s.pop();
-		// Search in the vector, if find return it
-		if (find(discovered.begin(), discovered.end(), current->getValue()) != discovered.end()) {
+		// Find the node, return
+		if (currentValue == searchValue) {
 			return current;
 		}
-		// Not find, search next nodes
-		else {
+		// Pop from stack
+		s.pop();
+		// Search in the vector, if find it has been discovered continue, if not push into stack
+		if (find(discovered.begin(), discovered.end(), current->getValue()) == discovered.end()) {
 			// Add in the discovered vector
 			discovered.push_back(currentValue);
 			// Add node's neighbors in stack
 			for (auto neighbor : current->getNeighbors()) {
-				q.push(neighbor);
+				s.push(neighbor);
 			}
 		}
 	}
