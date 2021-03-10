@@ -2465,7 +2465,76 @@ void ValidateBST() {
     }
 }
 
-void BTFirstCommonAncestor() {}
+bool BTFirstCommonAncestor(std::shared_ptr<BSTNode<int>> node, const int &node1, const int &node2, std::shared_ptr<BSTNode<int>>& ancestor) {
+    // Base case for leafs/null
+    if (node == nullptr) return false;
+
+    bool isNode1 = false;
+    bool isNode2 = false;
+    bool isInLeftSubtree = false;
+    bool isInRightSubtree = false;
+
+    // First node
+    if (node->getValue() == node1) {
+        isNode1 = true;
+    }
+    // Second node
+    else if (node->getValue() == node2) {
+        isNode2 = true;
+    }
+
+    // Recursive calls for left and right subtrees
+    isInLeftSubtree = BTFirstCommonAncestor(node->getLeftChild(), node1, node2, ancestor);
+    isInRightSubtree = BTFirstCommonAncestor(node->getRightChild(), node1, node2, ancestor);
+
+    // Found the ancestor
+    if ((isInLeftSubtree && isInRightSubtree)                       // Left and right subtrees return true, ancestor is current
+        || (isNode1 && (isInLeftSubtree || isInRightSubtree))       /* Node is one of them and either left or right subtree is true */
+        || (isNode2 && (isInLeftSubtree || isInRightSubtree))) {    /* so current node is the ancestor */
+        ancestor = node;
+        return false;   // Found the ancestor, return false to prior calls for not confusing
+    }
+    // Only 1 of the 4 conditions is true, return true to prior calls
+    else if (isNode1 || isNode2 || isInLeftSubtree || isInRightSubtree) {
+        return true;
+    }
+    // None of the conditions are true, return false
+    else {
+        return false;
+    }
+}
+
+void BTFirstCommonAncestor() {
+    // Description of the problem
+    cout << "Find the first common ancestor of the given 2 nodes in the binary tree." << endl;
+
+    // Get array values from user
+    vector<int> arr = getArrayInput<int>();
+    // Create a BST from the vector
+    auto bst = std::shared_ptr<BST<int>>(new BST<int>(arr));
+
+    // Get 2 nodes
+    int node1, node2;
+    cout << "Node 1: ";
+    cin >> node1;
+    cout << "Node 2: ";
+    cin >> node2;
+
+    cout << endl << "Tree: ";
+    bst->printTree();
+
+    std::shared_ptr<BSTNode<int>> ancestor = nullptr;
+    BTFirstCommonAncestor(bst->getRoot(), node1, node2, ancestor);
+
+    // Print the results
+    if (ancestor) {
+        cout << "First common ancestor of " << node1 << " and " << node2 <<" is: " << ancestor->getValue() << endl;
+    }
+    else {
+        cout << "These 2 nodes are not have a common ancestor, maybe one of them is not in the tree." << endl;
+    }
+    return;
+}
 
 void IsSubTree() {}
 
