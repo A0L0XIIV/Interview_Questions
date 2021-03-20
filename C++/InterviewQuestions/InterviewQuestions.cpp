@@ -2536,7 +2536,103 @@ void BTFirstCommonAncestor() {
     return;
 }
 
-void IsSubTree() {}
+bool IsTreeMatch(std::shared_ptr<BSTNode<int>> root1, std::shared_ptr<BSTNode<int>> root2) {
+    // One of them reached a leaf, XOR
+    if (root1 == nullptr ^ root2 == nullptr) {
+        return false;
+    }
+    // Both reached the leaves at the same time
+    else if (root1 == nullptr && root2 == nullptr) {
+        return true;
+    }
+    // Call left children, right children and check the current nodes values
+    else if (IsTreeMatch(root1->getLeftChild(), root2->getLeftChild())
+        && IsTreeMatch(root1->getRightChild(), root2->getRightChild())
+        && root1->getValue() == root2->getValue()
+        ) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool IsSubTree(std::shared_ptr<BSTNode<int>> root1, std::shared_ptr<BSTNode<int>> root2) {
+    // Reached the leaves
+    if (root1 == nullptr) {
+        return false;
+    }
+    // Call match function if the current node is equal to second tree's root
+    if (root1->getValue() == root2->getValue() && IsTreeMatch(root1, root2)) {
+        return true;
+    }
+    // Call left and right children
+    if (IsSubTree(root1->getLeftChild(), root2)) return true;
+    if (IsSubTree(root1->getRightChild(), root2)) return true;
+    // No matches, return false
+    return false;
+}
+
+void IsSubTree() {
+    // Description of the problem
+    cout << "Is tree B is subtree of the tree A?" << endl;
+    short solutionSelection = 0;
+
+    // Tree 1
+    cout << "Larger tree:" << endl;
+    // Get array values from user
+    vector<int> arr1 = getArrayInput<int>();
+    // Create a BST from the vector
+    auto bst1 = std::shared_ptr<BST<int>>(new BST<int>(arr1));
+
+    // Tree 2
+    cout << "Smaller/sub tree:" << endl;
+    // Get array values from user
+    vector<int> arr2 = getArrayInput<int>();
+    // Create a BST from the vector
+    auto bst2 = std::shared_ptr<BST<int>>(new BST<int>(arr2));
+
+    // Size comparison
+    if (arr1.size() < arr2.size()) {
+        cout << "Second/sub tree is larger than the first one, is not subtree." << endl;
+        return;
+    }
+
+    // Problem has several solutions, choose one
+    cout << "Enter 1 for preorder substring solution, 2 for recursive traversal solution: ";
+    cin >> solutionSelection;
+
+    // 1. Get 2 trees' preorder traverse strings and check for substring
+    if (solutionSelection == 1) {
+        cout << "If the smaller tree's preorder is in the larger tree's preorder, it is subtree." << endl;
+        cout << endl << "Large Tree: ";
+        bst1->printPreorder(bst1->getRoot());
+        cout << endl << "Small Tree: ";
+        bst2->printPreorder(bst2->getRoot());
+        // Search the substring --> Need to implement preorder that return a string, current one just prints
+        /*size_t found = str.find(str2);
+        if (found != std::string::npos)
+            cout << "Subtree" << endl;
+        else
+            cout << "Not subtree" << endl;*/
+    }
+    /* Traverse inside the large tree and if the node is equal to small tree's
+    * root node, call a matchTree function which compares all nodes until the leaves.*/
+    else if (solutionSelection == 2) {
+        // Call the recursive function
+        if (IsSubTree(bst1->getRoot(), bst2->getRoot())) {
+            cout << "Yes, second tree is subtree of the first one." << endl;
+        }
+        else {
+            cout << "No, second tree is NOT subtree of the first one." << endl;
+        }
+    }
+    // Incorrect solution selection
+    else {
+        cout << "Incorrect solution selection!" << endl;
+    }
+    return;
+}
 
 void RandomNodeInBST() {
     // Description of the problem
