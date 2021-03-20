@@ -20,6 +20,7 @@
 #include "LinkedList.h"
 #include "StacksWithArray.h"
 #include "MultithreadProblems.h"
+#include "Graph.h"
 
 using namespace std;
 
